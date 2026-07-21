@@ -33,8 +33,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          cp .github/workflows/unpack-soundz-upload.yml /tmp/unpack-soundz-upload.yml
           find . -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
           cp -a /tmp/soundz-source/soundz-platform-phase-1/. ./
+          rm -f .github/workflows/ci.yml
+          mkdir -p .github/workflows
+          cp /tmp/unpack-soundz-upload.yml .github/workflows/unpack-soundz-upload.yml
 
       - name: Commit complete source to main
         shell: bash
