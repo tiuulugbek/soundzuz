@@ -28,6 +28,16 @@
     "verify:structure": "node scripts/verify-structure.mjs",
     "smoke": "node scripts/smoke-test.mjs"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/engines",
+      "@scarf/scarf",
+      "esbuild",
+      "msgpackr-extract",
+      "prisma",
+      "sharp"
+    ]
+  },
   "devDependencies": {
     "@types/node": "^24.0.15",
     "prettier": "^3.6.2",
