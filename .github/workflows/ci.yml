@@ -5,28 +5,11 @@ on:
     branches: [main, develop]
   pull_request:
 
-permissions:
-  contents: write
-
 jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref || github.ref_name }}
-      - name: Apply ioredis ESM compatibility fix
-        if: github.event_name == 'pull_request'
-        shell: bash
-        run: |
-          sed -i 's/import IORedis from "ioredis";/import { Redis as IORedis } from "ioredis";/' apps/worker/src/main.ts
-          if ! git diff --quiet -- apps/worker/src/main.ts; then
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add apps/worker/src/main.ts
-            git commit -m 'Fix ioredis ESM import'
-            git push origin HEAD:${GITHUB_HEAD_REF}
-          fi
       - uses: pnpm/action-setup@v4
         with:
           version: 11.7.0
@@ -39,7 +22,25 @@ jobs:
         env:
           DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
       - run: pnpm --filter "./packages/**" build
-      - run: pnpm typecheck
+      - name: Capture typecheck diagnostics
+        shell: bash
+        run: |
+          set +e
+          pnpm typecheck > typecheck.log 2>&1
+          status=$?
+          cat typecheck.log
+          echo "$status" > typecheck-status.txt
+          exit 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: typecheck-log-latest
+          path: |
+            typecheck.log
+            typecheck-status.txt
+      - name: Fail when typecheck failed
+        shell: bash
+        run: |
+          test "$(cat typecheck-status.txt)" = "0"
       - run: pnpm test
       - run: pnpm build
         env:
