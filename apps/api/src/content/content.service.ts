@@ -14,8 +14,7 @@ export class ContentService {
     return this.prisma.$queryRawUnsafe(
       `SELECT id, slug, name, description, sort_order AS "sortOrder"
        FROM article_categories WHERE locale = $1 AND is_active = TRUE
-       ORDER BY sort_order, name`,
-      locale,
+       ORDER BY sort_order, name`, locale,
     );
   }
 
@@ -26,21 +25,15 @@ export class ContentService {
     const category = input.category?.trim() || null;
     return this.prisma.$queryRawUnsafe(
       `SELECT a.id, a.slug, a.locale, a.title, a.excerpt,
-              a.featured_image_url AS "featuredImageUrl",
-              a.reading_time_minutes AS "readingTimeMinutes",
+              a.featured_image_url AS "featuredImageUrl", a.reading_time_minutes AS "readingTimeMinutes",
               a.author_name AS "authorName", a.reviewer_name AS "reviewerName",
               a.published_at AS "publishedAt", c.name AS "categoryName", c.slug AS "categorySlug"
-       FROM articles a
-       LEFT JOIN article_categories c ON c.id = a.category_id
+       FROM articles a LEFT JOIN article_categories c ON c.id = a.category_id
        WHERE a.locale = $1 AND a.status = 'PUBLISHED'
          AND ($2::text IS NULL OR c.slug = $2)
          AND ($3::text IS NULL OR to_tsvector('simple', coalesce(a.title,'') || ' ' || coalesce(a.excerpt,'') || ' ' || coalesce(a.content,'')) @@ plainto_tsquery('simple', $3))
-       ORDER BY a.published_at DESC NULLS LAST, a.created_at DESC
-       LIMIT $4`,
-      locale,
-      category,
-      search,
-      limit,
+       ORDER BY a.published_at DESC NULLS LAST, a.created_at DESC LIMIT $4`,
+      locale, category, search, limit,
     );
   }
 
@@ -48,9 +41,7 @@ export class ContentService {
     const rows = await this.prisma.$queryRawUnsafe<any[]>(
       `SELECT a.*, c.name AS "categoryName", c.slug AS "categorySlug"
        FROM articles a LEFT JOIN article_categories c ON c.id = a.category_id
-       WHERE a.slug = $1 AND a.locale = $2 AND a.status = 'PUBLISHED' LIMIT 1`,
-      slug,
-      locale,
+       WHERE a.slug = $1 AND a.locale = $2 AND a.status = 'PUBLISHED' LIMIT 1`, slug, locale,
     );
     if (!rows[0]) throw new NotFoundException("Maqola topilmadi");
     return rows[0];
@@ -64,16 +55,12 @@ export class ContentService {
       `SELECT f.id, f.question, f.short_answer AS "shortAnswer", f.full_answer AS "fullAnswer",
               f.sort_order AS "sortOrder", c.name AS "categoryName", c.slug AS "categorySlug",
               a.slug AS "relatedArticleSlug"
-       FROM faqs f
-       LEFT JOIN faq_categories c ON c.id = f.category_id
+       FROM faqs f LEFT JOIN faq_categories c ON c.id = f.category_id
        LEFT JOIN articles a ON a.id = f.related_article_id
        WHERE f.locale = $1 AND f.status = 'PUBLISHED'
          AND ($2::text IS NULL OR c.slug = $2)
          AND ($3::text IS NULL OR to_tsvector('simple', coalesce(f.question,'') || ' ' || coalesce(f.short_answer,'') || ' ' || coalesce(f.full_answer,'')) @@ plainto_tsquery('simple', $3))
-       ORDER BY c.sort_order, f.sort_order, f.question`,
-      locale,
-      category,
-      search,
+       ORDER BY c.sort_order, f.sort_order, f.question`, locale, category, search,
     );
   }
 
@@ -81,8 +68,7 @@ export class ContentService {
     const q = query.trim();
     if (!q) return { articles: [], faqs: [] };
     const [articles, faqs] = await Promise.all([
-      this.listArticles({ locale, search: q, limit: 10 }),
-      this.listFaqs({ locale, search: q }),
+      this.listArticles({ locale, search: q, limit: 10 }), this.listFaqs({ locale, search: q }),
     ]);
     return { articles, faqs };
   }
@@ -91,9 +77,21 @@ export class ContentService {
     return this.prisma.$queryRawUnsafe(
       `SELECT a.id, a.slug, a.locale, a.title, a.status, a.updated_at AS "updatedAt",
               c.name AS "categoryName" FROM articles a
-       LEFT JOIN article_categories c ON c.id = a.category_id
-       ORDER BY a.updated_at DESC`,
+       LEFT JOIN article_categories c ON c.id = a.category_id ORDER BY a.updated_at DESC`,
     );
+  }
+
+  async getAdminArticle(id: string) {
+    const rows = await this.prisma.$queryRawUnsafe<any[]>(
+      `SELECT id, slug, locale, category_id AS "categoryId", title, excerpt, content, status,
+              author_name AS "authorName", reviewer_name AS "reviewerName", seo_title AS "seoTitle",
+              seo_description AS "seoDescription", reading_time_minutes AS "readingTimeMinutes",
+              medical_disclaimer AS "medicalDisclaimer", published_at AS "publishedAt",
+              last_reviewed_at AS "lastReviewedAt", next_review_at AS "nextReviewAt"
+       FROM articles WHERE id = $1 LIMIT 1`, id,
+    );
+    if (!rows[0]) throw new NotFoundException("Maqola topilmadi");
+    return rows[0];
   }
 
   createArticle(input: any) {
@@ -104,8 +102,7 @@ export class ContentService {
        (id, slug, locale, category_id, title, excerpt, content, status, author_name, reviewer_name,
         seo_title, seo_description, reading_time_minutes, medical_disclaimer, published_at, last_reviewed_at, next_review_at)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8::"ContentStatus",$9,$10,$11,$12,$13,$14,
-               CASE WHEN $8 = 'PUBLISHED' THEN NOW() ELSE NULL END,$15,$16)
-       RETURNING *`,
+               CASE WHEN $8 = 'PUBLISHED' THEN NOW() ELSE NULL END,$15,$16) RETURNING *`,
       id, input.slug, input.locale ?? "uz", input.categoryId ?? null, input.title, input.excerpt,
       input.content, status, input.authorName ?? null, input.reviewerName ?? null,
       input.seoTitle ?? null, input.seoDescription ?? null, input.readingTimeMinutes ?? 5,
@@ -115,14 +112,63 @@ export class ContentService {
     );
   }
 
+  async updateArticle(id: string, input: any) {
+    await this.getAdminArticle(id);
+    const status: ContentStatus = input.status ?? "DRAFT";
+    const rows = await this.prisma.$queryRawUnsafe<any[]>(
+      `UPDATE articles SET slug=$2, locale=$3, category_id=$4, title=$5, excerpt=$6, content=$7,
+       status=$8::"ContentStatus", author_name=$9, reviewer_name=$10, seo_title=$11,
+       seo_description=$12, reading_time_minutes=$13, medical_disclaimer=$14,
+       published_at=CASE WHEN $8='PUBLISHED' THEN COALESCE(published_at,NOW()) ELSE published_at END,
+       last_reviewed_at=$15, next_review_at=$16, updated_at=NOW() WHERE id=$1 RETURNING *`,
+      id, input.slug, input.locale ?? "uz", input.categoryId ?? null, input.title, input.excerpt,
+      input.content, status, input.authorName ?? null, input.reviewerName ?? null,
+      input.seoTitle ?? null, input.seoDescription ?? null, input.readingTimeMinutes ?? 5,
+      input.medicalDisclaimer ?? null, input.lastReviewedAt ? new Date(input.lastReviewedAt) : null,
+      input.nextReviewAt ? new Date(input.nextReviewAt) : null,
+    );
+    return rows[0];
+  }
+
+  listAdminFaqs() {
+    return this.prisma.$queryRawUnsafe(
+      `SELECT f.id, f.locale, f.question, f.status, f.sort_order AS "sortOrder",
+              f.updated_at AS "updatedAt", c.name AS "categoryName"
+       FROM faqs f LEFT JOIN faq_categories c ON c.id=f.category_id ORDER BY f.updated_at DESC`,
+    );
+  }
+
+  async getAdminFaq(id: string) {
+    const rows = await this.prisma.$queryRawUnsafe<any[]>(
+      `SELECT id, locale, category_id AS "categoryId", question, short_answer AS "shortAnswer",
+              full_answer AS "fullAnswer", status, sort_order AS "sortOrder",
+              related_article_id AS "relatedArticleId" FROM faqs WHERE id=$1 LIMIT 1`, id,
+    );
+    if (!rows[0]) throw new NotFoundException("FAQ topilmadi");
+    return rows[0];
+  }
+
   createFaq(input: any) {
     return this.prisma.$queryRawUnsafe(
       `INSERT INTO faqs
        (id, locale, category_id, question, short_answer, full_answer, status, sort_order, related_article_id, published_at)
-       VALUES ($1,$2,$3,$4,$5,$6,$7::"ContentStatus",$8,$9,CASE WHEN $7 = 'PUBLISHED' THEN NOW() ELSE NULL END)
-       RETURNING *`,
-      randomUUID(), input.locale ?? "uz", input.categoryId ?? null, input.question, input.shortAnswer,
+       VALUES ($1,$2,$3,$4,$5,$6,$7::"ContentStatus",$8,$9,CASE WHEN $7='PUBLISHED' THEN NOW() ELSE NULL END)
+       RETURNING *`, randomUUID(), input.locale ?? "uz", input.categoryId ?? null, input.question,
+      input.shortAnswer, input.fullAnswer ?? null, input.status ?? "DRAFT", input.sortOrder ?? 0,
+      input.relatedArticleId ?? null,
+    );
+  }
+
+  async updateFaq(id: string, input: any) {
+    await this.getAdminFaq(id);
+    const rows = await this.prisma.$queryRawUnsafe<any[]>(
+      `UPDATE faqs SET locale=$2, category_id=$3, question=$4, short_answer=$5, full_answer=$6,
+       status=$7::"ContentStatus", sort_order=$8, related_article_id=$9,
+       published_at=CASE WHEN $7='PUBLISHED' THEN COALESCE(published_at,NOW()) ELSE published_at END,
+       updated_at=NOW() WHERE id=$1 RETURNING *`,
+      id, input.locale ?? "uz", input.categoryId ?? null, input.question, input.shortAnswer,
       input.fullAnswer ?? null, input.status ?? "DRAFT", input.sortOrder ?? 0, input.relatedArticleId ?? null,
     );
+    return rows[0];
   }
 }
