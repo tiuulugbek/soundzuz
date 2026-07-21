@@ -77,7 +77,16 @@ export class SettingsService {
   }
 
   private async audit(actorUserId: string, action: string, entityType: string, entityId: string, before: object | null, after: object): Promise<void> {
-    const toJson = (value: object | null): object | null => value === null ? null : JSON.parse(JSON.stringify(value)) as object;
-    await this.prisma.auditLog.create({ data: { actorUserId, action, entityType, entityId, before: before === null ? undefined : toJson(before), after: toJson(after) } });
+    const toJson = (value: object): object => JSON.parse(JSON.stringify(value)) as object;
+    await this.prisma.auditLog.create({
+      data: {
+        actorUserId,
+        action,
+        entityType,
+        entityId,
+        before: before === null ? undefined : (toJson(before) as never),
+        after: toJson(after) as never,
+      },
+    });
   }
 }
