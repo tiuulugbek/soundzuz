@@ -1,0 +1,37 @@
+{
+  "name": "soundz-platform",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Soundz hearing-care and Custom IEM digital platform",
+  "packageManager": "pnpm@11.7.0",
+  "engines": {
+    "node": ">=22 <27"
+  },
+  "scripts": {
+    "dev": "pnpm bootstrap && turbo dev",
+    "build": "turbo build",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "lint": "turbo lint",
+    "format": "prettier --write .",
+    "db:generate": "pnpm --filter @soundz/database db:generate",
+    "db:validate": "pnpm --filter @soundz/database db:validate",
+    "db:migrate": "pnpm --filter @soundz/database db:migrate",
+    "db:seed": "pnpm --filter @soundz/database db:seed",
+    "migration:discover": "node scripts/migration/discover-site.mjs",
+    "migration:extract": "node scripts/migration/extract-wordpress.mjs",
+    "infra:up": "docker compose up -d",
+    "infra:down": "docker compose down",
+    "infra:logs": "docker compose logs -f",
+    "bootstrap": "pnpm db:generate && pnpm --filter \"./packages/**\" build",
+    "verify:structure": "node scripts/verify-structure.mjs",
+    "smoke": "node scripts/smoke-test.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.15",
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.5",
+    "typescript": "^5.9.2"
+  }
+}

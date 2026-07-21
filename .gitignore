@@ -1,0 +1,14 @@
+node_modules/
+.pnpm-store/
+.next/
+dist/
+coverage/
+.env
+.env.*
+!.env.example
+data/migration/**
+!data/migration/.gitkeep
+*.log
+.DS_Store
+.idea/
+.vscode/
