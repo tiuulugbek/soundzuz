@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { Queue, Worker, type Job } from "bullmq";
-import IORedis from "ioredis";
+import { Redis as IORedis } from "ioredis";
 import { parseWorkerEnvironment } from "@soundz/config";
 import { createPrismaClient, type OutboxEvent } from "@soundz/database";
 
