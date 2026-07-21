@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./media-picker.css";
 
 export const metadata: Metadata = {
   title: "Soundz Admin",
