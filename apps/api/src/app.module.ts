@@ -7,6 +7,7 @@ import { AppointmentsModule } from "./appointments/appointments.module.js";
 import { ContentModule } from "./content/content.module.js";
 import { HealthController } from "./health.controller.js";
 import { LeadsModule } from "./leads/leads.module.js";
+import { MediaModule } from "./media/media.module.js";
 import { PrismaModule } from "./prisma/prisma.module.js";
 import { SettingsModule } from "./settings/settings.module.js";
 
@@ -30,6 +31,7 @@ import { SettingsModule } from "./settings/settings.module.js";
     AppointmentsModule,
     SettingsModule,
     ContentModule,
+    MediaModule,
   ],
   controllers: [HealthController],
 })
