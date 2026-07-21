@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import type { PrismaClient } from "@soundz/database";
 import { randomUUID } from "node:crypto";
 import { PRISMA } from "../prisma/prisma.module.js";
@@ -9,6 +9,12 @@ type ContentStatus = "DRAFT" | "IN_REVIEW" | "APPROVED" | "PUBLISHED" | "NEEDS_U
 @Injectable()
 export class ContentService {
   constructor(@Inject(PRISMA) private readonly prisma: PrismaClient) {}
+
+  private categoryTable(kind: string): "article_categories" | "faq_categories" {
+    if (kind === "articles") return "article_categories";
+    if (kind === "faqs") return "faq_categories";
+    throw new BadRequestException("Noto‘g‘ri kategoriya turi");
+  }
 
   listCategories(locale: Locale = "uz") {
     return this.prisma.$queryRawUnsafe(
@@ -76,7 +82,7 @@ export class ContentService {
   listAdminArticles() {
     return this.prisma.$queryRawUnsafe(
       `SELECT a.id, a.slug, a.locale, a.title, a.status, a.updated_at AS "updatedAt",
-              c.name AS "categoryName" FROM articles a
+              a.featured_image_url AS "featuredImageUrl", c.name AS "categoryName" FROM articles a
        LEFT JOIN article_categories c ON c.id = a.category_id ORDER BY a.updated_at DESC`,
     );
   }
@@ -84,7 +90,7 @@ export class ContentService {
   async getAdminArticle(id: string) {
     const rows = await this.prisma.$queryRawUnsafe<any[]>(
       `SELECT id, slug, locale, category_id AS "categoryId", title, excerpt, content, status,
-              author_name AS "authorName", reviewer_name AS "reviewerName", seo_title AS "seoTitle",
+              featured_image_url AS "featuredImageUrl", author_name AS "authorName", reviewer_name AS "reviewerName", seo_title AS "seoTitle",
               seo_description AS "seoDescription", reading_time_minutes AS "readingTimeMinutes",
               medical_disclaimer AS "medicalDisclaimer", published_at AS "publishedAt",
               last_reviewed_at AS "lastReviewedAt", next_review_at AS "nextReviewAt"
@@ -99,12 +105,12 @@ export class ContentService {
     const status: ContentStatus = input.status ?? "DRAFT";
     return this.prisma.$queryRawUnsafe(
       `INSERT INTO articles
-       (id, slug, locale, category_id, title, excerpt, content, status, author_name, reviewer_name,
+       (id, slug, locale, category_id, title, excerpt, content, status, featured_image_url, author_name, reviewer_name,
         seo_title, seo_description, reading_time_minutes, medical_disclaimer, published_at, last_reviewed_at, next_review_at)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8::"ContentStatus",$9,$10,$11,$12,$13,$14,
-               CASE WHEN $8 = 'PUBLISHED' THEN NOW() ELSE NULL END,$15,$16) RETURNING *`,
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8::"ContentStatus",$9,$10,$11,$12,$13,$14,$15,
+               CASE WHEN $8 = 'PUBLISHED' THEN NOW() ELSE NULL END,$16,$17) RETURNING *`,
       id, input.slug, input.locale ?? "uz", input.categoryId ?? null, input.title, input.excerpt,
-      input.content, status, input.authorName ?? null, input.reviewerName ?? null,
+      input.content, status, input.featuredImageUrl ?? null, input.authorName ?? null, input.reviewerName ?? null,
       input.seoTitle ?? null, input.seoDescription ?? null, input.readingTimeMinutes ?? 5,
       input.medicalDisclaimer ?? "Ushbu ma’lumot umumiy tushuntirish uchun berilgan va individual tibbiy tashxis o‘rnini bosmaydi.",
       input.lastReviewedAt ? new Date(input.lastReviewedAt) : null,
@@ -117,12 +123,12 @@ export class ContentService {
     const status: ContentStatus = input.status ?? "DRAFT";
     const rows = await this.prisma.$queryRawUnsafe<any[]>(
       `UPDATE articles SET slug=$2, locale=$3, category_id=$4, title=$5, excerpt=$6, content=$7,
-       status=$8::"ContentStatus", author_name=$9, reviewer_name=$10, seo_title=$11,
-       seo_description=$12, reading_time_minutes=$13, medical_disclaimer=$14,
+       status=$8::"ContentStatus", featured_image_url=$9, author_name=$10, reviewer_name=$11, seo_title=$12,
+       seo_description=$13, reading_time_minutes=$14, medical_disclaimer=$15,
        published_at=CASE WHEN $8='PUBLISHED' THEN COALESCE(published_at,NOW()) ELSE published_at END,
-       last_reviewed_at=$15, next_review_at=$16, updated_at=NOW() WHERE id=$1 RETURNING *`,
+       last_reviewed_at=$16, next_review_at=$17, updated_at=NOW() WHERE id=$1 RETURNING *`,
       id, input.slug, input.locale ?? "uz", input.categoryId ?? null, input.title, input.excerpt,
-      input.content, status, input.authorName ?? null, input.reviewerName ?? null,
+      input.content, status, input.featuredImageUrl ?? null, input.authorName ?? null, input.reviewerName ?? null,
       input.seoTitle ?? null, input.seoDescription ?? null, input.readingTimeMinutes ?? 5,
       input.medicalDisclaimer ?? null, input.lastReviewedAt ? new Date(input.lastReviewedAt) : null,
       input.nextReviewAt ? new Date(input.nextReviewAt) : null,
@@ -169,6 +175,36 @@ export class ContentService {
       id, input.locale ?? "uz", input.categoryId ?? null, input.question, input.shortAnswer,
       input.fullAnswer ?? null, input.status ?? "DRAFT", input.sortOrder ?? 0, input.relatedArticleId ?? null,
     );
+    return rows[0];
+  }
+
+  listAdminCategories(kind: string) {
+    const table = this.categoryTable(kind);
+    return this.prisma.$queryRawUnsafe(
+      `SELECT id, slug, locale, name, description, sort_order AS "sortOrder", is_active AS "isActive"
+       FROM ${table} ORDER BY locale, sort_order, name`,
+    );
+  }
+
+  createCategory(kind: string, input: any) {
+    const table = this.categoryTable(kind);
+    return this.prisma.$queryRawUnsafe(
+      `INSERT INTO ${table} (id, slug, locale, name, description, sort_order, is_active)
+       VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
+      randomUUID(), input.slug, input.locale ?? "uz", input.name, input.description ?? null,
+      input.sortOrder ?? 0, input.isActive ?? true,
+    );
+  }
+
+  async updateCategory(kind: string, id: string, input: any) {
+    const table = this.categoryTable(kind);
+    const rows = await this.prisma.$queryRawUnsafe<any[]>(
+      `UPDATE ${table} SET slug=$2, locale=$3, name=$4, description=$5, sort_order=$6,
+       is_active=$7, updated_at=NOW() WHERE id=$1 RETURNING *`,
+      id, input.slug, input.locale ?? "uz", input.name, input.description ?? null,
+      input.sortOrder ?? 0, input.isActive ?? true,
+    );
+    if (!rows[0]) throw new NotFoundException("Kategoriya topilmadi");
     return rows[0];
   }
 }
