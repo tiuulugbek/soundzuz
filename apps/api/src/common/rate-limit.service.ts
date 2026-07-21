@@ -1,5 +1,5 @@
-import { Injectable, OnModuleDestroy, TooManyRequestsException } from "@nestjs/common";
-import IORedis from "ioredis";
+import { HttpException, HttpStatus, Injectable, OnModuleDestroy } from "@nestjs/common";
+import { Redis as IORedis } from "ioredis";
 
 @Injectable()
 export class RateLimitService implements OnModuleDestroy {
@@ -14,7 +14,10 @@ export class RateLimitService implements OnModuleDestroy {
     const count = await this.redis.incr(redisKey);
     if (count === 1) await this.redis.pexpire(redisKey, windowMs + 1_000);
     if (count > limit) {
-      throw new TooManyRequestsException("Juda ko‘p so‘rov yuborildi. Birozdan keyin qayta urinib ko‘ring.");
+      throw new HttpException(
+        "Juda ko‘p so‘rov yuborildi. Birozdan keyin qayta urinib ko‘ring.",
+        HttpStatus.TOO_MANY_REQUESTS,
+      );
     }
   }
 
