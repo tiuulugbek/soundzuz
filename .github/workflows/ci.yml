@@ -22,23 +22,7 @@ jobs:
         env:
           DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
       - run: pnpm --filter "./packages/**" build
-      - name: Typecheck
-        id: typecheck
-        continue-on-error: true
-        shell: bash
-        run: |
-          set -o pipefail
-          pnpm typecheck 2>&1 | tee typecheck.log
-      - name: Upload typecheck diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: typecheck-log
-          path: typecheck.log
-          if-no-files-found: ignore
-      - name: Stop when typecheck failed
-        if: steps.typecheck.outcome == 'failure'
-        run: exit 1
+      - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
         env:
