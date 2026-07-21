@@ -16,7 +16,7 @@
     "@soundz/database": "workspace:*",
     "bullmq": "^5.80.9",
     "dotenv": "^17.2.1",
-    "ioredis": "^5.7.0"
+    "ioredis": "5.7.0"
   },
   "devDependencies": {
     "@types/node": "^24.0.15",
