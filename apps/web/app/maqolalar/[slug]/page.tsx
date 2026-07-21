@@ -1,37 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
+const API_URL=process.env.NEXT_PUBLIC_API_URL??"http://localhost:4000/v1";
+type Article={id:string;slug:string;title:string;excerpt:string;content:string;categoryName?:string;categorySlug?:string;featured_image_url?:string;author_name?:string;reviewer_name?:string;reading_time_minutes?:number;medical_disclaimer?:string;last_reviewed_at?:string;published_at?:string};
 
-type Article = {
-  slug: string; title: string; excerpt: string; content: string; categoryName?: string;
-  author_name?: string; reviewer_name?: string; reading_time_minutes?: number;
-  medical_disclaimer?: string; last_reviewed_at?: string; published_at?: string;
-};
-
-export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  let article: Article;
-  try {
-    const response = await fetch(`${API_URL}/content/articles/${encodeURIComponent(slug)}?locale=uz`, { next: { revalidate: 120 } });
-    if (!response.ok) notFound();
-    article = await response.json();
-  } catch { notFound(); }
-
-  return <main style={{ maxWidth: 900, margin: "0 auto", padding: "32px 20px 90px" }}>
-    <header style={{ display: "flex", justifyContent: "space-between", marginBottom: 64 }}><Link className="logo" href="/"><span>S</span>Soundz</Link><Link href="/foydali-malumotlar">← Bilim markazi</Link></header>
-    <article>
-      <p className="eyebrow">{article.categoryName ?? "FOYDALI MA’LUMOT"}</p>
-      <h1 style={{ fontSize: "clamp(40px,7vw,72px)", lineHeight: 1.05, margin: "14px 0 22px" }}>{article.title}</h1>
-      <p style={{ fontSize: 21, lineHeight: 1.65, color: "#405047" }}>{article.excerpt}</p>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 18, padding: "20px 0", borderTop: "1px solid #dce8e0", borderBottom: "1px solid #dce8e0", margin: "34px 0" }}>
-        {article.author_name && <span>Muallif: <strong>{article.author_name}</strong></span>}
-        {article.reviewer_name && <span>Tekshirgan: <strong>{article.reviewer_name}</strong></span>}
-        <span>O‘qish vaqti: <strong>{article.reading_time_minutes ?? 5} daqiqa</strong></span>
-      </div>
-      <div style={{ fontSize: 18, lineHeight: 1.85, whiteSpace: "pre-wrap" }}>{article.content}</div>
-      <aside style={{ marginTop: 48, padding: 24, borderRadius: 18, background: "#f4f8f5", lineHeight: 1.6 }}><strong>Muhim eslatma</strong><p>{article.medical_disclaimer ?? "Ushbu ma’lumot umumiy tushuntirish uchun berilgan va individual tibbiy tashxis o‘rnini bosmaydi."}</p></aside>
-      <section style={{ marginTop: 36, padding: 30, borderRadius: 22, background: "#153f30", color: "white" }}><h2>Eshitishingizni tekshirtirmoqchimisiz?</h2><p>Filial va qulay vaqtni tanlab, mutaxassis qabuliga yoziling.</p><Link className="primary" href="/#booking">Qabulga yozilish</Link></section>
-    </article>
-  </main>;
+export default async function ArticlePage({params}:{params:Promise<{slug:string}>}){const {slug}=await params;let article:Article;try{const r=await fetch(`${API_URL}/content/articles/${encodeURIComponent(slug)}?locale=uz`,{next:{revalidate:120}});if(!r.ok)notFound();article=await r.json();}catch{notFound();}
+ const relatedRes=await fetch(`${API_URL}/content/articles?locale=uz${article.categorySlug?`&category=${encodeURIComponent(article.categorySlug)}`:''}&limit=5`,{next:{revalidate:120}});const related=relatedRes.ok?(await relatedRes.json()).filter((x:any)=>x.slug!==slug).slice(0,4):[];
+ const paragraphs=String(article.content??'').split(/\n{2,}/).filter(Boolean);
+ return <main><header className="site-header"><Link className="logo" href="/"><span>S</span>Soundz</Link><nav><Link href="/eshitish-moslamalari">Moslamalar</Link><Link href="/foydali-malumotlar">Bilim markazi</Link><Link href="/#booking">Qabul</Link></nav><Link className="header-cta" href="/#booking">Maslahat olish</Link></header>
+ <div className="article-shell"><article className="reading-article"><nav className="breadcrumbs"><Link href="/">Bosh sahifa</Link><span>›</span><Link href="/foydali-malumotlar">Bilim markazi</Link><span>›</span><span>{article.categoryName??'Maqola'}</span></nav><p className="eyebrow">{article.categoryName??'FOYDALI MA’LUMOT'}</p><h1>{article.title}</h1><p className="article-intro">{article.excerpt}</p><div className="article-meta">{article.author_name&&<span>Muallif: <strong>{article.author_name}</strong></span>}{article.reviewer_name&&<span>Tibbiy tekshiruv: <strong>{article.reviewer_name}</strong></span>}<span><strong>{article.reading_time_minutes??5} daqiqa</strong> o‘qish</span>{article.last_reviewed_at&&<span>Yangilangan: <strong>{new Intl.DateTimeFormat('uz-UZ').format(new Date(article.last_reviewed_at))}</strong></span>}</div>{article.featured_image_url&&<img className="article-hero-image" src={article.featured_image_url} alt={article.title}/>}<div className="article-body">{paragraphs.map((p,i)=>i===0?<p className="article-lead-paragraph" key={i}>{p}</p>:<p key={i}>{p}</p>)}</div><aside className="medical-note"><strong>Muhim tibbiy eslatma</strong><p>{article.medical_disclaimer??'Ushbu ma’lumot umumiy tushuntirish uchun berilgan va individual tibbiy tashxis o‘rnini bosmaydi.'}</p></aside><section className="article-cta"><div><p className="eyebrow">KEYINGI QADAM</p><h2>Eshitishingizni tekshirtiring</h2><p>Mutaxassis audiometriya o‘tkazib, aynan sizga mos yechimni tavsiya qiladi.</p></div><Link className="primary" href="/#booking">Qabulga yozilish</Link></section></article>
+ <aside className="reading-sidebar"><div className="sidebar-card sticky-card"><p className="eyebrow">MAQOLA HAQIDA</p><dl><div><dt>Kategoriya</dt><dd>{article.categoryName??'Eshitish salomatligi'}</dd></div><div><dt>O‘qish vaqti</dt><dd>{article.reading_time_minutes??5} daqiqa</dd></div><div><dt>Tekshiruvchi</dt><dd>{article.reviewer_name??'Soundz mutaxassisi'}</dd></div></dl><Link className="primary sidebar-button" href="/#booking">Mutaxassisga savol</Link></div>{related.length>0&&<div className="sidebar-card"><h3>Shu mavzuda</h3><div className="related-list">{related.map((x:any)=><Link key={x.id} href={`/maqolalar/${x.slug}`}><span>{x.categoryName??'Maqola'}</span><strong>{x.title}</strong></Link>)}</div></div>}<div className="sidebar-card sidebar-help"><h3>Qaysi moslama mos?</h3><p>Katalogdagi filterlardan foydalaning yoki testdan o‘ting.</p><Link href="/eshitish-moslamalari">Katalogni ko‘rish →</Link></div></aside></div></main>;
 }

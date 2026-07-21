@@ -4,6 +4,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { parseApiEnvironment } from "@soundz/config";
 import { AuthModule } from "./auth/auth.module.js";
 import { AppointmentsModule } from "./appointments/appointments.module.js";
+import { CatalogModule } from "./catalog/catalog.module.js";
 import { ContentModule } from "./content/content.module.js";
 import { HealthController } from "./health.controller.js";
 import { LeadsModule } from "./leads/leads.module.js";
@@ -32,6 +33,7 @@ import { SettingsModule } from "./settings/settings.module.js";
     SettingsModule,
     ContentModule,
     MediaModule,
+    CatalogModule,
   ],
   controllers: [HealthController],
 })
