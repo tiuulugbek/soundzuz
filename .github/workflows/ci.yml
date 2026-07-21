@@ -17,23 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Install dependencies
-        id: install
-        continue-on-error: true
-        shell: bash
-        run: |
-          set -o pipefail
-          pnpm install --no-frozen-lockfile 2>&1 | tee pnpm-install.log
-      - name: Upload install diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pnpm-install-log
-          path: pnpm-install.log
-          if-no-files-found: ignore
-      - name: Stop when install failed
-        if: steps.install.outcome == 'failure'
-        run: exit 1
+      - run: pnpm install --no-frozen-lockfile
       - run: pnpm db:generate
         env:
           DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
