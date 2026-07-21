@@ -22,24 +22,7 @@ jobs:
         env:
           DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
       - run: pnpm --filter "./packages/**" build
-      - name: Capture typecheck diagnostics
-        shell: bash
-        run: |
-          set +e
-          pnpm typecheck > typecheck.log 2>&1
-          status=$?
-          cat typecheck.log
-          echo "$status" > typecheck-status.txt
-          exit 0
-      - uses: actions/upload-artifact@v4
-        with:
-          name: typecheck-log-current
-          path: |
-            typecheck.log
-            typecheck-status.txt
-      - name: Fail when typecheck failed
-        shell: bash
-        run: test "$(cat typecheck-status.txt)" = "0"
+      - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
         env:
