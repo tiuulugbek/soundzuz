@@ -22,15 +22,15 @@ export class SettingsService {
   listPublicBranches() {
     return this.prisma.$queryRawUnsafe(`SELECT b.id,b.slug,b.name,b.phone,b.address,
       (SELECT v.url FROM media_usages u JOIN media_variants v ON v.media_id=u.media_id AND v.variant_key='card' WHERE u.entity_type='branch' AND u.entity_id=b.id AND u.slot='cover' ORDER BY u.sort_order LIMIT 1) AS "imageUrl",
-      COALESCE((SELECT json_agg(json_build_object('weekday',s.weekday,'openMinute',s.open_minute,'closeMinute',s.close_minute,'isClosed',s.is_closed) ORDER BY s.weekday) FROM "BranchSchedule" s WHERE s.branch_id=b.id),'[]') AS schedules
-      FROM "Branch" b WHERE b.is_active=TRUE ORDER BY b.name`);
+      COALESCE((SELECT json_agg(json_build_object('weekday',s.weekday,'openMinute',s."openMinute",'closeMinute',s."closeMinute",'isClosed',s."isClosed") ORDER BY s.weekday) FROM "BranchSchedule" s WHERE s."branchId"=b.id),'[]') AS schedules
+      FROM "Branch" b WHERE b."isActive"=TRUE ORDER BY b.name`);
   }
   async getPublicBranch(slug: string) {
     const rows=await this.prisma.$queryRawUnsafe<any[]>(`SELECT b.id,b.slug,b.name,b.phone,b.address,
       (SELECT v.url FROM media_usages u JOIN media_variants v ON v.media_id=u.media_id AND v.variant_key='hero' WHERE u.entity_type='branch' AND u.entity_id=b.id AND u.slot='cover' ORDER BY u.sort_order LIMIT 1) AS "imageUrl",
-      COALESCE((SELECT json_agg(json_build_object('weekday',s.weekday,'openMinute',s.open_minute,'closeMinute',s.close_minute,'isClosed',s.is_closed) ORDER BY s.weekday) FROM "BranchSchedule" s WHERE s.branch_id=b.id),'[]') AS schedules,
-      COALESCE((SELECT json_agg(json_build_object('id',sv.id,'code',sv.code,'name',sv.name,'description',sv.description,'durationMinutes',sv.duration_minutes) ORDER BY sv.name) FROM "BranchService" bs JOIN "Service" sv ON sv.id=bs.service_id WHERE bs.branch_id=b.id AND bs.is_active=TRUE AND sv.is_active=TRUE),'[]') AS services
-      FROM "Branch" b WHERE b.slug=$1 AND b.is_active=TRUE LIMIT 1`,slug); if(!rows[0])throw new NotFoundException("Filial topilmadi"); return rows[0];
+      COALESCE((SELECT json_agg(json_build_object('weekday',s.weekday,'openMinute',s."openMinute",'closeMinute',s."closeMinute",'isClosed',s."isClosed") ORDER BY s.weekday) FROM "BranchSchedule" s WHERE s."branchId"=b.id),'[]') AS schedules,
+      COALESCE((SELECT json_agg(json_build_object('id',sv.id,'code',sv.code,'name',sv.name,'description',sv.description,'durationMinutes',sv."durationMinutes") ORDER BY sv.name) FROM "BranchService" bs JOIN "Service" sv ON sv.id=bs."serviceId" WHERE bs."branchId"=b.id AND bs."isActive"=TRUE AND sv."isActive"=TRUE),'[]') AS services
+      FROM "Branch" b WHERE b.slug=$1 AND b."isActive"=TRUE LIMIT 1`,slug); if(!rows[0])throw new NotFoundException("Filial topilmadi"); return rows[0];
   }
   listPublicServices(){return this.prisma.service.findMany({where:{isActive:true},orderBy:{name:"asc"},select:{id:true,code:true,name:true,description:true,durationMinutes:true}})}
   async getPublicService(code:string){const item=await this.prisma.service.findUnique({where:{code},include:{branchServices:{where:{isActive:true},include:{branch:true}}}});if(!item||!item.isActive)throw new NotFoundException("Xizmat topilmadi");return {...item,branches:item.branchServices.filter(x=>x.branch.isActive).map(x=>x.branch)} }
