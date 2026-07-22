@@ -1,45 +1,26 @@
 {
-  "name": "soundz-platform",
+  "name": "soundz-cpanel-web",
   "version": "0.2.0",
   "private": true,
-  "type": "module",
-  "description": "Soundz hearing-care and Custom IEM digital platform",
-  "packageManager": "pnpm@10.15.1",
-  "engines": { "node": "22.x" },
+  "description": "Soundz Next.js frontend packaged for cPanel Passenger hosting",
+  "engines": {
+    "node": ">=22 <23"
+  },
   "scripts": {
-    "dev": "pnpm bootstrap && turbo dev",
-    "build": "turbo build",
-    "typecheck": "turbo typecheck",
-    "test": "turbo test",
-    "lint": "turbo lint",
-    "format": "prettier --write .",
-    "db:generate": "pnpm --filter @soundz/database db:generate",
-    "db:validate": "pnpm --filter @soundz/database db:validate",
-    "db:migrate": "pnpm --filter @soundz/database db:migrate",
-    "db:deploy": "pnpm --filter @soundz/database db:deploy",
-    "db:seed": "pnpm --filter @soundz/database db:seed",
-    "migration:discover": "node scripts/migration/discover-site.mjs",
-    "migration:extract": "node scripts/migration/extract-wordpress.mjs",
-    "infra:up": "docker compose up -d",
-    "infra:down": "docker compose down",
-    "infra:logs": "docker compose logs -f",
-    "prod:build": "docker compose --env-file .env.production -f docker-compose.production.yml build",
-    "prod:up": "docker compose --env-file .env.production -f docker-compose.production.yml up -d",
-    "prod:down": "docker compose --env-file .env.production -f docker-compose.production.yml down",
-    "prod:logs": "docker compose --env-file .env.production -f docker-compose.production.yml logs -f",
-    "prod:migrate": "docker compose --env-file .env.production -f docker-compose.production.yml run --rm api pnpm db:deploy",
-    "monitoring:up": "docker compose --env-file .env.production -f docker-compose.production.yml -f docker-compose.monitoring.yml up -d",
-    "monitoring:down": "docker compose --env-file .env.production -f docker-compose.production.yml -f docker-compose.monitoring.yml down",
-    "e2e": "pnpm dlx @playwright/test@1.55.0 test",
-    "e2e:install": "pnpm dlx playwright@1.55.0 install --with-deps chromium",
-    "bootstrap": "pnpm db:generate && pnpm --filter \"./packages/**\" build",
-    "verify:structure": "node scripts/verify-structure.mjs",
-    "smoke": "node scripts/smoke-test.mjs"
+    "dev": "next dev apps/web -p 3000",
+    "build": "next build apps/web",
+    "start": "node server.js",
+    "typecheck": "tsc --noEmit -p apps/web/tsconfig.json"
+  },
+  "dependencies": {
+    "next": "16.2.10",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
   },
   "devDependencies": {
     "@types/node": "^24.0.15",
-    "prettier": "^3.6.2",
-    "turbo": "^2.5.5",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
     "typescript": "^5.9.2"
   }
 }
