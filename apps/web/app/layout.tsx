@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./catalog-reading.css";
+import "./article-rich.css";
 
 export const metadata: Metadata = {
   title: "Soundz — Eshitish moslamalari va Custom IEM",

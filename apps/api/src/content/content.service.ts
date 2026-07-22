@@ -1,10 +1,27 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import type { PrismaClient } from "@soundz/database";
 import { randomUUID } from "node:crypto";
+import sanitizeHtml from "sanitize-html";
 import { PRISMA } from "../prisma/prisma.module.js";
 
 type Locale = "uz" | "ru";
 type ContentStatus = "DRAFT" | "IN_REVIEW" | "APPROVED" | "PUBLISHED" | "NEEDS_UPDATE" | "ARCHIVED";
+
+const sanitizeArticleContent = (value: unknown) => sanitizeHtml(String(value ?? ""), {
+  allowedTags: ["p", "br", "h2", "h3", "h4", "strong", "b", "em", "i", "u", "s", "ul", "ol", "li", "blockquote", "a", "img", "hr", "code", "pre"],
+  allowedAttributes: {
+    a: ["href", "title", "target", "rel"],
+    img: ["src", "alt", "title", "width", "height", "loading"],
+    h2: ["id"],
+    h3: ["id"],
+    h4: ["id"],
+  },
+  allowedSchemes: ["http", "https", "mailto", "tel"],
+  transformTags: {
+    a: (_tagName, attribs) => ({ tagName: "a", attribs: { ...attribs, rel: "noopener noreferrer" } }),
+    img: (_tagName, attribs) => ({ tagName: "img", attribs: { ...attribs, loading: "lazy" } }),
+  },
+});
 
 @Injectable()
 export class ContentService {
@@ -19,8 +36,7 @@ export class ContentService {
   listCategories(locale: Locale = "uz") {
     return this.prisma.$queryRawUnsafe(
       `SELECT id, slug, name, description, sort_order AS "sortOrder"
-       FROM article_categories WHERE locale = $1 AND is_active = TRUE
-       ORDER BY sort_order, name`, locale,
+       FROM article_categories WHERE locale = $1 AND is_active = TRUE ORDER BY sort_order, name`, locale,
     );
   }
 
@@ -45,7 +61,11 @@ export class ContentService {
 
   async getArticle(slug: string, locale: Locale = "uz") {
     const rows = await this.prisma.$queryRawUnsafe<any[]>(
-      `SELECT a.*, c.name AS "categoryName", c.slug AS "categorySlug"
+      `SELECT a.*, c.name AS "categoryName", c.slug AS "categorySlug",
+        COALESCE((SELECT json_agg(json_build_object(
+          'id',f.id,'question',f.question,'shortAnswer',f.short_answer,'fullAnswer',f.full_answer,'sortOrder',f.sort_order
+        ) ORDER BY f.sort_order,f.question)
+        FROM faqs f WHERE f.related_article_id=a.id AND f.status='PUBLISHED'),'[]') AS faqs
        FROM articles a LEFT JOIN article_categories c ON c.id = a.category_id
        WHERE a.slug = $1 AND a.locale = $2 AND a.status = 'PUBLISHED' LIMIT 1`, slug, locale,
     );
@@ -110,7 +130,7 @@ export class ContentService {
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8::"ContentStatus",$9,$10,$11,$12,$13,$14,$15,
                CASE WHEN $8 = 'PUBLISHED' THEN NOW() ELSE NULL END,$16,$17) RETURNING *`,
       id, input.slug, input.locale ?? "uz", input.categoryId ?? null, input.title, input.excerpt,
-      input.content, status, input.featuredImageUrl ?? null, input.authorName ?? null, input.reviewerName ?? null,
+      sanitizeArticleContent(input.content), status, input.featuredImageUrl ?? null, input.authorName ?? null, input.reviewerName ?? null,
       input.seoTitle ?? null, input.seoDescription ?? null, input.readingTimeMinutes ?? 5,
       input.medicalDisclaimer ?? "Ushbu ma’lumot umumiy tushuntirish uchun berilgan va individual tibbiy tashxis o‘rnini bosmaydi.",
       input.lastReviewedAt ? new Date(input.lastReviewedAt) : null,
@@ -128,7 +148,7 @@ export class ContentService {
        published_at=CASE WHEN $8='PUBLISHED' THEN COALESCE(published_at,NOW()) ELSE published_at END,
        last_reviewed_at=$16, next_review_at=$17, updated_at=NOW() WHERE id=$1 RETURNING *`,
       id, input.slug, input.locale ?? "uz", input.categoryId ?? null, input.title, input.excerpt,
-      input.content, status, input.featuredImageUrl ?? null, input.authorName ?? null, input.reviewerName ?? null,
+      sanitizeArticleContent(input.content), status, input.featuredImageUrl ?? null, input.authorName ?? null, input.reviewerName ?? null,
       input.seoTitle ?? null, input.seoDescription ?? null, input.readingTimeMinutes ?? 5,
       input.medicalDisclaimer ?? null, input.lastReviewedAt ? new Date(input.lastReviewedAt) : null,
       input.nextReviewAt ? new Date(input.nextReviewAt) : null,

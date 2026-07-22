@@ -3,6 +3,7 @@ import "./globals.css";
 import "./media-picker.css";
 import "./product-admin.css";
 import "./gallery-manager.css";
+import "./rich-editor.css";
 
 export const metadata: Metadata = {
   title: "Soundz Admin",
