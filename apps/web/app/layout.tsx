@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "../components/analytics";
 import "./globals.css";
 import "./catalog-reading.css";
 import "./article-rich.css";
@@ -12,14 +13,10 @@ export const metadata: Metadata = {
   description: "Eshitishni tekshirtirish, mos eshitish moslamasini tanlash va professional Custom In-Ear Monitor xizmatlari.",
   alternates: {
     canonical: "/",
-    languages: {
-      "uz-UZ": "/",
-      "ru-UZ": "/ru",
-      "x-default": "/",
-    },
+    languages: { "uz-UZ": "/", "ru-UZ": "/ru", "x-default": "/" },
   },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="uz"><body>{children}</body></html>;
+  return <html lang="uz"><body>{children}<Analytics /></body></html>;
 }

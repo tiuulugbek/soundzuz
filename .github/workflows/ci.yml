@@ -19,6 +19,7 @@ jobs:
           node-version: 24
       - run: pnpm install --no-frozen-lockfile --reporter=silent
       - run: docker compose --env-file .env.production.example -f docker-compose.production.yml config --quiet
+      - run: docker compose --env-file .env.production.example -f docker-compose.production.yml -f docker-compose.monitoring.yml config --quiet
       - run: pnpm db:generate
         env:
           DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder

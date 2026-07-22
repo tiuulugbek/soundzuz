@@ -5,9 +5,7 @@
   "type": "module",
   "description": "Soundz hearing-care and Custom IEM digital platform",
   "packageManager": "pnpm@11.7.0",
-  "engines": {
-    "node": ">=22 <27"
-  },
+  "engines": { "node": ">=22 <27" },
   "scripts": {
     "dev": "pnpm bootstrap && turbo dev",
     "build": "turbo build",
@@ -30,6 +28,10 @@
     "prod:down": "docker compose --env-file .env.production -f docker-compose.production.yml down",
     "prod:logs": "docker compose --env-file .env.production -f docker-compose.production.yml logs -f",
     "prod:migrate": "docker compose --env-file .env.production -f docker-compose.production.yml run --rm api pnpm db:deploy",
+    "monitoring:up": "docker compose --env-file .env.production -f docker-compose.production.yml -f docker-compose.monitoring.yml up -d",
+    "monitoring:down": "docker compose --env-file .env.production -f docker-compose.production.yml -f docker-compose.monitoring.yml down",
+    "e2e": "pnpm dlx @playwright/test@1.55.0 test",
+    "e2e:install": "pnpm dlx playwright@1.55.0 install --with-deps chromium",
     "bootstrap": "pnpm db:generate && pnpm --filter \"./packages/**\" build",
     "verify:structure": "node scripts/verify-structure.mjs",
     "smoke": "node scripts/smoke-test.mjs"
