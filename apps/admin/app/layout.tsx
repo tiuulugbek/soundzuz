@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./media-picker.css";
+import "./product-admin.css";
 
 export const metadata: Metadata = {
   title: "Soundz Admin",
-  description: "Soundz lead va qabul boshqaruvi",
+  description: "Soundz lead, kontent va katalog boshqaruvi",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
