@@ -125,7 +125,7 @@ export class AppointmentsService {
         where: { idempotencyKey: cleanIdempotencyKey },
         include: { branch: true, service: true },
       });
-      if (existing) return this.publicResponse(existing);
+      if (existing) return this.publicResponse(existing, input.locale);
     }
 
     const date = new Intl.DateTimeFormat("en-CA", {
@@ -136,7 +136,7 @@ export class AppointmentsService {
     }).format(startsAt);
     const available = await this.getAvailableSlots(input.branchId, input.serviceId, date) as { items: Array<{ startsAt: string; endsAt: string }> };
     const selected = available.items.find((slot) => slot.startsAt === startsAt.toISOString());
-    if (!selected) throw new ConflictException("Tanlangan vaqt endi bo‘sh emas. Boshqa vaqtni tanlang.");
+    if (!selected) throw new ConflictException(input.locale === "ru" ? "Выбранное время уже занято. Выберите другое время." : "Tanlangan vaqt endi bo‘sh emas. Boshqa vaqtni tanlang.");
 
     try {
       const appointment = await this.prisma.$transaction(async (tx) => {
@@ -154,6 +154,7 @@ export class AppointmentsService {
             locale: input.locale,
             branchId: input.branchId,
             serviceId: input.serviceId,
+            productId: input.productId,
             message: input.message,
             preferredAt: startsAt,
             sourceUrl: input.sourceUrl,
@@ -161,6 +162,8 @@ export class AppointmentsService {
             utmSource: input.utmSource,
             utmMedium: input.utmMedium,
             utmCampaign: input.utmCampaign,
+            utmContent: input.utmContent,
+            utmTerm: input.utmTerm,
             statusHistory: {
               create: [
                 { toStatus: "NEW", note: "Public appointment form submission" },
@@ -201,10 +204,15 @@ export class AppointmentsService {
               phone: contact.displayPhone,
               branchName: created.branch.name,
               serviceName: created.service.name,
+              productId: input.productId,
               startsAt: created.startsAt.toISOString(),
               endsAt: created.endsAt.toISOString(),
               note: created.note,
               utmSource: input.utmSource,
+              utmMedium: input.utmMedium,
+              utmCampaign: input.utmCampaign,
+              utmContent: input.utmContent,
+              utmTerm: input.utmTerm,
             },
           },
         });
@@ -213,23 +221,28 @@ export class AppointmentsService {
             action: "appointment.public_created",
             entityType: "Appointment",
             entityId: created.id,
-            after: { status: created.status, publicReference: created.publicReference, startsAt: created.startsAt.toISOString() },
+            after: {
+              status: created.status,
+              publicReference: created.publicReference,
+              startsAt: created.startsAt.toISOString(),
+              productId: input.productId,
+            },
             ipAddress: metadata.ipAddress,
             userAgent: metadata.userAgent,
           },
         });
         return created;
       }, { isolationLevel: "Serializable" });
-      return this.publicResponse(appointment);
+      return this.publicResponse(appointment, input.locale);
     } catch (error: unknown) {
       if (cleanIdempotencyKey) {
         const existing = await this.prisma.appointment.findUnique({
           where: { idempotencyKey: cleanIdempotencyKey },
           include: { branch: true, service: true },
         });
-        if (existing) return this.publicResponse(existing);
+        if (existing) return this.publicResponse(existing, input.locale);
       }
-      throw new ConflictException("Bu vaqt band bo‘lib qoldi. Boshqa vaqtni tanlang.", { cause: error });
+      throw new ConflictException(input.locale === "ru" ? "Это время уже занято. Выберите другое время." : "Bu vaqt band bo‘lib qoldi. Boshqa vaqtni tanlang.", { cause: error });
     }
   }
 
@@ -296,14 +309,19 @@ export class AppointmentsService {
     return this.getById(id);
   }
 
-  private publicResponse(item: { publicReference: string; status: string; startsAt: Date; branch: { name: string }; service: { name: string } }): object {
+  private publicResponse(
+    item: { publicReference: string; status: string; startsAt: Date; branch: { name: string }; service: { name: string } },
+    locale: "uz" | "ru" = "uz",
+  ): object {
     return {
       reference: item.publicReference,
       status: item.status,
       startsAt: item.startsAt,
       branch: item.branch.name,
       service: item.service.name,
-      message: "Qabul so‘rovingiz saqlandi. Operator vaqtni tasdiqlash uchun bog‘lanadi.",
+      message: locale === "ru"
+        ? "Заявка сохранена. Оператор свяжется с вами для подтверждения времени."
+        : "Qabul so‘rovingiz saqlandi. Operator vaqtni tasdiqlash uchun bog‘lanadi.",
     };
   }
 }
