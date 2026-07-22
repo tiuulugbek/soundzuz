@@ -1,0 +1,40 @@
+groups:
+  - name: soundz-production
+    rules:
+      - alert: SoundzApiDown
+        expr: up{job="soundz-api-health"} == 0
+        for: 2m
+        labels: { severity: critical }
+        annotations:
+          summary: "Soundz API ishlamayapti"
+          description: "API health endpoint 2 daqiqadan beri javob bermayapti."
+      - alert: PostgreSQLDown
+        expr: pg_up == 0
+        for: 2m
+        labels: { severity: critical }
+        annotations:
+          summary: "PostgreSQL ishlamayapti"
+      - alert: RedisDown
+        expr: redis_up == 0
+        for: 2m
+        labels: { severity: critical }
+        annotations:
+          summary: "Redis ishlamayapti"
+      - alert: HostDiskAlmostFull
+        expr: (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"}) < 0.15
+        for: 10m
+        labels: { severity: warning }
+        annotations:
+          summary: "Server diskida 15% dan kam joy qoldi"
+      - alert: HostHighMemory
+        expr: (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) > 0.90
+        for: 10m
+        labels: { severity: warning }
+        annotations:
+          summary: "Server xotirasi 90% dan yuqori"
+      - alert: PostgreSQLTooManyConnections
+        expr: sum(pg_stat_activity_count) > 80
+        for: 5m
+        labels: { severity: warning }
+        annotations:
+          summary: "PostgreSQL ulanishlari ko‘payib ketdi"
