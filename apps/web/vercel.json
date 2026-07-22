@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "cd ../.. && pnpm install --no-frozen-lockfile",
+  "buildCommand": "cd ../.. && pnpm db:generate && pnpm --filter './packages/**' build && pnpm --filter @soundz/web build",
+  "outputDirectory": ".next",
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/demo",
+      "permanent": false
+    }
+  ]
+}
