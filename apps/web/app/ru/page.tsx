@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BookingForm } from "../../components/booking-form";
 
 export default function RussianHomePage() {
   return (
@@ -64,9 +65,9 @@ export default function RussianHomePage() {
       <section className="booking-section" id="booking">
         <div className="section-heading">
           <div><p className="eyebrow">ПРЕДВАРИТЕЛЬНАЯ ЗАПИСЬ</p><h2>Выберите филиал и удобное время.</h2></div>
-          <p>Русская версия формы записи использует ту же безопасную систему бронирования. Оператор свяжется для подтверждения.</p>
+          <p>После отправки заявки оператор свяжется с вами и подтвердит запись.</p>
         </div>
-        <Link className="primary" href="/#booking">Открыть форму записи</Link>
+        <BookingForm locale="ru" />
       </section>
 
       <footer>
