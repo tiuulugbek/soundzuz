@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "description": "Soundz hearing-care and Custom IEM digital platform",
-  "packageManager": "pnpm@11.7.0",
-  "engines": { "node": ">=22 <27" },
+  "packageManager": "pnpm@10.15.1",
+  "engines": { "node": "22.x" },
   "scripts": {
     "dev": "pnpm bootstrap && turbo dev",
     "build": "turbo build",
