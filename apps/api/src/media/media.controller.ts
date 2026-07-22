@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Param, Post, Query, Res, StreamableFile, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Query, Res, StreamableFile, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import type { Response } from "express";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard.js";
@@ -33,6 +33,20 @@ export class MediaController {
   attach(@Body() body: { mediaId: string; entityType: string; entityId: string; slot: string; sortOrder?: number }) {
     if (!body.mediaId || !body.entityType || !body.entityId || !body.slot) throw new BadRequestException("Media bog‘lash ma’lumotlari to‘liq emas");
     return this.media.attach(body);
+  }
+
+  @Delete("usage")
+  @UseGuards(JwtAuthGuard)
+  detach(@Body() body: { mediaId: string; entityType: string; entityId: string; slot: string }) {
+    if (!body.mediaId || !body.entityType || !body.entityId || !body.slot) throw new BadRequestException("Media bog‘lanishini o‘chirish ma’lumotlari to‘liq emas");
+    return this.media.detach(body);
+  }
+
+  @Patch("usage/reorder")
+  @UseGuards(JwtAuthGuard)
+  reorder(@Body() body: { entityType: string; entityId: string; slot: string; mediaIds: string[] }) {
+    if (!body.entityType || !body.entityId || !body.slot || !Array.isArray(body.mediaIds)) throw new BadRequestException("Media tartiblash ma’lumotlari noto‘g‘ri");
+    return this.media.reorder(body);
   }
 
   @Post("upload")
