@@ -70,14 +70,25 @@ CREATE INDEX IF NOT EXISTS "products_brand_form_idx" ON "products" ("brand", "fo
 
 CREATE TABLE IF NOT EXISTS "catalog_taxonomies" (
   "id" TEXT PRIMARY KEY,
-  "type" TEXT NOT NULL,
+  "type" TEXT,
   "value" TEXT NOT NULL,
   "label" TEXT NOT NULL,
   "sort_order" INTEGER NOT NULL DEFAULT 0,
   "is_active" BOOLEAN NOT NULL DEFAULT TRUE,
   "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT "catalog_taxonomies_type_value_key" UNIQUE ("type", "value")
+  "updated_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+ALTER TABLE "catalog_taxonomies" ADD COLUMN IF NOT EXISTS "type" TEXT;
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_name='catalog_taxonomies' AND column_name='taxonomy_type'
+  ) THEN
+    EXECUTE 'UPDATE catalog_taxonomies SET type=taxonomy_type WHERE type IS NULL';
+  END IF;
+END $$;
+ALTER TABLE "catalog_taxonomies" ALTER COLUMN "type" SET NOT NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS "catalog_taxonomies_type_value_key" ON "catalog_taxonomies" ("type", "value");
 CREATE INDEX IF NOT EXISTS "catalog_taxonomies_type_active_idx" ON "catalog_taxonomies" ("type", "is_active", "sort_order");
