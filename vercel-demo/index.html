@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>Soundz Demo</title>
+  <style>
+    :root{--green:#1f6f5f;--mint:#eaf5f1;--ink:#17312b;--muted:#66756f;--line:#dce8e4;--orange:#ff8201}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,sans-serif;color:var(--ink);background:#f8fbfa}
+    .wrap{max-width:1120px;margin:auto;padding:0 22px}.nav{display:flex;align-items:center;justify-content:space-between;padding:22px 0}.logo{font-size:28px;font-weight:800;color:var(--green)}
+    .pill{background:var(--mint);padding:9px 14px;border-radius:999px;font-size:13px}.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:34px;align-items:center;padding:50px 0 70px}
+    h1{font-size:58px;line-height:1.02;margin:0 0 18px}.lead{font-size:20px;line-height:1.6;color:var(--muted);max-width:680px}.actions{display:flex;gap:12px;margin-top:28px}.btn{border:0;border-radius:12px;padding:15px 20px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}.primary{background:var(--orange);color:white}.secondary{background:white;color:var(--green);border:1px solid var(--line)}
+    .device{background:linear-gradient(145deg,#fff,#eaf5f1);border:1px solid var(--line);border-radius:28px;min-height:360px;display:grid;place-items:center;box-shadow:0 24px 70px rgba(31,111,95,.12)}
+    .ear{font-size:130px;filter:grayscale(.15)} section{padding:62px 0}.section-title{font-size:36px;margin:0 0 24px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:white;border:1px solid var(--line);border-radius:18px;padding:22px}.card h3{margin:8px 0}.tag{font-size:12px;color:var(--green);font-weight:700}.price{font-weight:800;margin-top:18px}.branch{display:flex;gap:12px;align-items:flex-start}.dot{width:12px;height:12px;border-radius:50%;background:var(--orange);margin-top:5px;flex:0 0 auto}
+    .booking{background:var(--green);color:white;border-radius:28px;padding:34px}.booking h2{margin-top:0}.form{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.form input,.form select{width:100%;padding:14px;border:0;border-radius:10px}.full{grid-column:1/-1}.notice{margin-top:15px;font-size:14px;opacity:.85}.success{display:none;background:#d9f7e8;color:#14513f;padding:14px;border-radius:10px;margin-top:14px}
+    footer{padding:38px 0;color:var(--muted);font-size:14px}.demo-bar{background:#fff5e8;color:#8a4d00;padding:10px;text-align:center;font-size:13px;border-bottom:1px solid #ffe0ba}
+    @media(max-width:800px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.form{grid-template-columns:1fr}.full{grid-column:auto}h1{font-size:42px}.device{min-height:260px}}
+  </style>
+</head>
+<body>
+  <div class="demo-bar">Bu Soundz platformasining ko‘rgazmali demo versiyasi. Ma’lumotlar saqlanmaydi.</div>
+  <div class="wrap">
+    <nav class="nav"><div class="logo">Soundz</div><div class="pill">Eshitishingizni asrang!</div></nav>
+    <main>
+      <section class="hero">
+        <div><span class="tag">PROFESSIONAL ESHITISH YECHIMLARI</span><h1>Yaxshi eshitish — yaxshi hayot.</h1><p class="lead">Eshitishni tekshirtiring, mos eshitish moslamasini tanlang va Soundz mutaxassislaridan professional yordam oling.</p><div class="actions"><a class="btn primary" href="#booking">Qabulga yozilish</a><a class="btn secondary" href="#catalog">Moslamalarni ko‘rish</a></div></div>
+        <div class="device"><div class="ear">🦻</div></div>
+      </section>
+      <section id="catalog"><h2 class="section-title">Eshitish moslamalari</h2><div class="grid">
+        <article class="card"><span class="tag">RIC / miniRITE</span><h3>Soundz Air Mini</h3><p>Yengil, nozik va kundalik foydalanish uchun qulay model.</p><div class="price">Demo mahsulot</div></article>
+        <article class="card"><span class="tag">BTE</span><h3>Soundz Power</h3><p>Kuchli eshitish yo‘qotishlari uchun ishonchli yechim.</p><div class="price">Demo mahsulot</div></article>
+        <article class="card"><span class="tag">CIC</span><h3>Soundz Invisible</h3><p>Quloq ichida deyarli sezilmaydigan ixcham model.</p><div class="price">Demo mahsulot</div></article>
+      </div></section>
+      <section><h2 class="section-title">Filiallar</h2><div class="grid">
+        <div class="card branch"><span class="dot"></span><div><h3>Toshkent</h3><p>Eshitishni tekshirish va moslama tanlash.</p></div></div>
+        <div class="card branch"><span class="dot"></span><div><h3>Farg‘ona</h3><p>Buvayda va Marg‘ilon xizmat nuqtalari.</p></div></div>
+        <div class="card branch"><span class="dot"></span><div><h3>Samarqand</h3><p>Kattaqo‘rg‘on xizmat markazi.</p></div></div>
+      </div></section>
+      <section id="booking"><div class="booking"><h2>Qabulga yozilish</h2><form class="form" id="demoForm"><input required placeholder="Ismingiz"/><input required placeholder="+998 90 123 45 67"/><select required><option value="">Filialni tanlang</option><option>Toshkent</option><option>Farg‘ona</option><option>Samarqand</option></select><select required><option value="">Xizmatni tanlang</option><option>Eshitishni tekshirish</option><option>Moslama tanlash</option><option>Sozlash va servis</option></select><button class="btn primary full" type="submit">Demo so‘rov yuborish</button></form><div class="success" id="success">So‘rov demo rejimida muvaffaqiyatli qabul qilindi. Hech qanday shaxsiy ma’lumot saqlanmadi.</div><div class="notice">Haqiqiy production versiyada so‘rov CRM, Telegram va call-center tizimiga yuboriladi.</div></div></section>
+    </main>
+    <footer>© 2026 Soundz demo. Eshitishingizni asrang!</footer>
+  </div>
+  <script>document.getElementById('demoForm').addEventListener('submit',function(e){e.preventDefault();document.getElementById('success').style.display='block';this.reset();});</script>
+</body>
+</html>
