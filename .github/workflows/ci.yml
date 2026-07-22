@@ -12,11 +12,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
         with:
-          version: 11.7.0
+          version: 10.15.1
           run_install: false
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 22
       - run: pnpm install --no-frozen-lockfile --reporter=silent
       - run: docker compose --env-file .env.production.example -f docker-compose.production.yml config --quiet
       - run: docker compose --env-file .env.production.example -f docker-compose.production.yml -f docker-compose.monitoring.yml config --quiet
