@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "installCommand": "corepack enable && corepack prepare pnpm@11.7.0 --activate && pnpm install --no-frozen-lockfile",
+  "buildCommand": "pnpm --filter @soundz/web build",
+  "outputDirectory": "apps/web/.next",
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/demo",
+      "permanent": false
+    }
+  ]
+}
