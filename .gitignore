@@ -6,8 +6,12 @@ coverage/
 .env
 .env.*
 !.env.example
+!.env.production.example
 data/migration/**
 !data/migration/.gitkeep
+deploy/certs/*.pem
+!deploy/certs/README.md
+media-storage/
 *.log
 .DS_Store
 .idea/
