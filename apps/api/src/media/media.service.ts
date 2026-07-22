@@ -25,17 +25,7 @@ export class MediaService {
     const metadata = await source.metadata();
     if (!metadata.width || !metadata.height) throw new Error("Rasm o‘lchamini aniqlab bo‘lmadi");
 
-    const variants: Array<{
-      id: string;
-      key: string;
-      width: number;
-      height: number;
-      sizeBytes: number;
-      path: string;
-      url: string;
-      provider: string;
-    }> = [];
-
+    const variants: Array<{ id: string; key: string; width: number; height: number; sizeBytes: number; path: string; url: string; provider: string }> = [];
     for (const preset of PRESETS) {
       const output = await sharp(input.buffer, { failOn: "error", limitInputPixels: 50_000_000 })
         .rotate()
@@ -48,16 +38,7 @@ export class MediaService {
         .webp({ quality: 82, effort: 5, smartSubsample: true })
         .toBuffer();
       const stored = await this.storage.put(`${id}/${preset.key}.webp`, output, "image/webp");
-      variants.push({
-        id: randomUUID(),
-        key: preset.key,
-        width: preset.width,
-        height: preset.height,
-        sizeBytes: output.byteLength,
-        path: stored.path,
-        url: stored.url,
-        provider: stored.provider,
-      });
+      variants.push({ id: randomUUID(), key: preset.key, width: preset.width, height: preset.height, sizeBytes: output.byteLength, path: stored.path, url: stored.url, provider: stored.provider });
     }
 
     const provider = variants[0]?.provider ?? "local";
@@ -65,27 +46,13 @@ export class MediaService {
       await tx.$executeRawUnsafe(
         `INSERT INTO media_assets (id, original_name, mime_type, width, height, alt_text, caption, storage_provider)
          VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
-        id,
-        input.originalName,
-        "image/webp",
-        metadata.width,
-        metadata.height,
-        input.altText ?? null,
-        input.caption ?? null,
-        provider,
+        id,input.originalName,"image/webp",metadata.width,metadata.height,input.altText ?? null,input.caption ?? null,provider,
       );
       for (const variant of variants) {
         await tx.$executeRawUnsafe(
           `INSERT INTO media_variants (id, media_id, variant_key, width, height, size_bytes, path, url)
            VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
-          variant.id,
-          id,
-          variant.key,
-          variant.width,
-          variant.height,
-          variant.sizeBytes,
-          variant.path,
-          variant.url,
+          variant.id,id,variant.key,variant.width,variant.height,variant.sizeBytes,variant.path,variant.url,
         );
       }
     });
@@ -94,21 +61,54 @@ export class MediaService {
 
   async attach(input: { mediaId: string; entityType: string; entityId: string; slot: string; sortOrder?: number }) {
     await this.get(input.mediaId);
+    const order = input.sortOrder ?? await this.nextSortOrder(input.entityType, input.entityId, input.slot);
     await this.prisma.$executeRawUnsafe(
       `INSERT INTO media_usages (id,media_id,entity_type,entity_id,slot,sort_order) VALUES ($1,$2,$3,$4,$5,$6)
        ON CONFLICT (entity_type,entity_id,slot,sort_order) DO UPDATE SET media_id=EXCLUDED.media_id`,
-      randomUUID(),
-      input.mediaId,
-      input.entityType,
-      input.entityId,
-      input.slot,
-      input.sortOrder ?? 0,
+      randomUUID(),input.mediaId,input.entityType,input.entityId,input.slot,order,
     );
+    return { success: true, sortOrder: order };
+  }
+
+  private async nextSortOrder(entityType: string, entityId: string, slot: string) {
+    const rows = await this.prisma.$queryRawUnsafe<Array<{ next: number }>>(
+      `SELECT COALESCE(MAX(sort_order),-1)+1 AS next FROM media_usages WHERE entity_type=$1 AND entity_id=$2 AND slot=$3`,
+      entityType,entityId,slot,
+    );
+    return Number(rows[0]?.next ?? 0);
+  }
+
+  async detach(input: { entityType: string; entityId: string; slot: string; mediaId: string }) {
+    const count = await this.prisma.$executeRawUnsafe(
+      `DELETE FROM media_usages WHERE entity_type=$1 AND entity_id=$2 AND slot=$3 AND media_id=$4`,
+      input.entityType,input.entityId,input.slot,input.mediaId,
+    );
+    await this.normalizeOrder(input.entityType, input.entityId, input.slot);
+    return { success: count > 0 };
+  }
+
+  async reorder(input: { entityType: string; entityId: string; slot: string; mediaIds: string[] }) {
+    await this.prisma.$transaction(async (tx) => {
+      for (let index = 0; index < input.mediaIds.length; index += 1) {
+        await tx.$executeRawUnsafe(
+          `UPDATE media_usages SET sort_order=$1 WHERE entity_type=$2 AND entity_id=$3 AND slot=$4 AND media_id=$5`,
+          index,input.entityType,input.entityId,input.slot,input.mediaIds[index],
+        );
+      }
+    });
     return { success: true };
   }
 
+  private async normalizeOrder(entityType: string, entityId: string, slot: string) {
+    const rows = await this.prisma.$queryRawUnsafe<Array<{ mediaId: string }>>(
+      `SELECT media_id AS "mediaId" FROM media_usages WHERE entity_type=$1 AND entity_id=$2 AND slot=$3 ORDER BY sort_order,created_at`,
+      entityType,entityId,slot,
+    );
+    await this.reorder({ entityType, entityId, slot, mediaIds: rows.map((row) => row.mediaId) });
+  }
+
   async usages(entityType: string, entityId: string) {
-    return this.prisma.$queryRawUnsafe(`SELECT u.slot,u.sort_order AS "sortOrder",m.id,m.alt_text AS "altText",
+    return this.prisma.$queryRawUnsafe(`SELECT u.slot,u.sort_order AS "sortOrder",m.id,m.alt_text AS "altText",m.original_name AS "originalName",
       COALESCE(json_agg(json_build_object('key',v.variant_key,'url',v.url,'width',v.width,'height',v.height)
       ORDER BY v.width) FILTER (WHERE v.id IS NOT NULL),'[]') AS variants
       FROM media_usages u JOIN media_assets m ON m.id=u.media_id LEFT JOIN media_variants v ON v.media_id=m.id
@@ -137,8 +137,7 @@ export class MediaService {
     const rows = await this.prisma.$queryRawUnsafe<any[]>(
       `SELECT v.path,m.storage_provider AS provider FROM media_variants v
        JOIN media_assets m ON m.id=v.media_id WHERE v.media_id=$1 AND v.variant_key=$2 LIMIT 1`,
-      mediaId,
-      key,
+      mediaId,key,
     );
     if (!rows[0]) throw new NotFoundException("Rasm varianti topilmadi");
     return this.storage.read(rows[0].path);
