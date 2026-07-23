@@ -1,0 +1,129 @@
+{
+  "common": {
+    "brand": "Soundz",
+    "tagline": "Love Your Hearing",
+    "nav": {
+      "hearingAids": "Eshitish apparatlari",
+      "iem": "Custom IEM",
+      "services": "Xizmatlar",
+      "knowledge": "Bilim markazi",
+      "branches": "Filiallar",
+      "contact": "Aloqa"
+    },
+    "cta": {
+      "consultation": "Konsultatsiya",
+      "booking": "Qabulga yozilish"
+    },
+    "locales": { "uz": "O‘zbekcha", "ru": "Русский", "en": "English" }
+  },
+  "home": {
+    "meta": {
+      "title": "Soundz — Eshitish apparatlari va Custom IEM | Toshkent",
+      "description": "Professional audiometriya, jahon brendlaridagi eshitish apparatlari, individual moslash va musiqachilar uchun Custom In-Ear Monitor. Eshitishingizni asrang — Soundz."
+    },
+    "hero": {
+      "eyebrow": "Love Your Hearing",
+      "title": "Dunyoni yana",
+      "titleAccent": "to‘liq eshiting.",
+      "lead": "Professional eshitish tekshiruvi, jahonning yetakchi eshitish apparatlari va sahna uchun individual monitorlar — barchasi bitta markazda.",
+      "ctaPrimary": "Eshitishni tekshirtirish",
+      "ctaSecondary": "Katalogni ko‘rish",
+      "chips": {
+        "audiometry": "Professional audiometriya",
+        "fitting": "Individual moslash",
+        "service": "Doimiy servis"
+      },
+      "cardSound": { "title": "Tabiiy tovush", "text": "Aqlli shovqin boshqaruvi" },
+      "cardBrands": { "title": "Jahon brendlari", "text": "Phonak, Oticon, Signia va boshqalar" }
+    },
+    "brands": { "label": "Yetakchi ishlab chiqaruvchilar bilan ishlaymiz" },
+    "paths": {
+      "eyebrow": "YO‘NALISHLAR",
+      "title": "Sizga qaysi yechim kerak?",
+      "lead": "Har bir ehtiyoj uchun alohida yo‘nalish — kundalik hayotdan professional sahnagacha.",
+      "hearing": {
+        "title": "Eshitish apparatlari",
+        "text": "Deyarli ko‘rinmas RIC modellardan quvvatli BTE gacha — turmush tarzingizga mos yechim.",
+        "link": "Katalogga o‘tish"
+      },
+      "iem": {
+        "title": "Custom IEM",
+        "text": "Musiqachilar va sahna professionallari uchun quloq shakliga quyma monitorlar.",
+        "link": "Batafsil"
+      },
+      "accessories": {
+        "title": "Aksessuarlar",
+        "text": "Batareyalar, filtrlar, quritish qutilari va Bluetooth aksessuarlar.",
+        "link": "Ko‘rish"
+      },
+      "children": {
+        "title": "Bolalar eshitishi",
+        "text": "Kichkintoylar uchun ehtiyotkor tekshiruv va maxsus moslash dasturi.",
+        "link": "Ma’lumot olish"
+      }
+    },
+    "steps": {
+      "eyebrow": "QANDAY ISHLAYDI",
+      "title": "Qurilma sotib olishdan oldin — to‘g‘ri tashxis.",
+      "lead": "To‘lov faqat filialda, qurilma sizga mos kelishiga ishonch hosil qilganingizdan keyin.",
+      "items": [
+        { "title": "Qabulga yoziling", "text": "Filial va qulay vaqtni onlayn tanlang." },
+        { "title": "Eshitishni tekshirtiring", "text": "Mutaxassis professional audiometriya o‘tkazadi." },
+        { "title": "Mos modelni tanlang", "text": "Natija, budjet va turmush tarzingizga qarab." },
+        { "title": "Individual sozlating", "text": "Moslama aynan sizning eshitishingizga sozlanadi." }
+      ]
+    },
+    "stats": {
+      "eyebrow": "SOUNDZ RAQAMLARDA",
+      "items": [
+        { "value": 5, "suffix": "+", "label": "Jahon brendi" },
+        { "value": 5, "suffix": "", "label": "Moslama forma-faktori" },
+        { "value": 3, "suffix": "", "label": "Xizmat tili" }
+      ]
+    },
+    "iem": {
+      "eyebrow": "CUSTOM IN-EAR MONITOR",
+      "title": "Sahna uchun. Aynan sizning qulog‘ingiz uchun.",
+      "lead": "Quloq shaklingiz bo‘yicha individual quyiladigan monitorlar — musiqachilar, ovoz muhandislari va audiofillar tanlovi.",
+      "features": [
+        { "title": "Individual qolip", "text": "Quloq qolipi mutaxassis tomonidan olinadi — monitor faqat sizga mos." },
+        { "title": "Studiya darajasidagi tovush", "text": "Sahnada ham, studiyada ham aniq va boy tovush." },
+        { "title": "Ishonchli izolyatsiya", "text": "Tashqi shovqindan himoya — eshitishingiz ham himoyada." }
+      ],
+      "cta": "IEM bo‘yicha konsultatsiya"
+    },
+    "knowledge": {
+      "eyebrow": "BILIM MARKAZI",
+      "title": "Avval tushuning, keyin tanlang.",
+      "lead": "Eshitish salomatligi bo‘yicha mutaxassislar tayyorlagan ishonchli maqolalar.",
+      "cards": [
+        { "title": "Eshitish pasayishining ilk belgilari", "text": "Qaysi holatlarda mutaxassisga murojaat qilish kerak?" },
+        { "title": "Eshitish apparati qanday tanlanadi?", "text": "Forma-faktor, texnologiya darajasi va budjet bo‘yicha yo‘riqnoma." },
+        { "title": "Bolalarda eshitish", "text": "Ota-onalar uchun: belgilar, tekshiruv va moslash jarayoni." }
+      ],
+      "cta": "Bilim markaziga o‘tish"
+    },
+    "booking": {
+      "eyebrow": "OLDINDAN YOZILISH",
+      "title": "Filial va qulay vaqtni tanlang.",
+      "lead": "So‘rov saqlangach, operator siz bilan bog‘lanib qabulni tasdiqlaydi."
+    },
+    "contact": {
+      "eyebrow": "BIRINCHI QADAM",
+      "title": "Mutaxassis siz bilan bog‘lanadi.",
+      "lead": "Telefon raqamingizni qoldiring — qolganini biz hal qilamiz.",
+      "bullets": [
+        "Onlayn to‘lov talab qilinmaydi",
+        "Qabul oldindan belgilanadi",
+        "To‘lov filialning o‘zida"
+      ]
+    },
+    "footer": {
+      "tagline": "Eshitishingizni asrang!",
+      "directions": "Yo‘nalishlar",
+      "company": "Kompaniya",
+      "language": "Til",
+      "rights": "Barcha huquqlar himoyalangan."
+    }
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "common": {
+    "brand": "Soundz",
+    "tagline": "Love Your Hearing",
+    "nav": {
+      "hearingAids": "Hearing aids",
+      "iem": "Custom IEM",
+      "services": "Services",
+      "knowledge": "Knowledge hub",
+      "branches": "Locations",
+      "contact": "Contact"
+    },
+    "cta": {
+      "consultation": "Consultation",
+      "booking": "Book an appointment"
+    },
+    "locales": { "uz": "O‘zbekcha", "ru": "Русский", "en": "English" }
+  },
+  "home": {
+    "meta": {
+      "title": "Soundz — Hearing Aids & Custom IEM | Tashkent",
+      "description": "Professional audiometry, hearing aids from world-leading brands, individual fitting and Custom In-Ear Monitors for musicians. Love your hearing — Soundz."
+    },
+    "hero": {
+      "eyebrow": "Love Your Hearing",
+      "title": "Hear your world,",
+      "titleAccent": "in full again.",
+      "lead": "Professional hearing tests, world-leading hearing aids and custom stage monitors — all in one place.",
+      "ctaPrimary": "Test your hearing",
+      "ctaSecondary": "Browse catalog",
+      "chips": {
+        "audiometry": "Professional audiometry",
+        "fitting": "Individual fitting",
+        "service": "Ongoing service"
+      },
+      "cardSound": { "title": "Natural sound", "text": "Smart noise management" },
+      "cardBrands": { "title": "World brands", "text": "Phonak, Oticon, Signia and more" }
+    },
+    "brands": { "label": "We work with leading manufacturers" },
+    "paths": {
+      "eyebrow": "WHAT WE DO",
+      "title": "Which solution do you need?",
+      "lead": "A dedicated path for every need — from everyday life to the professional stage.",
+      "hearing": {
+        "title": "Hearing aids",
+        "text": "From nearly invisible RIC to powerful BTE — matched to your lifestyle.",
+        "link": "Go to catalog"
+      },
+      "iem": {
+        "title": "Custom IEM",
+        "text": "Ear-molded monitors for musicians and stage professionals.",
+        "link": "Learn more"
+      },
+      "accessories": {
+        "title": "Accessories",
+        "text": "Batteries, filters, drying boxes and Bluetooth accessories.",
+        "link": "Browse"
+      },
+      "children": {
+        "title": "Children's hearing",
+        "text": "Gentle testing and a dedicated fitting program for kids.",
+        "link": "Find out more"
+      }
+    },
+    "steps": {
+      "eyebrow": "HOW IT WORKS",
+      "title": "The right diagnosis — before you buy.",
+      "lead": "You pay at the clinic, only once you're sure the device fits you.",
+      "items": [
+        { "title": "Book an appointment", "text": "Pick a location and a convenient time online." },
+        { "title": "Test your hearing", "text": "A specialist runs professional audiometry." },
+        { "title": "Choose your model", "text": "Based on results, budget and lifestyle." },
+        { "title": "Individual fitting", "text": "The device is tuned precisely to your hearing." }
+      ]
+    },
+    "stats": {
+      "eyebrow": "SOUNDZ IN NUMBERS",
+      "items": [
+        { "value": 5, "suffix": "+", "label": "World brands" },
+        { "value": 5, "suffix": "", "label": "Form factors" },
+        { "value": 3, "suffix": "", "label": "Service languages" }
+      ]
+    },
+    "iem": {
+      "eyebrow": "CUSTOM IN-EAR MONITOR",
+      "title": "Built for the stage. Molded for your ears.",
+      "lead": "Individually cast monitors from an impression of your ear — the choice of musicians, engineers and audiophiles.",
+      "features": [
+        { "title": "Custom impression", "text": "A specialist takes your ear impression — the monitor fits only you." },
+        { "title": "Studio-grade sound", "text": "Accurate, rich sound on stage and in the studio." },
+        { "title": "Reliable isolation", "text": "Protection from outside noise — and for your hearing." }
+      ],
+      "cta": "IEM consultation"
+    },
+    "knowledge": {
+      "eyebrow": "KNOWLEDGE HUB",
+      "title": "Understand first, choose second.",
+      "lead": "Trusted articles on hearing health, prepared by specialists.",
+      "cards": [
+        { "title": "Early signs of hearing loss", "text": "When is it time to see a specialist?" },
+        { "title": "How to choose a hearing aid?", "text": "A guide to form factors, technology levels and budget." },
+        { "title": "Children's hearing", "text": "For parents: signs, testing and the fitting journey." }
+      ],
+      "cta": "Visit the knowledge hub"
+    },
+    "booking": {
+      "eyebrow": "BOOK AHEAD",
+      "title": "Pick a location and a time.",
+      "lead": "Once your request is saved, an operator will call to confirm the visit."
+    },
+    "contact": {
+      "eyebrow": "FIRST STEP",
+      "title": "A specialist will contact you.",
+      "lead": "Leave your phone number — we'll take it from there.",
+      "bullets": [
+        "No online payment required",
+        "Visits are scheduled in advance",
+        "Payment at the clinic"
+      ]
+    },
+    "footer": {
+      "tagline": "Love your hearing!",
+      "directions": "What we do",
+      "company": "Company",
+      "language": "Language",
+      "rights": "All rights reserved."
+    }
+  }
+}
