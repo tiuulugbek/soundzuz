@@ -1,0 +1,106 @@
+/* ============================================================
+   SOUNDZ dizayn tokenlari — Bosqich 0 (logo ranglari asosida)
+   Barcha yangi UI shu tokenlarga tayanadi. Legacy sahifalar
+   bosqichma-bosqich shu tizimga ko'chiriladi.
+   ============================================================ */
+:root {
+  /* --- Brend ranglari --- */
+  --sz-orange: #ff8201;
+  --sz-orange-strong: #e67300;      /* hover / bosilgan holat */
+  --sz-orange-soft: #ffb25e;        /* gradientlar, dark fondagi aksent */
+  --sz-orange-tint: #fff3e3;        /* och apelsin fon (badge, ikonka foni) */
+  --sz-dark: #252423;               /* asosiy grafit — matn, IEM foni */
+  --sz-dark-2: #2b2a29;             /* ikkinchi darajali to'q fon */
+  --sz-dark-3: #383634;             /* to'q fondagi kartalar / chiziqlar */
+
+  /* --- Yuzalar --- */
+  --sz-surface: #ffffff;
+  --sz-surface-warm: #faf7f2;       /* iliq krem seksiyalar */
+  --sz-surface-gray: #f4f4f3;       /* input / karta fonlari */
+
+  /* --- Matn --- */
+  --sz-text: var(--sz-dark);
+  --sz-text-muted: #6b6864;
+  --sz-text-soft: #94908b;
+  --sz-text-on-dark: #f7f4f0;
+  --sz-text-muted-on-dark: #b5b0aa;
+
+  /* --- Holatlar --- */
+  --sz-success: #2e7d4f;
+  --sz-success-bg: #e7f4ec;
+  --sz-error: #b3362a;
+  --sz-error-bg: #fdefed;
+
+  /* --- Chiziqlar --- */
+  --sz-line: #e9e4dd;
+  --sz-line-strong: #d8d2c9;
+  --sz-line-on-dark: #ffffff1f;
+
+  /* --- Tipografika --- */
+  --sz-font-display: "Manrope Variable", Manrope, "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
+  --sz-font-body: "Inter Variable", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sz-text-xs: 0.75rem;
+  --sz-text-sm: 0.875rem;
+  --sz-text-base: 1rem;
+  --sz-text-lg: clamp(1.05rem, 1rem + 0.3vw, 1.2rem);
+  --sz-text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.55rem);
+  --sz-h3: clamp(1.35rem, 1.2rem + 0.8vw, 1.8rem);
+  --sz-h2: clamp(2rem, 1.5rem + 2.2vw, 3.4rem);
+  --sz-h1: clamp(2.7rem, 1.8rem + 4.4vw, 5.6rem);
+  --sz-display: clamp(3rem, 1.6rem + 6vw, 7rem);
+  --sz-tracking-tight: -0.045em;
+  --sz-tracking-tighter: -0.06em;
+  --sz-tracking-wide: 0.16em;
+
+  /* --- Radiuslar (logo blob shakliga hamohang) --- */
+  --sz-r-sm: 10px;
+  --sz-r-md: 16px;
+  --sz-r-lg: 24px;
+  --sz-r-xl: 32px;
+  --sz-r-pill: 999px;
+  --sz-r-blob: 58% 42% 55% 45% / 52% 58% 42% 48%;
+
+  /* --- Soyalar (iliq ohang) --- */
+  --sz-shadow-sm: 0 2px 10px rgba(37, 36, 35, 0.06);
+  --sz-shadow-md: 0 14px 40px rgba(37, 36, 35, 0.09);
+  --sz-shadow-lg: 0 30px 90px rgba(37, 36, 35, 0.14);
+  --sz-shadow-orange: 0 14px 40px rgba(255, 130, 1, 0.28);
+
+  /* --- Harakat (motion) --- */
+  --sz-ease: cubic-bezier(0.22, 0.61, 0.1, 1);
+  --sz-ease-spring: cubic-bezier(0.34, 1.4, 0.44, 1);
+  --sz-dur-fast: 160ms;
+  --sz-dur: 300ms;
+  --sz-dur-slow: 650ms;
+  --sz-dur-reveal: 850ms;
+
+  /* --- Layout --- */
+  --sz-container: 1280px;
+  --sz-gutter: clamp(1rem, 4vw, 2.25rem);
+  --sz-section-gap: clamp(5rem, 10vw, 9rem);
+  --sz-header-h: 76px;
+}
+
+/* IEM va boshqa to'q seksiyalar uchun kontekst */
+.sz-dark-scope {
+  --sz-surface: var(--sz-dark);
+  --sz-surface-warm: var(--sz-dark-2);
+  --sz-surface-gray: var(--sz-dark-3);
+  --sz-text: var(--sz-text-on-dark);
+  --sz-text-muted: var(--sz-text-muted-on-dark);
+  --sz-line: var(--sz-line-on-dark);
+  --sz-line-strong: #ffffff33;
+  --sz-shadow-md: 0 14px 40px rgba(0, 0, 0, 0.35);
+  --sz-shadow-lg: 0 30px 90px rgba(0, 0, 0, 0.5);
+  color: var(--sz-text);
+}
+
+/* Harakat qisqartirilgan rejim — barcha bezak animatsiyalar o'chadi */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --sz-dur-fast: 1ms;
+    --sz-dur: 1ms;
+    --sz-dur-slow: 1ms;
+    --sz-dur-reveal: 1ms;
+  }
+}

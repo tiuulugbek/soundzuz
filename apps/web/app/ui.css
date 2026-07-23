@@ -1,0 +1,141 @@
+/* ============================================================
+   SOUNDZ UI kutubxonasi — komponent stillari (tokens.css'ga tayanadi)
+   ============================================================ */
+
+.sz-container { max-width: var(--sz-container); margin: 0 auto; padding: 0 var(--sz-gutter); }
+
+.sz-eyebrow {
+  font-size: var(--sz-text-xs);
+  letter-spacing: var(--sz-tracking-wide);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--sz-orange);
+  margin: 0 0 0.6rem;
+}
+
+/* --- Seksiyalar --- */
+.sz-section { padding: calc(var(--sz-section-gap) / 2) 0; }
+.sz-section--warm { background: var(--sz-surface-warm); }
+.sz-section--dark { background: var(--sz-dark); color: var(--sz-text-on-dark); }
+.sz-section--bleed { padding: 0; }
+
+.sz-heading { display: grid; gap: 1rem; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+.sz-heading--split { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: end; gap: 3rem; }
+.sz-heading--center { text-align: center; justify-items: center; }
+.sz-heading__title {
+  font-family: var(--sz-font-display);
+  font-size: var(--sz-h2);
+  line-height: 1.02;
+  letter-spacing: var(--sz-tracking-tight);
+  margin: 0;
+  text-wrap: balance;
+}
+.sz-heading__lead { color: var(--sz-text-muted); line-height: 1.7; max-width: 46ch; margin: 0; font-size: var(--sz-text-lg); }
+
+/* --- Tugmalar --- */
+.sz-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid transparent;
+  border-radius: var(--sz-r-pill);
+  font-weight: 800;
+  font-family: var(--sz-font-body);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform var(--sz-dur-fast) var(--sz-ease), box-shadow var(--sz-dur) var(--sz-ease),
+    background-color var(--sz-dur-fast) var(--sz-ease), border-color var(--sz-dur-fast) var(--sz-ease);
+  will-change: transform;
+}
+.sz-btn--md { padding: 0.8rem 1.4rem; font-size: 0.95rem; }
+.sz-btn--lg { padding: 1.05rem 1.8rem; font-size: 1.05rem; }
+.sz-btn__arrow { display: inline-block; transition: transform var(--sz-dur) var(--sz-ease-spring); }
+.sz-btn:hover .sz-btn__arrow { transform: translateX(4px); }
+.sz-btn:active { transform: scale(0.97); }
+.sz-btn:focus-visible { outline: 3px solid var(--sz-orange-soft); outline-offset: 2px; }
+
+.sz-btn--primary { background: var(--sz-orange); color: #fff; box-shadow: 0 6px 20px rgba(255, 130, 1, 0.25); }
+.sz-btn--primary:hover { background: var(--sz-orange-strong); box-shadow: var(--sz-shadow-orange); transform: translateY(-1px); }
+.sz-btn--secondary { background: transparent; color: var(--sz-text); border-color: var(--sz-line-strong); }
+.sz-btn--secondary:hover { border-color: var(--sz-dark); transform: translateY(-1px); }
+.sz-dark-scope .sz-btn--secondary { color: var(--sz-text-on-dark); border-color: #ffffff3d; }
+.sz-dark-scope .sz-btn--secondary:hover { border-color: #ffffff88; }
+.sz-btn--ghost { background: transparent; color: var(--sz-orange); padding-left: 0.4rem; padding-right: 0.4rem; }
+.sz-btn--on-dark { background: #fff; color: var(--sz-dark); }
+.sz-btn--on-dark:hover { transform: translateY(-1px); box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35); }
+
+/* --- Reveal --- */
+.sz-reveal {
+  opacity: 0;
+  transform: translate3d(0, var(--sz-reveal-y, 28px), 0);
+  transition: opacity var(--sz-dur-reveal) var(--sz-ease) var(--sz-reveal-delay, 0ms),
+    transform var(--sz-dur-reveal) var(--sz-ease) var(--sz-reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.sz-reveal.is-visible { opacity: 1; transform: translate3d(0, 0, 0); }
+@media (prefers-reduced-motion: reduce) {
+  .sz-reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* --- Magnetic --- */
+.sz-magnetic { display: inline-block; transition: transform 480ms var(--sz-ease-spring); will-change: transform; }
+
+/* --- Marquee --- */
+.sz-marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+.sz-marquee__track { display: flex; width: max-content; }
+.sz-marquee__group { display: flex; align-items: center; gap: clamp(2.5rem, 6vw, 5rem); padding-right: clamp(2.5rem, 6vw, 5rem); animation: sz-marquee var(--sz-marquee-duration, 32s) linear infinite; will-change: transform; }
+.sz-marquee:hover .sz-marquee__group { animation-play-state: paused; }
+@keyframes sz-marquee { to { transform: translate3d(-100%, 0, 0); } }
+@media (prefers-reduced-motion: reduce) {
+  .sz-marquee__group { animation: none; }
+  .sz-marquee__group[aria-hidden] { display: none; }
+  .sz-marquee { mask-image: none; -webkit-mask-image: none; }
+}
+
+/* --- Wave canvas --- */
+.sz-wave { display: block; width: 100%; height: 100%; }
+
+/* --- Karta primitivi --- */
+.sz-card {
+  background: var(--sz-surface);
+  border: 1px solid var(--sz-line);
+  border-radius: var(--sz-r-lg);
+  padding: clamp(1.5rem, 3vw, 2.2rem);
+  transition: transform var(--sz-dur) var(--sz-ease), box-shadow var(--sz-dur) var(--sz-ease), border-color var(--sz-dur) var(--sz-ease);
+}
+.sz-card--hover:hover { transform: translateY(-6px); box-shadow: var(--sz-shadow-md); border-color: var(--sz-line-strong); }
+
+/* --- Chip / belgi --- */
+.sz-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--sz-r-pill);
+  background: var(--sz-orange-tint);
+  color: var(--sz-dark);
+  font-size: var(--sz-text-sm);
+  font-weight: 700;
+}
+.sz-chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--sz-orange); }
+
+/* --- Organik blob dekor (logo shaklidan ilhomlangan) --- */
+.sz-blob {
+  position: absolute;
+  border-radius: var(--sz-r-blob);
+  background: radial-gradient(circle at 32% 28%, var(--sz-orange-soft), var(--sz-orange) 68%);
+  filter: blur(0.5px);
+  animation: sz-blob-morph 14s ease-in-out infinite alternate;
+  will-change: border-radius, transform;
+}
+@keyframes sz-blob-morph {
+  0% { border-radius: 58% 42% 55% 45% / 52% 58% 42% 48%; transform: rotate(-2deg) scale(1); }
+  50% { border-radius: 45% 55% 48% 52% / 58% 44% 56% 42%; transform: rotate(3deg) scale(1.04); }
+  100% { border-radius: 52% 48% 42% 58% / 45% 52% 48% 55%; transform: rotate(-1deg) scale(0.98); }
+}
+@media (prefers-reduced-motion: reduce) { .sz-blob { animation: none; } }
+
+@media (max-width: 900px) {
+  .sz-heading--split { grid-template-columns: 1fr; align-items: start; gap: 1rem; }
+}
