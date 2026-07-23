@@ -35,6 +35,7 @@ enum LeadStatus {
 enum Locale {
   uz
   ru
+  en
 }
 
 enum OutboxStatus {
@@ -392,14 +393,16 @@ model MediaUsage {
 
 model Product {
   id               String   @id
-  slug             String   @unique
+  slug             String
   locale           String   @default("uz")
   name             String
   shortDescription String?  @map("short_description")
   description      String?
   brand            String?
+  brandSlug        String?  @map("brand_slug")
   formFactor       String?  @map("form_factor")
   technologyLevel  String?  @map("technology_level")
+  audience         String?
   priceFrom        Decimal? @map("price_from")
   priceTo          Decimal? @map("price_to")
   rechargeable     Boolean  @default(false)
@@ -409,11 +412,17 @@ model Product {
   status           String   @default("DRAFT")
   seoTitle         String?  @map("seo_title")
   seoDescription   String?  @map("seo_description")
+  specs            ProductSpec[]
+  reviews          Review[]
+  relatedFrom      ProductRelation[] @relation("ProductRelationSource")
+  relatedTo        ProductRelation[] @relation("ProductRelationTarget")
   createdAt        DateTime @default(now()) @map("created_at")
   updatedAt        DateTime @updatedAt @map("updated_at")
 
+  @@unique([slug, locale], map: "products_slug_locale_key")
   @@index([status, locale], map: "products_status_locale_idx")
   @@index([brand, formFactor], map: "products_brand_form_idx")
+  @@index([brandSlug, locale], map: "products_brand_slug_idx")
   @@map("products")
 }
 
@@ -430,4 +439,96 @@ model CatalogTaxonomy {
   @@unique([type, value])
   @@index([type, isActive, sortOrder], map: "catalog_taxonomies_type_active_idx")
   @@map("catalog_taxonomies")
+}
+
+model Brand {
+  id             String   @id
+  slug           String
+  locale         String   @default("uz")
+  name           String
+  tagline        String?
+  description    String?
+  originCountry  String?  @map("origin_country")
+  websiteUrl     String?  @map("website_url")
+  sortOrder      Int      @default(0) @map("sort_order")
+  isActive       Boolean  @default(true) @map("is_active")
+  status         String   @default("DRAFT")
+  seoTitle       String?  @map("seo_title")
+  seoDescription String?  @map("seo_description")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@unique([slug, locale], map: "brands_slug_locale_key")
+  @@index([status, locale, sortOrder], map: "brands_status_locale_idx")
+  @@map("brands")
+}
+
+model ProductSpec {
+  id        String   @id
+  productId String   @map("product_id")
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  specGroup String?  @map("spec_group")
+  label     String
+  value     String
+  unit      String?
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([productId, sortOrder], map: "product_specs_product_idx")
+  @@map("product_specs")
+}
+
+model ProductRelation {
+  id               String  @id
+  productId        String  @map("product_id")
+  product          Product @relation("ProductRelationSource", fields: [productId], references: [id], onDelete: Cascade)
+  relatedProductId String  @map("related_product_id")
+  relatedProduct   Product @relation("ProductRelationTarget", fields: [relatedProductId], references: [id], onDelete: Cascade)
+  kind             String  @default("related")
+  sortOrder        Int     @default(0) @map("sort_order")
+
+  @@unique([productId, relatedProductId, kind], map: "product_relations_unique")
+  @@index([productId, kind], map: "product_relations_product_idx")
+  @@map("product_relations")
+}
+
+model Review {
+  id          String   @id
+  productId   String?  @map("product_id")
+  product     Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  brandSlug   String?  @map("brand_slug")
+  locale      String   @default("uz")
+  authorName  String   @map("author_name")
+  rating      Int      @default(5)
+  title       String?
+  body        String?
+  isPublished Boolean  @default(false) @map("is_published")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([productId, isPublished], map: "reviews_product_idx")
+  @@index([brandSlug, locale, isPublished], map: "reviews_brand_idx")
+  @@map("reviews")
+}
+
+model Comparison {
+  id             String   @id
+  slug           String
+  locale         String   @default("uz")
+  title          String
+  subtitle       String?
+  entityType     String   @default("product") @map("entity_type")
+  entityAId      String   @map("entity_a_id")
+  entityBId      String   @map("entity_b_id")
+  summary        String?
+  body           String?
+  status         String   @default("DRAFT")
+  seoTitle       String?  @map("seo_title")
+  seoDescription String?  @map("seo_description")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@unique([slug, locale], map: "comparisons_slug_locale_key")
+  @@index([status, locale], map: "comparisons_status_locale_idx")
+  @@map("comparisons")
 }
