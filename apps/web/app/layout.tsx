@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getLocale } from "next-intl/server";
 import { Analytics } from "../components/analytics";
 import "@fontsource-variable/manrope";
 import "@fontsource-variable/inter";
@@ -21,6 +22,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="uz"><body>{children}<Analytics /></body></html>;
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  // [locale] route'larda joriy til, legacy route'larda default 'uz'
+  const locale = await getLocale();
+  return <html lang={locale}><body>{children}<Analytics /></body></html>;
 }
