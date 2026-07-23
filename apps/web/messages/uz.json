@@ -14,7 +14,11 @@
       "consultation": "Konsultatsiya",
       "booking": "Qabulga yozilish"
     },
-    "locales": { "uz": "O‘zbekcha", "ru": "Русский", "en": "English" }
+    "locales": {
+      "uz": "O‘zbekcha",
+      "ru": "Русский",
+      "en": "English"
+    }
   },
   "home": {
     "meta": {
@@ -33,10 +37,18 @@
         "fitting": "Individual moslash",
         "service": "Doimiy servis"
       },
-      "cardSound": { "title": "Tabiiy tovush", "text": "Aqlli shovqin boshqaruvi" },
-      "cardBrands": { "title": "Jahon brendlari", "text": "Phonak, Oticon, Signia va boshqalar" }
+      "cardSound": {
+        "title": "Tabiiy tovush",
+        "text": "Aqlli shovqin boshqaruvi"
+      },
+      "cardBrands": {
+        "title": "Jahon brendlari",
+        "text": "Phonak, Oticon, Signia va boshqalar"
+      }
     },
-    "brands": { "label": "Yetakchi ishlab chiqaruvchilar bilan ishlaymiz" },
+    "brands": {
+      "label": "Yetakchi ishlab chiqaruvchilar bilan ishlaymiz"
+    },
     "paths": {
       "eyebrow": "YO‘NALISHLAR",
       "title": "Sizga qaysi yechim kerak?",
@@ -67,18 +79,42 @@
       "title": "Qurilma sotib olishdan oldin — to‘g‘ri tashxis.",
       "lead": "To‘lov faqat filialda, qurilma sizga mos kelishiga ishonch hosil qilganingizdan keyin.",
       "items": [
-        { "title": "Qabulga yoziling", "text": "Filial va qulay vaqtni onlayn tanlang." },
-        { "title": "Eshitishni tekshirtiring", "text": "Mutaxassis professional audiometriya o‘tkazadi." },
-        { "title": "Mos modelni tanlang", "text": "Natija, budjet va turmush tarzingizga qarab." },
-        { "title": "Individual sozlating", "text": "Moslama aynan sizning eshitishingizga sozlanadi." }
+        {
+          "title": "Qabulga yoziling",
+          "text": "Filial va qulay vaqtni onlayn tanlang."
+        },
+        {
+          "title": "Eshitishni tekshirtiring",
+          "text": "Mutaxassis professional audiometriya o‘tkazadi."
+        },
+        {
+          "title": "Mos modelni tanlang",
+          "text": "Natija, budjet va turmush tarzingizga qarab."
+        },
+        {
+          "title": "Individual sozlating",
+          "text": "Moslama aynan sizning eshitishingizga sozlanadi."
+        }
       ]
     },
     "stats": {
       "eyebrow": "SOUNDZ RAQAMLARDA",
       "items": [
-        { "value": 5, "suffix": "+", "label": "Jahon brendi" },
-        { "value": 5, "suffix": "", "label": "Moslama forma-faktori" },
-        { "value": 3, "suffix": "", "label": "Xizmat tili" }
+        {
+          "value": 5,
+          "suffix": "+",
+          "label": "Jahon brendi"
+        },
+        {
+          "value": 5,
+          "suffix": "",
+          "label": "Moslama forma-faktori"
+        },
+        {
+          "value": 3,
+          "suffix": "",
+          "label": "Xizmat tili"
+        }
       ]
     },
     "iem": {
@@ -86,9 +122,18 @@
       "title": "Sahna uchun. Aynan sizning qulog‘ingiz uchun.",
       "lead": "Quloq shaklingiz bo‘yicha individual quyiladigan monitorlar — musiqachilar, ovoz muhandislari va audiofillar tanlovi.",
       "features": [
-        { "title": "Individual qolip", "text": "Quloq qolipi mutaxassis tomonidan olinadi — monitor faqat sizga mos." },
-        { "title": "Studiya darajasidagi tovush", "text": "Sahnada ham, studiyada ham aniq va boy tovush." },
-        { "title": "Ishonchli izolyatsiya", "text": "Tashqi shovqindan himoya — eshitishingiz ham himoyada." }
+        {
+          "title": "Individual qolip",
+          "text": "Quloq qolipi mutaxassis tomonidan olinadi — monitor faqat sizga mos."
+        },
+        {
+          "title": "Studiya darajasidagi tovush",
+          "text": "Sahnada ham, studiyada ham aniq va boy tovush."
+        },
+        {
+          "title": "Ishonchli izolyatsiya",
+          "text": "Tashqi shovqindan himoya — eshitishingiz ham himoyada."
+        }
       ],
       "cta": "IEM bo‘yicha konsultatsiya"
     },
@@ -97,11 +142,21 @@
       "title": "Avval tushuning, keyin tanlang.",
       "lead": "Eshitish salomatligi bo‘yicha mutaxassislar tayyorlagan ishonchli maqolalar.",
       "cards": [
-        { "title": "Eshitish pasayishining ilk belgilari", "text": "Qaysi holatlarda mutaxassisga murojaat qilish kerak?" },
-        { "title": "Eshitish apparati qanday tanlanadi?", "text": "Forma-faktor, texnologiya darajasi va budjet bo‘yicha yo‘riqnoma." },
-        { "title": "Bolalarda eshitish", "text": "Ota-onalar uchun: belgilar, tekshiruv va moslash jarayoni." }
+        {
+          "title": "Eshitish pasayishining ilk belgilari",
+          "text": "Qaysi holatlarda mutaxassisga murojaat qilish kerak?"
+        },
+        {
+          "title": "Eshitish apparati qanday tanlanadi?",
+          "text": "Forma-faktor, texnologiya darajasi va budjet bo‘yicha yo‘riqnoma."
+        },
+        {
+          "title": "Bolalarda eshitish",
+          "text": "Ota-onalar uchun: belgilar, tekshiruv va moslash jarayoni."
+        }
       ],
-      "cta": "Bilim markaziga o‘tish"
+      "cta": "Bilim markaziga o‘tish",
+      "read": "Batafsil o‘qish"
     },
     "booking": {
       "eyebrow": "OLDINDAN YOZILISH",

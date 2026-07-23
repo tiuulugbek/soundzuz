@@ -81,8 +81,8 @@ html { scroll-padding-top: calc(var(--sz-header-h) + 16px); }
 }
 .sz-hero__accent {
   color: var(--sz-orange);
-  background: linear-gradient(100deg, var(--sz-orange), var(--sz-orange-soft) 55%, var(--sz-orange));
-  background-size: 180% 100%;
+  background: linear-gradient(100deg, var(--sz-orange-strong), var(--sz-orange) 40%, #ffa64d 75%, var(--sz-orange));
+  background-size: 160% 100%;
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   animation: sz-accent-shift 6s var(--sz-ease) infinite alternate;
 }
@@ -98,7 +98,11 @@ html { scroll-padding-top: calc(var(--sz-header-h) + 16px); }
 }
 
 .sz-hero__visual { position: relative; height: clamp(380px, 46vw, 600px); }
-.sz-hero__blob { width: min(66%, 400px); aspect-ratio: 1; top: 12%; right: 8%; opacity: 0.95; }
+.sz-hero__blob {
+  width: min(54%, 330px); aspect-ratio: 1; top: 16%; right: 12%; opacity: 0.9;
+  background: linear-gradient(140deg, var(--sz-orange-soft), var(--sz-orange) 58%, var(--sz-orange-strong));
+  box-shadow: 0 40px 110px rgba(255, 130, 1, 0.32);
+}
 .sz-hero__rings {
   position: absolute; inset: -4% -10% auto auto; width: 120%; aspect-ratio: 1;
   background: repeating-radial-gradient(circle at 62% 42%, transparent 0 74px, rgba(37, 36, 35, 0.055) 74px 76px);

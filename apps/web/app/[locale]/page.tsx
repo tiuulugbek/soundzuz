@@ -228,7 +228,7 @@ export default async function HomePage({ params }: PageParams) {
                 <a href={knowledgeHref}>
                   <h3>{card.title}</h3>
                   <p>{card.text}</p>
-                  <span className="sz-path__cta">{t("knowledge.cta")} <span aria-hidden>→</span></span>
+                  <span className="sz-path__cta">{t("knowledge.read")} <span aria-hidden>→</span></span>
                 </a>
               </Reveal>
             ))}

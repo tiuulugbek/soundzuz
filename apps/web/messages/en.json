@@ -14,7 +14,11 @@
       "consultation": "Consultation",
       "booking": "Book an appointment"
     },
-    "locales": { "uz": "O‘zbekcha", "ru": "Русский", "en": "English" }
+    "locales": {
+      "uz": "O‘zbekcha",
+      "ru": "Русский",
+      "en": "English"
+    }
   },
   "home": {
     "meta": {
@@ -33,10 +37,18 @@
         "fitting": "Individual fitting",
         "service": "Ongoing service"
       },
-      "cardSound": { "title": "Natural sound", "text": "Smart noise management" },
-      "cardBrands": { "title": "World brands", "text": "Phonak, Oticon, Signia and more" }
+      "cardSound": {
+        "title": "Natural sound",
+        "text": "Smart noise management"
+      },
+      "cardBrands": {
+        "title": "World brands",
+        "text": "Phonak, Oticon, Signia and more"
+      }
     },
-    "brands": { "label": "We work with leading manufacturers" },
+    "brands": {
+      "label": "We work with leading manufacturers"
+    },
     "paths": {
       "eyebrow": "WHAT WE DO",
       "title": "Which solution do you need?",
@@ -67,18 +79,42 @@
       "title": "The right diagnosis — before you buy.",
       "lead": "You pay at the clinic, only once you're sure the device fits you.",
       "items": [
-        { "title": "Book an appointment", "text": "Pick a location and a convenient time online." },
-        { "title": "Test your hearing", "text": "A specialist runs professional audiometry." },
-        { "title": "Choose your model", "text": "Based on results, budget and lifestyle." },
-        { "title": "Individual fitting", "text": "The device is tuned precisely to your hearing." }
+        {
+          "title": "Book an appointment",
+          "text": "Pick a location and a convenient time online."
+        },
+        {
+          "title": "Test your hearing",
+          "text": "A specialist runs professional audiometry."
+        },
+        {
+          "title": "Choose your model",
+          "text": "Based on results, budget and lifestyle."
+        },
+        {
+          "title": "Individual fitting",
+          "text": "The device is tuned precisely to your hearing."
+        }
       ]
     },
     "stats": {
       "eyebrow": "SOUNDZ IN NUMBERS",
       "items": [
-        { "value": 5, "suffix": "+", "label": "World brands" },
-        { "value": 5, "suffix": "", "label": "Form factors" },
-        { "value": 3, "suffix": "", "label": "Service languages" }
+        {
+          "value": 5,
+          "suffix": "+",
+          "label": "World brands"
+        },
+        {
+          "value": 5,
+          "suffix": "",
+          "label": "Form factors"
+        },
+        {
+          "value": 3,
+          "suffix": "",
+          "label": "Service languages"
+        }
       ]
     },
     "iem": {
@@ -86,9 +122,18 @@
       "title": "Built for the stage. Molded for your ears.",
       "lead": "Individually cast monitors from an impression of your ear — the choice of musicians, engineers and audiophiles.",
       "features": [
-        { "title": "Custom impression", "text": "A specialist takes your ear impression — the monitor fits only you." },
-        { "title": "Studio-grade sound", "text": "Accurate, rich sound on stage and in the studio." },
-        { "title": "Reliable isolation", "text": "Protection from outside noise — and for your hearing." }
+        {
+          "title": "Custom impression",
+          "text": "A specialist takes your ear impression — the monitor fits only you."
+        },
+        {
+          "title": "Studio-grade sound",
+          "text": "Accurate, rich sound on stage and in the studio."
+        },
+        {
+          "title": "Reliable isolation",
+          "text": "Protection from outside noise — and for your hearing."
+        }
       ],
       "cta": "IEM consultation"
     },
@@ -97,11 +142,21 @@
       "title": "Understand first, choose second.",
       "lead": "Trusted articles on hearing health, prepared by specialists.",
       "cards": [
-        { "title": "Early signs of hearing loss", "text": "When is it time to see a specialist?" },
-        { "title": "How to choose a hearing aid?", "text": "A guide to form factors, technology levels and budget." },
-        { "title": "Children's hearing", "text": "For parents: signs, testing and the fitting journey." }
+        {
+          "title": "Early signs of hearing loss",
+          "text": "When is it time to see a specialist?"
+        },
+        {
+          "title": "How to choose a hearing aid?",
+          "text": "A guide to form factors, technology levels and budget."
+        },
+        {
+          "title": "Children's hearing",
+          "text": "For parents: signs, testing and the fitting journey."
+        }
       ],
-      "cta": "Visit the knowledge hub"
+      "cta": "Visit the knowledge hub",
+      "read": "Read more"
     },
     "booking": {
       "eyebrow": "BOOK AHEAD",
