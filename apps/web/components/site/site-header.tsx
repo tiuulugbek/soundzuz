@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import type { Locale } from "../../i18n/routing";
 import { legacyHref } from "./legacy-paths";
+import { localePath } from "../../lib/seo";
 import { LocaleSwitcher } from "./locale-switcher";
 
 /**
@@ -29,7 +30,7 @@ export function SiteHeader() {
   }, [open]);
 
   const links = [
-    { href: legacyHref(locale, "/eshitish-moslamalari"), label: t("nav.hearingAids") },
+    { href: localePath(locale, "/hearing-aids"), label: t("nav.hearingAids") },
     { href: "#iem", label: t("nav.iem") },
     { href: legacyHref(locale, "/xizmatlar"), label: t("nav.services") },
     { href: legacyHref(locale, "/foydali-malumotlar"), label: t("nav.knowledge") },

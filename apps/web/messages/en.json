@@ -180,5 +180,77 @@
       "language": "Language",
       "rights": "All rights reserved."
     }
+  },
+  "catalog": {
+    "meta": {
+      "title": "Hearing Aids Catalog — Oticon, ReSound, Signia | Soundz",
+      "description": "Oticon, ReSound and Signia hearing aids. Filter by style, technology level and price to find the right solution for you."
+    },
+    "hero": {
+      "eyebrow": "HEARING AIDS",
+      "title": "Find your right solution",
+      "subtitle": "Filter by lifestyle, hearing level and budget. The final choice is made after a specialist assessment."
+    },
+    "filters": {
+      "title": "Filters",
+      "search": "Search",
+      "searchPlaceholder": "Model or brand",
+      "brand": "Brand",
+      "formFactor": "Form factor",
+      "techLevel": "Technology level",
+      "minPrice": "Min price",
+      "maxPrice": "Max price",
+      "rechargeable": "Rechargeable",
+      "bluetooth": "Bluetooth",
+      "inStock": "In stock only",
+      "sort": "Sort",
+      "sortRecommended": "Recommended",
+      "sortPriceAsc": "Price: low to high",
+      "sortPriceDesc": "Price: high to low",
+      "sortName": "By name",
+      "apply": "Apply",
+      "reset": "Reset",
+      "all": "All"
+    },
+    "list": {
+      "count": "{total} devices",
+      "empty": "No devices found",
+      "emptyHint": "Relax the filters or book a specialist consultation.",
+      "inStock": "In stock",
+      "preOrder": "To order",
+      "priceFrom": "from {price} UZS",
+      "priceOnConsult": "Price at consultation",
+      "details": "Details",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "brands": {
+      "title": "Brands",
+      "subtitle": "The world's leading hearing technology manufacturers.",
+      "products": "{count} devices",
+      "view": "View"
+    },
+    "product": {
+      "backToCatalog": "Back to catalog",
+      "specs": "Specifications",
+      "reviews": "Reviews",
+      "noReviews": "No reviews yet.",
+      "whoFor": "Who it's for",
+      "features": "Features",
+      "rechargeable": "Rechargeable",
+      "bluetooth": "Bluetooth",
+      "inStock": "In stock",
+      "preOrder": "To order",
+      "consult": "Get a consultation",
+      "priceFrom": "from {price} UZS",
+      "priceOnConsult": "We'll set the price at consultation",
+      "rating": "{average} ({count} reviews)",
+      "relatedTitle": "Similar devices"
+    },
+    "brandPage": {
+      "productsTitle": "{brand} devices",
+      "noProducts": "Devices for this brand are coming soon.",
+      "visitSite": "Official site"
+    }
   }
 }

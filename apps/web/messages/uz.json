@@ -180,5 +180,77 @@
       "language": "Til",
       "rights": "Barcha huquqlar himoyalangan."
     }
+  },
+  "catalog": {
+    "meta": {
+      "title": "Eshitish apparatlari katalogi — Oticon, ReSound, Signia | Soundz",
+      "description": "Oticon, ReSound va Signia eshitish apparatlari. Forma, texnologiya darajasi va narx bo'yicha filtrlab, sizga mos yechimni toping."
+    },
+    "hero": {
+      "eyebrow": "ESHITISH APPARATLARI",
+      "title": "Sizga mos yechimni toping",
+      "subtitle": "Turmush tarzi, eshitish darajasi va byudjetga qarab filtrlab ko'ring. Yakuniy tanlov mutaxassis tekshiruvidan keyin qilinadi."
+    },
+    "filters": {
+      "title": "Filtrlar",
+      "search": "Qidirish",
+      "searchPlaceholder": "Model yoki brend",
+      "brand": "Brend",
+      "formFactor": "Forma-faktor",
+      "techLevel": "Texnologiya darajasi",
+      "minPrice": "Min narx",
+      "maxPrice": "Max narx",
+      "rechargeable": "Qayta zaryadlanuvchi",
+      "bluetooth": "Bluetooth",
+      "inStock": "Faqat mavjud",
+      "sort": "Saralash",
+      "sortRecommended": "Tavsiya etilgan",
+      "sortPriceAsc": "Narx: arzonidan",
+      "sortPriceDesc": "Narx: qimmatidan",
+      "sortName": "Nomi bo'yicha",
+      "apply": "Filtrlash",
+      "reset": "Tozalash",
+      "all": "Barchasi"
+    },
+    "list": {
+      "count": "{total} ta apparat",
+      "empty": "Apparat topilmadi",
+      "emptyHint": "Filtrlarni yumshatib ko'ring yoki mutaxassis maslahatini oling.",
+      "inStock": "Mavjud",
+      "preOrder": "Buyurtma bilan",
+      "priceFrom": "{price} so'mdan",
+      "priceOnConsult": "Narx konsultatsiyada",
+      "details": "Batafsil",
+      "prev": "Oldingi",
+      "next": "Keyingi"
+    },
+    "brands": {
+      "title": "Brendlar",
+      "subtitle": "Dunyoning yetakchi eshitish texnologiyasi ishlab chiqaruvchilari.",
+      "products": "{count} ta apparat",
+      "view": "Ko'rish"
+    },
+    "product": {
+      "backToCatalog": "Katalogga qaytish",
+      "specs": "Spetsifikatsiya",
+      "reviews": "Sharhlar",
+      "noReviews": "Hozircha sharhlar yo'q.",
+      "whoFor": "Kimga mos",
+      "features": "Xususiyatlar",
+      "rechargeable": "Qayta zaryadlanuvchi",
+      "bluetooth": "Bluetooth",
+      "inStock": "Mavjud",
+      "preOrder": "Buyurtma bilan",
+      "consult": "Konsultatsiya olish",
+      "priceFrom": "{price} so'mdan",
+      "priceOnConsult": "Narxni konsultatsiyada aniqlaymiz",
+      "rating": "{average} ({count} sharh)",
+      "relatedTitle": "O'xshash apparatlar"
+    },
+    "brandPage": {
+      "productsTitle": "{brand} apparatlari",
+      "noProducts": "Bu brend uchun apparatlar tez orada qo'shiladi.",
+      "visitSite": "Rasmiy sayt"
+    }
   }
 }
