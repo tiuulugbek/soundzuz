@@ -14,6 +14,23 @@
 .sz-loc__section { padding-top: 3rem; padding-bottom: var(--sz-section-gap); }
 .sz-loc__muted { color: var(--sz-text-muted); }
 
+/* Bo'sh holat (ma'lumot hali yo'q) — bo'sh joyni to'ldiradigan chiroyli blok */
+.sz-loc__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  background: var(--sz-surface-warm);
+  border: 1px dashed var(--sz-line-strong);
+  border-radius: var(--sz-r-xl);
+  padding: clamp(2.5rem, 6vw, 4.5rem) 1.5rem;
+}
+.sz-loc__empty svg { color: var(--sz-orange); }
+.sz-loc__empty h2 { font: 700 var(--sz-h3)/1.15 var(--sz-font-display); color: var(--sz-dark); margin: 0; }
+.sz-loc__empty p { font: 400 var(--sz-text-lg)/1.55 var(--sz-font-body); color: var(--sz-text-muted); margin: 0; max-width: 34rem; }
+.sz-loc__empty .sz-btn { margin-top: 0.5rem; }
+
 .sz-loc__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
 .sz-loc__card {
   display: flex; flex-direction: column;

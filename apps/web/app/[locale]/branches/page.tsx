@@ -37,7 +37,17 @@ export default async function BranchesPage({ params }: PageParams) {
         </section>
         <section className="sz-container sz-loc__section">
           {branches.length === 0 ? (
-            <p className="sz-loc__muted">{t("empty")}</p>
+            <div className="sz-loc__empty">
+              <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+                <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" strokeLinejoin="round" />
+                <circle cx="12" cy="10" r="2.4" />
+              </svg>
+              <h2>{t("empty")}</h2>
+              <p>{t("emptyHint")}</p>
+              <a className="sz-btn sz-btn--primary sz-btn--md" href={localePath(locale, "/#contact")}>
+                <span className="sz-btn__label">{t("book")}</span>
+              </a>
+            </div>
           ) : (
             <div className="sz-loc__grid">
               {branches.map((b) => (

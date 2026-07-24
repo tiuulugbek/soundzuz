@@ -310,7 +310,9 @@
     "title": "Services",
     "subtitle": "A full range of services for your hearing health — from testing to service.",
     "duration": "{min} min",
-    "book": "Book an appointment"
+    "book": "Book an appointment",
+    "empty": "Services coming soon",
+    "emptyHint": "The service list is being updated. Meanwhile, contact us — a specialist will advise the right check and solution."
   },
   "branches": {
     "metaTitle": "Branches — Soundz",
@@ -325,7 +327,8 @@
     "services": "Services at this branch",
     "map": "Open in maps",
     "book": "Book an appointment",
-    "backToBranches": "All branches"
+    "backToBranches": "All branches",
+    "emptyHint": "The branch list is being updated. Contact us — we'll tell you the nearest location."
   },
   "days": {
     "mon": "Monday",

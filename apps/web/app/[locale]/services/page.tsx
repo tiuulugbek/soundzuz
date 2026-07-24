@@ -36,18 +36,32 @@ export default async function ServicesPage({ params }: PageParams) {
           </div>
         </section>
         <section className="sz-container sz-loc__section">
-          <div className="sz-loc__grid">
-            {services.map((s) => (
-              <article className="sz-loc__card" key={s.id}>
-                <h2>{s.name}</h2>
-                {s.description ? <p>{s.description}</p> : null}
-                <div className="sz-loc__card-foot">
-                  {s.durationMinutes ? <span className="sz-loc__pill">{t("duration", { min: s.durationMinutes })}</span> : <span />}
-                  <a href={localePath(locale, "/#contact")}>{t("book")} →</a>
-                </div>
-              </article>
-            ))}
-          </div>
+          {services.length === 0 ? (
+            <div className="sz-loc__empty">
+              <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
+                <path d="M12 3a4 4 0 0 1 4 4c0 2-1.5 3-2.5 4S12 16 12 17" strokeLinecap="round" />
+                <circle cx="12" cy="20.5" r="0.4" fill="currentColor" stroke="none" />
+              </svg>
+              <h2>{t("empty")}</h2>
+              <p>{t("emptyHint")}</p>
+              <a className="sz-btn sz-btn--primary sz-btn--md" href={localePath(locale, "/#contact")}>
+                <span className="sz-btn__label">{t("book")}</span>
+              </a>
+            </div>
+          ) : (
+            <div className="sz-loc__grid">
+              {services.map((s) => (
+                <article className="sz-loc__card" key={s.id}>
+                  <h2>{s.name}</h2>
+                  {s.description ? <p>{s.description}</p> : null}
+                  <div className="sz-loc__card-foot">
+                    {s.durationMinutes ? <span className="sz-loc__pill">{t("duration", { min: s.durationMinutes })}</span> : <span />}
+                    <a href={localePath(locale, "/#contact")}>{t("book")} →</a>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
         </section>
       </main>
       <SiteFooter />

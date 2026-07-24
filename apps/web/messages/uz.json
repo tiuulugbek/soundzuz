@@ -310,7 +310,9 @@
     "title": "Xizmatlar",
     "subtitle": "Eshitish salomatligingiz uchun to'liq xizmatlar — tekshiruvdan servisgacha.",
     "duration": "{min} daqiqa",
-    "book": "Qabulga yozilish"
+    "book": "Qabulga yozilish",
+    "empty": "Xizmatlar tez orada",
+    "emptyHint": "Xizmatlar ro'yxati yangilanmoqda. Hozircha bizga bog'laning — mutaxassis kerakli tekshiruv va yechimni aytadi."
   },
   "branches": {
     "metaTitle": "Filiallar — Soundz",
@@ -325,7 +327,8 @@
     "services": "Ushbu filialdagi xizmatlar",
     "map": "Xaritada ochish",
     "book": "Qabulga yozilish",
-    "backToBranches": "Barcha filiallar"
+    "backToBranches": "Barcha filiallar",
+    "emptyHint": "Filiallar ro'yxati yangilanmoqda. Bog'laning — sizga eng yaqin qabul nuqtasini aytamiz."
   },
   "days": {
     "mon": "Dushanba",
