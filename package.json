@@ -5,7 +5,9 @@
   "type": "module",
   "description": "Soundz hearing-care and Custom IEM digital platform",
   "packageManager": "pnpm@10.15.1",
-  "engines": { "node": "22.x" },
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "pnpm bootstrap && turbo dev",
     "build": "turbo build",
@@ -34,7 +36,8 @@
     "e2e:install": "pnpm dlx playwright@1.55.0 install --with-deps chromium",
     "bootstrap": "pnpm db:generate && pnpm --filter \"./packages/**\" build",
     "verify:structure": "node scripts/verify-structure.mjs",
-    "smoke": "node scripts/smoke-test.mjs"
+    "smoke": "node scripts/smoke-test.mjs",
+    "db:seed:catalog": "pnpm --filter @soundz/database db:seed:catalog"
   },
   "devDependencies": {
     "@types/node": "^24.0.15",
