@@ -93,6 +93,8 @@ services:
       NODE_ENV: production
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
+      # Server-side (SSR) fetch uchun ichki API manzili — tashqi DNS'ga bog'liq emas.
+      API_INTERNAL_URL: ${API_INTERNAL_URL:-http://api:4000/v1}
       WAIT_FOR_DATABASE: "false"
     depends_on:
       api: { condition: service_healthy }

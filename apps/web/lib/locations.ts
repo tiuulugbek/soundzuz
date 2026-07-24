@@ -1,8 +1,9 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
+const API_URL = process.env.API_INTERNAL_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
+const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
 
 export function locMediaUrl(url?: string | null): string {
   if (!url) return "";
-  return /^https?:\/\//.test(url) ? url : `${API_URL.replace(/\/v1$/, "")}${url}`;
+  return /^https?:\/\//.test(url) ? url : `${PUBLIC_API_URL.replace(/\/v1$/, "")}${url}`;
 }
 
 export type Schedule = { weekday: number; openMinute: number; closeMinute: number; isClosed: boolean };

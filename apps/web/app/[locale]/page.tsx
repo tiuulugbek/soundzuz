@@ -3,13 +3,12 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { BookingForm } from "../../components/booking-form";
 import { LeadForm } from "../../components/lead-form";
 import { HeroParallax } from "../../components/home/hero-parallax";
-import { legacyHref } from "../../components/site/legacy-paths";
 import { SiteFooter } from "../../components/site/site-footer";
 import { SiteHeader } from "../../components/site/site-header";
 import { JsonLd, organizationJsonLd, webSiteJsonLd } from "../../components/seo/json-ld";
 import { Button, Counter, Magnetic, Marquee, Reveal, Section, SectionHeading, WaveCanvas } from "../../components/ui";
 import type { Locale } from "../../i18n/routing";
-import { buildPageMetadata } from "../../lib/seo";
+import { buildPageMetadata, localePath } from "../../lib/seo";
 import "../home.css";
 
 const BRANDS = ["Phonak", "Oticon", "Signia", "ReSound", "Widex", "Starkey", "Unitron"];
@@ -65,8 +64,8 @@ export default async function HomePage({ params }: PageParams) {
   const knowledgeCards = t.raw("knowledge.cards") as Array<{ title: string; text: string }>;
   const contactBullets = t.raw("contact.bullets") as string[];
 
-  const catalogHref = legacyHref(locale, "/eshitish-moslamalari");
-  const knowledgeHref = legacyHref(locale, "/foydali-malumotlar");
+  const catalogHref = localePath(locale, "/hearing-aids");
+  const knowledgeHref = localePath(locale, "/learn");
 
   const pathCards = [
     { key: "hearing", icon: "hearing" as const, href: catalogHref, dark: false },

@@ -1,10 +1,13 @@
 import type { Locale } from "../i18n/routing";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
+// Server-side fetch: ichki Docker tarmog'i (api:4000) — ishonchli, tashqi DNS'ga bog'liq emas.
+// mediaUrl esa brauzer uchun ochiq (public) URL ishlatadi.
+const API_URL = process.env.API_INTERNAL_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
+const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
 
 export function mediaUrl(url?: string | null): string {
   if (!url) return "";
-  return /^https?:\/\//.test(url) ? url : `${API_URL.replace(/\/v1$/, "")}${url}`;
+  return /^https?:\/\//.test(url) ? url : `${PUBLIC_API_URL.replace(/\/v1$/, "")}${url}`;
 }
 
 export type Product = {

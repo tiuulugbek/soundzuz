@@ -1,6 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import type { Locale } from "../../i18n/routing";
-import { legacyHref } from "./legacy-paths";
+import { localePath } from "../../lib/seo";
 
 /** Sayt pastki qismi — grafit fon, yo'nalish va kompaniya havolalari. */
 export async function SiteFooter() {
@@ -20,14 +20,14 @@ export async function SiteFooter() {
           </div>
           <nav className="sz-footer__col" aria-label={f("directions")}>
             <p>{f("directions")}</p>
-            <a href={legacyHref(locale, "/eshitish-moslamalari")}>{t("nav.hearingAids")}</a>
+            <a href={localePath(locale, "/hearing-aids")}>{t("nav.hearingAids")}</a>
             <a href="#iem">{t("nav.iem")}</a>
-            <a href={legacyHref(locale, "/xizmatlar")}>{t("nav.services")}</a>
+            <a href={localePath(locale, "/services")}>{t("nav.services")}</a>
           </nav>
           <nav className="sz-footer__col" aria-label={f("company")}>
             <p>{f("company")}</p>
-            <a href={legacyHref(locale, "/filiallar")}>{t("nav.branches")}</a>
-            <a href={legacyHref(locale, "/foydali-malumotlar")}>{t("nav.knowledge")}</a>
+            <a href={localePath(locale, "/branches")}>{t("nav.branches")}</a>
+            <a href={localePath(locale, "/learn")}>{t("nav.knowledge")}</a>
             <a href="#contact">{t("nav.contact")}</a>
           </nav>
         </div>
