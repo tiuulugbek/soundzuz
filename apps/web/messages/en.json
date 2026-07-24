@@ -555,5 +555,37 @@
         }
       }
     }
+  },
+  "compare": {
+    "meta": {
+      "title": "{names} — comparison | Soundz",
+      "description": "Compare the {names} hearing aids side by side: price, form factor, technology level and more.",
+      "fallbackTitle": "Compare hearing aids | Soundz",
+      "fallbackDesc": "Compare hearing aids side by side."
+    },
+    "hero": {
+      "eyebrow": "Comparison",
+      "lead": "Review the specs side by side. The final choice is made after an audiologist assessment."
+    },
+    "rows": {
+      "brand": "Brand",
+      "price": "Price",
+      "availability": "Availability"
+    },
+    "table": {
+      "spec": "Spec"
+    },
+    "empty": {
+      "title": "No devices found to compare",
+      "lead": "The link is outdated or the models aren't available. Pick devices from the catalog.",
+      "cta": "Go to catalog"
+    },
+    "cta": {
+      "title": "A specialist will tell you which one fits",
+      "body": "A comparison gives direction, but the exact model is chosen after an assessment.",
+      "button": "Book an appointment",
+      "secondary": "Full catalog"
+    },
+    "popular": "Popular comparisons"
   }
 }

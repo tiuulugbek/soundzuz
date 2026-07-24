@@ -24,6 +24,25 @@
 }
 .sz-cat__hubnav a:hover { border-color: var(--sz-orange); background: var(--sz-orange-tint); color: var(--sz-orange-strong); }
 
+/* Katalog: ommabop taqqoslashlar */
+.sz-cat__compare { margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--sz-line); }
+.sz-cat__compare h2 { font: 700 var(--sz-h3)/1.1 var(--sz-font-display); letter-spacing: var(--sz-tracking-tight); color: var(--sz-dark); margin: 0 0 1rem; }
+.sz-cat__compare-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.75rem; }
+.sz-cat__compare-list a {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  background: var(--sz-surface-gray);
+  border: 1px solid var(--sz-line);
+  border-radius: var(--sz-r-md);
+  padding: 0.85rem 1.1rem;
+  text-decoration: none;
+  color: var(--sz-text);
+  font: 500 var(--sz-text-sm)/1.35 var(--sz-font-body);
+  transition: border-color var(--sz-dur) var(--sz-ease), background var(--sz-dur) var(--sz-ease), transform var(--sz-dur) var(--sz-ease);
+}
+.sz-cat__compare-list b { color: var(--sz-orange-strong); transition: transform var(--sz-dur) var(--sz-ease); }
+.sz-cat__compare-list a:hover { border-color: var(--sz-orange-soft); background: var(--sz-orange-tint); transform: translateY(-2px); }
+.sz-cat__compare-list a:hover b { transform: translateX(3px); }
+
 /* --- Hero --- */
 .sz-hub__hero {
   position: relative;

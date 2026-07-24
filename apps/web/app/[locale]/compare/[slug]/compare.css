@@ -1,0 +1,93 @@
+/* Mahsulot taqqoslash sahifasi (a-vs-b) — dizayn tokenlari ustida. */
+
+.sz-cmp { background: var(--sz-surface); }
+
+.sz-cmp__hero {
+  background:
+    radial-gradient(120% 140% at 100% 0%, var(--sz-orange-tint) 0%, transparent 55%),
+    var(--sz-surface-warm);
+  padding: calc(var(--sz-header-h) + 3rem) 0 2.75rem;
+  border-bottom: 1px solid var(--sz-line);
+}
+.sz-cmp__crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; font: 500 var(--sz-text-sm)/1 var(--sz-font-body); color: var(--sz-text-muted); margin-bottom: 1.25rem; }
+.sz-cmp__crumbs a { color: var(--sz-orange-strong); text-decoration: none; }
+.sz-cmp__crumbs a:hover { text-decoration: underline; }
+.sz-cmp__crumbs b { color: var(--sz-text); font-weight: 600; }
+.sz-cmp__eyebrow { font: 600 var(--sz-text-xs)/1 var(--sz-font-body); letter-spacing: var(--sz-tracking-wide); text-transform: uppercase; color: var(--sz-orange-strong); margin: 0 0 0.75rem; }
+.sz-cmp__title { font: 700 var(--sz-h1)/1.05 var(--sz-font-display); letter-spacing: var(--sz-tracking-tight); color: var(--sz-dark); margin: 0 0 0.75rem; }
+.sz-cmp__lead { font: 400 var(--sz-text-lg)/1.55 var(--sz-font-body); color: var(--sz-text-muted); max-width: 44rem; margin: 0; }
+
+.sz-cmp__section { padding-top: 2.5rem; padding-bottom: clamp(3rem, 6vw, 5rem); }
+
+/* Gorizontal scroll o'ramchisi — sahifa gorizontal siljimasin */
+.sz-cmp__scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--sz-line); border-radius: var(--sz-r-lg); }
+
+.sz-cmp__table { width: 100%; border-collapse: collapse; min-width: 640px; background: var(--sz-surface); }
+.sz-cmp__table th, .sz-cmp__table td { text-align: left; vertical-align: top; }
+
+/* Ustun kengliklari: birinchi (label) ustun tor, mahsulot ustunlari teng */
+.sz-cmp__corner { width: 22%; }
+.sz-cmp__table--2 .sz-cmp__prod { width: 39%; }
+.sz-cmp__table--3 .sz-cmp__prod { width: 26%; }
+.sz-cmp__table--4 .sz-cmp__prod { width: 19.5%; }
+
+/* Mahsulot sarlavha kataklari (yopishqoq) */
+.sz-cmp__table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--sz-surface-warm);
+  border-bottom: 1px solid var(--sz-line-strong);
+  padding: 1.25rem 1rem;
+}
+.sz-cmp__corner { font: 600 var(--sz-text-sm)/1.3 var(--sz-font-display); color: var(--sz-text-muted); }
+.sz-cmp__prod { display: table-cell; }
+.sz-cmp__prod-media {
+  display: grid; place-items: center;
+  aspect-ratio: 4 / 3;
+  background: var(--sz-surface-gray);
+  border-radius: var(--sz-r-md);
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+.sz-cmp__prod-media img { width: 100%; height: 100%; object-fit: contain; }
+.sz-cmp__prod-media span { font: 600 var(--sz-text-xs)/1 var(--sz-font-body); letter-spacing: var(--sz-tracking-wide); text-transform: uppercase; color: var(--sz-text-soft); }
+.sz-cmp__prod-brand { display: block; font: 600 var(--sz-text-xs)/1 var(--sz-font-body); text-transform: uppercase; letter-spacing: var(--sz-tracking-wide); color: var(--sz-text-soft); margin-bottom: 0.3rem; }
+.sz-cmp__prod-name { display: block; font: 700 var(--sz-text-lg)/1.25 var(--sz-font-display); color: var(--sz-dark); text-decoration: none; margin-bottom: 0.5rem; }
+.sz-cmp__prod-name:hover { color: var(--sz-orange-strong); }
+.sz-cmp__prod-cta { font: 600 var(--sz-text-sm)/1 var(--sz-font-body); color: var(--sz-orange-strong); text-decoration: none; }
+.sz-cmp__prod-cta:hover { text-decoration: underline; }
+
+/* Qatorlar */
+.sz-cmp__table tbody th {
+  font: 600 var(--sz-text-sm)/1.4 var(--sz-font-body);
+  color: var(--sz-text-muted);
+  padding: 0.9rem 1rem;
+  background: var(--sz-surface-gray);
+  border-bottom: 1px solid var(--sz-line);
+}
+.sz-cmp__table tbody td {
+  font: 500 var(--sz-text-sm)/1.5 var(--sz-font-body);
+  color: var(--sz-text);
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--sz-line);
+  border-left: 1px solid var(--sz-line);
+}
+.sz-cmp__table tbody tr:nth-child(even) th,
+.sz-cmp__table tbody tr:nth-child(even) td { background: var(--sz-surface); }
+.sz-cmp__table tbody tr:nth-child(even) th { background: var(--sz-surface-warm); }
+.sz-cmp__row--hl td { font-weight: 700; color: var(--sz-orange-strong); }
+.sz-cmp__na { color: var(--sz-text-soft); }
+
+/* CTA */
+.sz-cmp__cta {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.75rem;
+  background: var(--sz-surface-warm);
+  border: 1px solid var(--sz-line);
+  border-radius: var(--sz-r-xl);
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+.sz-cmp__cta h2 { font: 700 var(--sz-h3)/1.1 var(--sz-font-display); letter-spacing: var(--sz-tracking-tight); color: var(--sz-dark); margin: 0 0 0.5rem; }
+.sz-cmp__cta p { font: 400 var(--sz-text-base)/1.55 var(--sz-font-body); color: var(--sz-text-muted); margin: 0; max-width: 40rem; }
+.sz-cmp__cta-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }

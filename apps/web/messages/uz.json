@@ -555,5 +555,37 @@
         }
       }
     }
+  },
+  "compare": {
+    "meta": {
+      "title": "{names} — taqqoslash | Soundz",
+      "description": "{names} eshitish moslamalarini yonma-yon taqqoslang: narx, forma-faktor, texnologiya darajasi va boshqa xususiyatlar.",
+      "fallbackTitle": "Moslamalarni taqqoslash | Soundz",
+      "fallbackDesc": "Eshitish moslamalarini yonma-yon taqqoslang."
+    },
+    "hero": {
+      "eyebrow": "Taqqoslash",
+      "lead": "Xususiyatlarni yonma-yon ko'rib chiqing. Yakuniy tanlov audiolog tekshiruvidan so'ng qilinadi."
+    },
+    "rows": {
+      "brand": "Brend",
+      "price": "Narx",
+      "availability": "Holat"
+    },
+    "table": {
+      "spec": "Xususiyat"
+    },
+    "empty": {
+      "title": "Taqqoslash uchun moslama topilmadi",
+      "lead": "Havola eskirgan yoki modellar mavjud emas. Katalogdan moslamalarni tanlang.",
+      "cta": "Katalogga o'tish"
+    },
+    "cta": {
+      "title": "Qaysi biri sizga mos — mutaxassis aytadi",
+      "body": "Taqqoslash yo'nalish beradi, ammo eng to'g'ri model tekshiruvdan so'ng tanlanadi.",
+      "button": "Qabulga yozilish",
+      "secondary": "Butun katalog"
+    },
+    "popular": "Ommabop taqqoslashlar"
   }
 }

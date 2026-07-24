@@ -7,6 +7,7 @@ import type { Locale } from "../../../i18n/routing";
 import { buildPageMetadata, localePath } from "../../../lib/seo";
 import { fetchFilters, fetchProducts, formatPrice, mediaUrl } from "../../../lib/catalog";
 import { allHubs } from "../../../lib/catalog-hubs";
+import { popularComparePairs } from "../../../lib/compare";
 import "./catalog.css";
 import "./hub.css";
 
@@ -27,6 +28,7 @@ export default async function CatalogPage({ params, searchParams }: PageParams) 
   setRequestLocale(rawLocale);
   const raw = await searchParams;
   const t = await getTranslations({ locale: rawLocale, namespace: "catalog" });
+  const tCompare = await getTranslations({ locale: rawLocale, namespace: "compare" });
 
   const query = new URLSearchParams();
   Object.entries(raw).forEach(([k, v]) => {
@@ -34,6 +36,7 @@ export default async function CatalogPage({ params, searchParams }: PageParams) 
   });
 
   const [result, filters] = await Promise.all([fetchProducts(locale, query), fetchFilters(locale)]);
+  const comparePairs = popularComparePairs(result.items);
 
   const base = localePath(locale, "/hearing-aids");
   const str = (key: string) => (typeof raw[key] === "string" ? (raw[key] as string) : "");
@@ -153,6 +156,20 @@ export default async function CatalogPage({ params, searchParams }: PageParams) 
                 <span>{result.page} / {result.totalPages}</span>
                 {result.page < result.totalPages ? <a href={pageHref(result.page + 1)}>{t("list.next")} →</a> : <span />}
               </nav>
+            ) : null}
+
+            {comparePairs.length > 0 ? (
+              <div className="sz-cat__compare">
+                <h2>{tCompare("popular")}</h2>
+                <div className="sz-cat__compare-list">
+                  {comparePairs.map((pair) => (
+                    <a key={pair.slug} href={localePath(locale, `/compare/${pair.slug}`)}>
+                      <span>{pair.label}</span>
+                      <b aria-hidden>→</b>
+                    </a>
+                  ))}
+                </div>
+              </div>
             ) : null}
           </div>
         </section>

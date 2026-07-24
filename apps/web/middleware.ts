@@ -12,7 +12,7 @@ export const config = {
     "/",
     "/(uz|ru|en)",
     "/(uz|en)/:path+",
-    "/ru/(hearing-aids|learn|faq|search|services|branches|iem|tools)/:path*",
-    "/(hearing-aids|learn|faq|search|services|branches|iem|tools)/:path*",
+    "/ru/(hearing-aids|learn|faq|search|services|branches|iem|tools|compare)/:path*",
+    "/(hearing-aids|learn|faq|search|services|branches|iem|tools|compare)/:path*",
   ],
 };
