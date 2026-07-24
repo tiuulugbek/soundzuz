@@ -5,6 +5,7 @@ import "@fontsource-variable/manrope";
 import "@fontsource-variable/inter";
 import "./tokens.css";
 import "./ui.css";
+import "./site-chrome.css";
 import "./globals.css";
 import "./catalog-reading.css";
 import "./article-rich.css";
