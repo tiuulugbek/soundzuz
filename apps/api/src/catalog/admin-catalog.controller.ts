@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard.js";
 import { Roles } from "../auth/roles.decorator.js";
 import { RolesGuard } from "../auth/roles.guard.js";
@@ -16,4 +16,12 @@ export class AdminCatalogController {
   @Get("taxonomies") taxonomies(){return this.catalog.adminTaxonomies()}
   @Post("taxonomies") createTaxonomy(@Body()body:unknown){return this.catalog.createTaxonomy(body)}
   @Patch("taxonomies/:id") updateTaxonomy(@Param("id")id:string,@Body()body:unknown){return this.catalog.updateTaxonomy(id,body)}
+  @Get("brands") brands(){return this.catalog.adminBrands()}
+  @Get("brands/:id") brand(@Param("id")id:string){return this.catalog.getAdminBrand(id)}
+  @Post("brands") createBrand(@Body()body:unknown){return this.catalog.createBrand(body)}
+  @Patch("brands/:id") updateBrand(@Param("id")id:string,@Body()body:unknown){return this.catalog.updateBrand(id,body)}
+  @Get("products/:id/specs") specs(@Param("id")id:string){return this.catalog.productSpecs(id)}
+  @Post("specs") createSpec(@Body()body:unknown){return this.catalog.createSpec(body)}
+  @Patch("specs/:id") updateSpec(@Param("id")id:string,@Body()body:unknown){return this.catalog.updateSpec(id,body)}
+  @Delete("specs/:id") deleteSpec(@Param("id")id:string){return this.catalog.deleteSpec(id)}
 }

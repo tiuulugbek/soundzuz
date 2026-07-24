@@ -3,11 +3,15 @@ import type { PrismaClient } from "@soundz/database";
 import { randomUUID } from "node:crypto";
 import { PRISMA } from "../prisma/prisma.module.js";
 
+type Loc = "uz" | "ru" | "en";
+const normLocale = (value?: string): Loc => (value === "ru" ? "ru" : value === "en" ? "en" : "uz");
+
 @Injectable()
 export class CatalogService {
   constructor(@Inject(PRISMA) private readonly prisma: PrismaClient) {}
 
-  async filters(locale: "uz" | "ru" = "uz") {
+  async filters(localeInput: string = "uz") {
+    const locale = normLocale(localeInput);
     const [managed, prices] = await Promise.all([
       this.prisma.$queryRawUnsafe<any[]>(
         `SELECT type,value,label FROM catalog_taxonomies WHERE is_active=TRUE ORDER BY type,sort_order,label`,
@@ -28,7 +32,7 @@ export class CatalogService {
   }
 
   async list(input: Record<string, string | undefined>) {
-    const locale = input.locale === "ru" ? "ru" : "uz";
+    const locale = normLocale(input.locale);
     const search = input.search?.trim() || null;
     const brand = input.brand || null;
     const formFactor = input.formFactor || null;
@@ -96,18 +100,61 @@ export class CatalogService {
     return { items, total, page, limit, totalPages: Math.max(1, Math.ceil(total / limit)) };
   }
 
-  async get(slug: string, locale: "uz" | "ru" = "uz") {
+  async get(slug: string, localeInput: string = "uz") {
+    const locale = normLocale(localeInput);
     const rows = await this.prisma.$queryRawUnsafe<any[]>(
-      `SELECT p.*,COALESCE((SELECT json_agg(json_build_object('slot',u.slot,'sortOrder',u.sort_order,'variants',
+      `SELECT p.*,
+       COALESCE((SELECT json_agg(json_build_object('slot',u.slot,'sortOrder',u.sort_order,'variants',
        (SELECT json_agg(json_build_object('key',v.variant_key,'url',v.url,'width',v.width,'height',v.height) ORDER BY v.width)
         FROM media_variants v WHERE v.media_id=u.media_id)) ORDER BY u.sort_order)
-       FROM media_usages u WHERE u.entity_type='product' AND u.entity_id=p.id),'[]') AS media
+       FROM media_usages u WHERE u.entity_type='product' AND u.entity_id=p.id),'[]') AS media,
+       COALESCE((SELECT json_agg(json_build_object('group',s.spec_group,'label',s.label,'value',s.value,'unit',s.unit) ORDER BY s.sort_order)
+       FROM product_specs s WHERE s.product_id=p.id),'[]') AS specs,
+       COALESCE((SELECT json_agg(json_build_object('author',r.author_name,'rating',r.rating,'title',r.title,'body',r.body,'createdAt',r.created_at) ORDER BY r.created_at DESC)
+       FROM reviews r WHERE r.product_id=p.id AND r.is_published=TRUE),'[]') AS reviews,
+       (SELECT ROUND(AVG(r.rating)::numeric,1)::float FROM reviews r WHERE r.product_id=p.id AND r.is_published=TRUE) AS "ratingAverage",
+       (SELECT COUNT(*)::int FROM reviews r WHERE r.product_id=p.id AND r.is_published=TRUE) AS "ratingCount"
        FROM products p WHERE p.slug=$1 AND p.locale=$2 AND p.status='PUBLISHED' LIMIT 1`,
       slug,
       locale,
     );
-    if (!rows[0]) throw new NotFoundException(locale === "ru" ? "Товар не найден" : "Mahsulot topilmadi");
+    if (!rows[0]) throw new NotFoundException(locale === "ru" ? "Товар не найден" : locale === "en" ? "Product not found" : "Mahsulot topilmadi");
     return rows[0];
+  }
+
+  async listBrands(localeInput: string = "uz") {
+    const locale = normLocale(localeInput);
+    return this.prisma.$queryRawUnsafe(
+      `SELECT b.id,b.slug,b.name,b.tagline,b.description,b.origin_country AS "originCountry",b.website_url AS "websiteUrl",
+       (SELECT COUNT(*)::int FROM products p WHERE p.brand_slug=b.slug AND p.locale=b.locale AND p.status='PUBLISHED') AS "productCount",
+       (SELECT v.url FROM media_usages u JOIN media_variants v ON v.media_id=u.media_id AND v.variant_key='logo'
+        WHERE u.entity_type='brand' AND u.entity_id=b.id ORDER BY u.sort_order LIMIT 1) AS "logoUrl"
+       FROM brands b WHERE b.locale=$1 AND b.is_active=TRUE AND b.status='PUBLISHED' ORDER BY b.sort_order,b.name`,
+      locale,
+    );
+  }
+
+  async getBrand(slug: string, localeInput: string = "uz") {
+    const locale = normLocale(localeInput);
+    const rows = await this.prisma.$queryRawUnsafe<any[]>(
+      `SELECT b.*,
+       (SELECT v.url FROM media_usages u JOIN media_variants v ON v.media_id=u.media_id AND v.variant_key='logo'
+        WHERE u.entity_type='brand' AND u.entity_id=b.id ORDER BY u.sort_order LIMIT 1) AS "logoUrl"
+       FROM brands b WHERE b.slug=$1 AND b.locale=$2 AND b.status='PUBLISHED' LIMIT 1`,
+      slug,
+      locale,
+    );
+    if (!rows[0]) throw new NotFoundException(locale === "ru" ? "Бренд не найден" : locale === "en" ? "Brand not found" : "Brend topilmadi");
+    const brandProducts = await this.prisma.$queryRawUnsafe(
+      `SELECT p.id,p.slug,p.name,p.short_description AS "shortDescription",p.brand,p.form_factor AS "formFactor",
+       p.technology_level AS "technologyLevel",p.price_from::float AS "priceFrom",p.price_to::float AS "priceTo",p.rechargeable,p.bluetooth,
+       (SELECT v.url FROM media_usages u JOIN media_variants v ON v.media_id=u.media_id AND v.variant_key='card'
+        WHERE u.entity_type='product' AND u.entity_id=p.id AND u.slot='featured' ORDER BY u.sort_order LIMIT 1) AS "imageUrl"
+       FROM products p WHERE p.brand_slug=$1 AND p.locale=$2 AND p.status='PUBLISHED' ORDER BY p.is_featured DESC,p.updated_at DESC`,
+      slug,
+      locale,
+    );
+    return { ...rows[0], products: brandProducts };
   }
 
   listAdmin() {
@@ -164,5 +211,66 @@ export class CatalogService {
     );
     if (!rows[0]) throw new NotFoundException("Taxonomiya topilmadi");
     return rows[0];
+  }
+
+  adminBrands() {
+    return this.prisma.$queryRawUnsafe(
+      `SELECT id,slug,locale,name,tagline,status,is_active AS "isActive",sort_order AS "sortOrder",updated_at AS "updatedAt" FROM brands ORDER BY sort_order,name`,
+    );
+  }
+
+  async getAdminBrand(id: string) {
+    const rows = await this.prisma.$queryRawUnsafe<any[]>(
+      `SELECT id,slug,locale,name,tagline,description,origin_country AS "originCountry",website_url AS "websiteUrl",sort_order AS "sortOrder",is_active AS "isActive",status,seo_title AS "seoTitle",seo_description AS "seoDescription" FROM brands WHERE id=$1 LIMIT 1`,
+      id,
+    );
+    if (!rows[0]) throw new NotFoundException("Brend topilmadi");
+    return rows[0];
+  }
+
+  async createBrand(input: any) {
+    const rows = await this.prisma.$queryRawUnsafe<any[]>(
+      `INSERT INTO brands(id,slug,locale,name,tagline,description,origin_country,website_url,sort_order,is_active,status,seo_title,seo_description) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *`,
+      randomUUID(),input.slug,input.locale??"uz",input.name,input.tagline??null,input.description??null,input.originCountry??null,input.websiteUrl??null,input.sortOrder??0,input.isActive!==false,input.status??"DRAFT",input.seoTitle??null,input.seoDescription??null,
+    );
+    return rows[0];
+  }
+
+  async updateBrand(id: string, input: any) {
+    await this.getAdminBrand(id);
+    const rows = await this.prisma.$queryRawUnsafe<any[]>(
+      `UPDATE brands SET slug=$2,locale=$3,name=$4,tagline=$5,description=$6,origin_country=$7,website_url=$8,sort_order=$9,is_active=$10,status=$11,seo_title=$12,seo_description=$13,updated_at=NOW() WHERE id=$1 RETURNING *`,
+      id,input.slug,input.locale??"uz",input.name,input.tagline??null,input.description??null,input.originCountry??null,input.websiteUrl??null,input.sortOrder??0,input.isActive!==false,input.status??"DRAFT",input.seoTitle??null,input.seoDescription??null,
+    );
+    return rows[0];
+  }
+
+  productSpecs(productId: string) {
+    return this.prisma.$queryRawUnsafe(
+      `SELECT id,spec_group AS "specGroup",label,value,unit,sort_order AS "sortOrder" FROM product_specs WHERE product_id=$1 ORDER BY sort_order,label`,
+      productId,
+    );
+  }
+
+  async createSpec(input: any) {
+    const rows = await this.prisma.$queryRawUnsafe<any[]>(
+      `INSERT INTO product_specs(id,product_id,spec_group,label,value,unit,sort_order) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
+      randomUUID(),input.productId,input.specGroup??null,input.label,input.value,input.unit??null,input.sortOrder??0,
+    );
+    return rows[0];
+  }
+
+  async updateSpec(id: string, input: any) {
+    const rows = await this.prisma.$queryRawUnsafe<any[]>(
+      `UPDATE product_specs SET spec_group=$2,label=$3,value=$4,unit=$5,sort_order=$6 WHERE id=$1 RETURNING *`,
+      id,input.specGroup??null,input.label,input.value,input.unit??null,input.sortOrder??0,
+    );
+    if (!rows[0]) throw new NotFoundException("Spetsifikatsiya topilmadi");
+    return rows[0];
+  }
+
+  async deleteSpec(id: string) {
+    await this.prisma.$queryRawUnsafe(`DELETE FROM product_specs WHERE id=$1`, id);
+    return { ok: true };
   }
 }

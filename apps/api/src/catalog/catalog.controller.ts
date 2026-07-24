@@ -30,7 +30,17 @@ export class CatalogController {
   }
 
   @Get("products/:slug")
-  product(@Param("slug") slug: string, @Query("locale") locale: "uz" | "ru" = "uz") {
+  product(@Param("slug") slug: string, @Query("locale") locale = "uz") {
     return this.catalog.get(slug, locale);
+  }
+
+  @Get("brands")
+  brands(@Query("locale") locale = "uz") {
+    return this.catalog.listBrands(locale);
+  }
+
+  @Get("brands/:slug")
+  brand(@Param("slug") slug: string, @Query("locale") locale = "uz") {
+    return this.catalog.getBrand(slug, locale);
   }
 }
