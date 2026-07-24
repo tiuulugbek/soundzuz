@@ -89,3 +89,21 @@ export async function fetchFaqs(locale: Locale, opts: { category?: string; searc
   if (opts.search) q.set("q", opts.search);
   return safeJson<Faq[]>(`${API_URL}/content/faqs?${q.toString()}`, [], 300);
 }
+
+export async function searchKnowledge(locale: Locale, query: string): Promise<{ articles: ArticleSummary[]; faqs: Faq[] }> {
+  if (!query.trim()) return { articles: [], faqs: [] };
+  const q = new URLSearchParams({ locale, q: query });
+  return safeJson<{ articles: ArticleSummary[]; faqs: Faq[] }>(`${API_URL}/content/search?${q.toString()}`, { articles: [], faqs: [] }, 30);
+}
+
+/** FAQ'larni kategoriya bo'yicha guruhlaydi (FAQ sahifasi uchun). */
+export function groupFaqsByCategory(faqs: Faq[]): Array<{ slug: string; name: string; items: Faq[] }> {
+  const map = new Map<string, { slug: string; name: string; items: Faq[] }>();
+  for (const f of faqs) {
+    const slug = f.categorySlug ?? "general";
+    const name = f.categoryName ?? "";
+    if (!map.has(slug)) map.set(slug, { slug, name, items: [] });
+    map.get(slug)!.items.push(f);
+  }
+  return Array.from(map.values());
+}

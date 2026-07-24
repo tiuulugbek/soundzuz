@@ -33,6 +33,10 @@ export default async function LearnHub({ params }: PageParams) {
             <p className="sz-learn__eyebrow">{t("hero.eyebrow")}</p>
             <h1 className="sz-learn__title">{t("hero.title")}</h1>
             <p className="sz-learn__lead">{t("hero.subtitle")}</p>
+            <form className="sz-learn__search" method="get" action={localePath(locale, "/search")}>
+              <input name="q" placeholder={t("search.placeholder")} aria-label={t("search.title")} />
+              <button className="sz-btn sz-btn--primary sz-btn--md" type="submit">{t("search.button")}</button>
+            </form>
           </div>
         </section>
 
@@ -46,6 +50,11 @@ export default async function LearnHub({ params }: PageParams) {
                 <span className="sz-learn__cat-arrow">→</span>
               </a>
             ))}
+            <a className="sz-learn__cat sz-learn__cat--faq" href={localePath(locale, "/faq")}>
+              <h3>{t("faq.title")}</h3>
+              <p>{t("faq.subtitle")}</p>
+              <span className="sz-learn__cat-arrow">→</span>
+            </a>
           </div>
         </section>
 

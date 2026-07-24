@@ -278,6 +278,29 @@
       "updated": "Yangilangan",
       "related": "O'xshash savollar",
       "disclaimerTitle": "Eslatma"
+    },
+    "faq": {
+      "metaTitle": "Savol-javoblar — Soundz",
+      "metaDesc": "Eshitish, audiometriya, moslamalar va narxlar bo'yicha tez-tez beriladigan savollar.",
+      "title": "Savol-javoblar",
+      "subtitle": "Eng ko'p beriladigan savollarga qisqa javoblar. Kerak bo'lsa qabulga yoziling yoki maslahat oling.",
+      "empty": "Savollar tez orada qo'shiladi."
+    },
+    "search": {
+      "metaTitle": "Qidiruv — Soundz",
+      "placeholder": "Masalan: quloqda shovqin, audiometriya narxi",
+      "title": "Qidiruv",
+      "button": "Qidirish",
+      "articles": "Maqolalar",
+      "faqs": "Savol-javoblar",
+      "empty": "Hech narsa topilmadi. Boshqa so'z bilan urinib ko'ring yoki maslahat oling.",
+      "prompt": "Savolingizni yozing — biz maqolalar va javoblardan mos keladiganini ko'rsatamiz.",
+      "results": "\"{q}\" bo'yicha natijalar"
+    },
+    "cta": {
+      "question": "Eshitishingizni tekshirtirmoqchimisiz?",
+      "book": "Qabulga yozilish",
+      "consult": "Maslahat olish"
     }
   }
 }

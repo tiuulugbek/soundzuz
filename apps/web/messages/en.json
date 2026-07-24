@@ -278,6 +278,29 @@
       "updated": "Updated",
       "related": "Related questions",
       "disclaimerTitle": "Note"
+    },
+    "faq": {
+      "metaTitle": "FAQ — Soundz",
+      "metaDesc": "Frequently asked questions about hearing, audiometry, devices and prices.",
+      "title": "Frequently asked questions",
+      "subtitle": "Short answers to the most common questions. Book an appointment or get a consultation if needed.",
+      "empty": "Questions are coming soon."
+    },
+    "search": {
+      "metaTitle": "Search — Soundz",
+      "placeholder": "e.g. ringing in ears, audiometry price",
+      "title": "Search",
+      "button": "Search",
+      "articles": "Articles",
+      "faqs": "FAQ",
+      "empty": "Nothing found. Try another query or get a consultation.",
+      "prompt": "Type your question — we'll show matching articles and answers.",
+      "results": "Results for \"{q}\""
+    },
+    "cta": {
+      "question": "Want to check your hearing?",
+      "book": "Book an appointment",
+      "consult": "Get a consultation"
     }
   }
 }

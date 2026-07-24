@@ -84,6 +84,13 @@ export default async function ArticlePage({ params }: PageParams) {
               ))}
             </section>
           ) : null}
+          <aside className="sz-cta-block">
+            <strong>{t("cta.question")}</strong>
+            <div className="sz-cta-block__btns">
+              <a className="sz-btn sz-btn--primary sz-btn--md" href={localePath(locale, "/#contact")}>{t("cta.book")}</a>
+              <a className="sz-btn sz-btn--ghost sz-btn--md" href={localePath(locale, "/#contact")}>{t("cta.consult")}</a>
+            </div>
+          </aside>
         </div>
       </main>
       <SiteFooter />
