@@ -302,5 +302,37 @@
       "book": "Qabulga yozilish",
       "consult": "Maslahat olish"
     }
+  },
+  "services": {
+    "metaTitle": "Xizmatlar — Soundz",
+    "metaDesc": "Eshitishni tekshirish, moslash, quloq qolipi, servis va kafolat xizmatlari.",
+    "title": "Xizmatlar",
+    "subtitle": "Eshitish salomatligingiz uchun to'liq xizmatlar — tekshiruvdan servisgacha.",
+    "duration": "{min} daqiqa",
+    "book": "Qabulga yozilish"
+  },
+  "branches": {
+    "metaTitle": "Filiallar — Soundz",
+    "metaDesc": "Soundz filiallari: manzil, telefon, ish vaqti va xizmatlar.",
+    "title": "Filiallar",
+    "subtitle": "Bizga eng yaqin filialda tashrif buyuring yoki qo'ng'iroq qiling.",
+    "empty": "Filiallar tez orada qo'shiladi.",
+    "phone": "Telefon",
+    "address": "Manzil",
+    "hours": "Ish vaqti",
+    "closed": "Yopiq",
+    "services": "Ushbu filialdagi xizmatlar",
+    "map": "Xaritada ochish",
+    "book": "Qabulga yozilish",
+    "backToBranches": "Barcha filiallar"
+  },
+  "days": {
+    "mon": "Dushanba",
+    "tue": "Seshanba",
+    "wed": "Chorshanba",
+    "thu": "Payshanba",
+    "fri": "Juma",
+    "sat": "Shanba",
+    "sun": "Yakshanba"
   }
 }

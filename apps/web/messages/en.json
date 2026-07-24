@@ -302,5 +302,37 @@
       "book": "Book an appointment",
       "consult": "Get a consultation"
     }
+  },
+  "services": {
+    "metaTitle": "Services — Soundz",
+    "metaDesc": "Hearing tests, fitting, ear impressions, service and warranty.",
+    "title": "Services",
+    "subtitle": "A full range of services for your hearing health — from testing to service.",
+    "duration": "{min} min",
+    "book": "Book an appointment"
+  },
+  "branches": {
+    "metaTitle": "Branches — Soundz",
+    "metaDesc": "Soundz branches: address, phone, opening hours and services.",
+    "title": "Branches",
+    "subtitle": "Visit your nearest branch or give us a call.",
+    "empty": "Branches are coming soon.",
+    "phone": "Phone",
+    "address": "Address",
+    "hours": "Opening hours",
+    "closed": "Closed",
+    "services": "Services at this branch",
+    "map": "Open in maps",
+    "book": "Book an appointment",
+    "backToBranches": "All branches"
+  },
+  "days": {
+    "mon": "Monday",
+    "tue": "Tuesday",
+    "wed": "Wednesday",
+    "thu": "Thursday",
+    "fri": "Friday",
+    "sat": "Saturday",
+    "sun": "Sunday"
   }
 }

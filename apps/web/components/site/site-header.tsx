@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import type { Locale } from "../../i18n/routing";
-import { legacyHref } from "./legacy-paths";
 import { localePath } from "../../lib/seo";
 import { LocaleSwitcher } from "./locale-switcher";
 
@@ -32,9 +31,9 @@ export function SiteHeader() {
   const links = [
     { href: localePath(locale, "/hearing-aids"), label: t("nav.hearingAids") },
     { href: "#iem", label: t("nav.iem") },
-    { href: legacyHref(locale, "/xizmatlar"), label: t("nav.services") },
+    { href: localePath(locale, "/services"), label: t("nav.services") },
     { href: localePath(locale, "/learn"), label: t("nav.knowledge") },
-    { href: legacyHref(locale, "/filiallar"), label: t("nav.branches") },
+    { href: localePath(locale, "/branches"), label: t("nav.branches") },
   ];
 
   return (

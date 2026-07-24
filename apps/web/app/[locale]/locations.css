@@ -1,0 +1,63 @@
+/* Xizmatlar va filiallar (Bosqich 3) — dizayn tokenlari ustida */
+
+.sz-loc { background: var(--sz-surface); min-height: 60vh; }
+.sz-loc__hero {
+  background: var(--sz-surface-warm);
+  padding: calc(var(--sz-header-h) + 3.5rem) 0 3rem;
+  border-bottom: 1px solid var(--sz-line);
+}
+.sz-loc__eyebrow { font: 600 var(--sz-text-xs)/1 var(--sz-font-body); letter-spacing: var(--sz-tracking-wide); text-transform: uppercase; color: var(--sz-orange-strong); margin: 0 0 0.75rem; }
+.sz-loc__title { font: 700 var(--sz-h1)/1.05 var(--sz-font-display); color: var(--sz-dark); margin: 0 0 0.75rem; letter-spacing: var(--sz-tracking-tight); }
+.sz-loc__lead { font: 400 var(--sz-text-lg)/1.5 var(--sz-font-body); color: var(--sz-text-muted); max-width: 44rem; margin: 0; }
+.sz-loc__back { display: inline-block; font: 500 var(--sz-text-sm)/1 var(--sz-font-body); color: var(--sz-orange-strong); text-decoration: none; margin-bottom: 1.25rem; }
+.sz-loc__back:hover { text-decoration: underline; }
+.sz-loc__section { padding-top: 3rem; padding-bottom: var(--sz-section-gap); }
+.sz-loc__muted { color: var(--sz-text-muted); }
+
+.sz-loc__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+.sz-loc__card {
+  display: flex; flex-direction: column;
+  background: var(--sz-surface);
+  border: 1px solid var(--sz-line);
+  border-radius: var(--sz-r-lg);
+  padding: 1.5rem;
+  transition: transform var(--sz-dur) var(--sz-ease), box-shadow var(--sz-dur) var(--sz-ease);
+}
+.sz-loc__card:hover { transform: translateY(-3px); box-shadow: var(--sz-shadow-md); }
+.sz-loc__card h2 { font: 700 var(--sz-text-lg)/1.25 var(--sz-font-display); color: var(--sz-dark); margin: 0 0 0.5rem; }
+.sz-loc__card h2 a { color: var(--sz-dark); text-decoration: none; }
+.sz-loc__card h2 a:hover { color: var(--sz-orange-strong); }
+.sz-loc__card p { font: 400 var(--sz-text-sm)/1.55 var(--sz-font-body); color: var(--sz-text-muted); margin: 0 0 1rem; }
+.sz-loc__card-foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
+.sz-loc__card-foot a { font: 600 var(--sz-text-sm)/1 var(--sz-font-body); color: var(--sz-orange-strong); text-decoration: none; }
+.sz-loc__pill { font: 500 var(--sz-text-xs)/1 var(--sz-font-body); background: var(--sz-surface-gray); border-radius: var(--sz-r-pill); padding: 0.35rem 0.7rem; color: var(--sz-text); }
+
+/* Filial kartasi */
+.sz-loc__branch { padding: 0; overflow: hidden; }
+.sz-loc__branch-img { display: block; aspect-ratio: 16/9; background: var(--sz-surface-warm); }
+.sz-loc__branch-img img { width: 100%; height: 100%; object-fit: cover; }
+.sz-loc__branch-body { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.sz-loc__addr { font: 400 var(--sz-text-sm)/1.5 var(--sz-font-body); color: var(--sz-text-muted); margin: 0; }
+.sz-loc__phone { font: 600 var(--sz-text-sm)/1 var(--sz-font-body); color: var(--sz-dark); text-decoration: none; }
+.sz-loc__more { margin-top: 0.4rem; font: 600 var(--sz-text-sm)/1 var(--sz-font-body); color: var(--sz-orange-strong); text-decoration: none; }
+
+/* Filial detali */
+.sz-branch__layout { display: grid; grid-template-columns: 1fr 300px; gap: 2.5rem; align-items: start; }
+@media (max-width: 860px) { .sz-branch__layout { grid-template-columns: 1fr; } }
+.sz-branch__hero-img { border-radius: var(--sz-r-xl); overflow: hidden; aspect-ratio: 16/9; background: var(--sz-surface-warm); margin-bottom: 1.5rem; }
+.sz-branch__hero-img img { width: 100%; height: 100%; object-fit: cover; }
+.sz-branch__info { display: grid; gap: 0.5rem; margin-bottom: 2rem; }
+.sz-branch__row { display: flex; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--sz-line); font: 400 var(--sz-text-base)/1.4 var(--sz-font-body); }
+.sz-branch__row span:first-child { color: var(--sz-text-muted); min-width: 90px; }
+.sz-branch__row a { color: var(--sz-orange-strong); text-decoration: none; }
+.sz-branch__block { margin-top: 1.5rem; }
+.sz-branch__block h2 { font: 700 var(--sz-h3)/1.1 var(--sz-font-display); color: var(--sz-dark); margin: 0 0 1rem; }
+.sz-branch__hours { display: grid; gap: 0; max-width: 24rem; }
+.sz-branch__hour { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--sz-line); font: 400 var(--sz-text-sm)/1.4 var(--sz-font-body); }
+.sz-branch__hour dt { color: var(--sz-text-muted); margin: 0; }
+.sz-branch__hour dd { margin: 0; color: var(--sz-dark); font-weight: 600; }
+.sz-branch__services { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.6rem; }
+.sz-branch__services li { padding: 0.7rem 1rem; background: var(--sz-surface-gray); border-radius: var(--sz-r-sm); font: 400 var(--sz-text-sm)/1.5 var(--sz-font-body); color: var(--sz-text); }
+.sz-branch__services strong { color: var(--sz-dark); }
+.sz-branch__aside { position: sticky; top: calc(var(--sz-header-h) + 1rem); }
+.sz-branch__cta { background: var(--sz-surface-warm); border: 1px solid var(--sz-line); border-radius: var(--sz-r-lg); padding: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }

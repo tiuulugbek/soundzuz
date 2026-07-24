@@ -224,5 +224,47 @@ export function catalogStatements(): { text: string; values: unknown[] }[] {
     });
   }
 
+  // Standart xizmatlar (Service jadvali — tarjimasiz, uz)
+  const services = [
+    { code: "CONSULTATION", name: "Konsultatsiya", desc: "Audiolog bilan bepul dastlabki maslahat", dur: 30 },
+    { code: "HEARING_TEST", name: "Eshitishni tekshirish (audiometriya)", desc: "Og'riqsiz audiometriya va audiogramma tahlili", dur: 30 },
+    { code: "FITTING", name: "Moslamani moslash (fitting)", desc: "Eshitish moslamasini individual sozlash va moslash", dur: 45 },
+    { code: "EAR_MOLD", name: "Quloq qolipini olish", desc: "Individual quloq qolipi (apparat yoki IEM uchun)", dur: 30 },
+    { code: "SERVICE_REPAIR", name: "Servis va ta'mirlash", desc: "Moslamani tozalash, tekshirish va ta'mirlash", dur: 30 },
+  ];
+  for (const s of services) {
+    stmts.push({
+      text: `INSERT INTO "Service" (id,code,name,description,"durationMinutes","isActive","createdAt","updatedAt") VALUES ($1,$2,$3,$4,$5,TRUE,NOW(),NOW()) ON CONFLICT (code) DO UPDATE SET name=EXCLUDED.name,description=EXCLUDED.description,"durationMinutes"=EXCLUDED."durationMinutes","isActive"=TRUE,"updatedAt"=NOW()`,
+      values: [`svc-${s.code}`, s.code, s.name, s.desc, s.dur],
+    });
+  }
+
+  // Namuna filiallar (Branch — tarjimasiz). Aniq "namuna" deb belgilangan; asoschi admin'da almashtiradi.
+  const branches = [
+    { slug: "toshkent-markaz", name: "Soundz — Toshkent markaz (namuna)", phone: "+998 71 200 00 00", address: "Toshkent sh. (haqiqiy manzil bilan almashtiring)" },
+    { slug: "toshkent-yunusobod", name: "Soundz — Yunusobod (namuna)", phone: "+998 71 200 00 01", address: "Toshkent sh., Yunusobod tumani (haqiqiy manzil bilan almashtiring)" },
+  ];
+  for (const b of branches) {
+    stmts.push({
+      text: `INSERT INTO "Branch" (id,name,slug,phone,address,"isActive","createdAt","updatedAt") VALUES ($1,$2,$3,$4,$5,TRUE,NOW(),NOW()) ON CONFLICT (slug) DO UPDATE SET name=EXCLUDED.name,phone=EXCLUDED.phone,address=EXCLUDED.address,"isActive"=TRUE,"updatedAt"=NOW()`,
+      values: [`br-${b.slug}`, b.name, b.slug, b.phone, b.address],
+    });
+    // Ish vaqti: Du–Sha 9:00–18:00, Yak yopiq
+    for (let wd = 0; wd <= 6; wd++) {
+      const closed = wd === 0;
+      stmts.push({
+        text: `INSERT INTO "BranchSchedule" (id,"branchId",weekday,"openMinute","closeMinute","isClosed","createdAt","updatedAt") VALUES ($1,$2,$3,$4,$5,$6,NOW(),NOW()) ON CONFLICT ("branchId",weekday) DO UPDATE SET "openMinute"=EXCLUDED."openMinute","closeMinute"=EXCLUDED."closeMinute","isClosed"=EXCLUDED."isClosed","updatedAt"=NOW()`,
+        values: [`sch-${b.slug}-${wd}`, `br-${b.slug}`, wd, 540, 1080, closed],
+      });
+    }
+    // Barcha xizmatlarni filialga bog'lash
+    for (const s of services) {
+      stmts.push({
+        text: `INSERT INTO "BranchService" ("branchId","serviceId","isActive","slotCapacity") VALUES ($1,$2,TRUE,1) ON CONFLICT ("branchId","serviceId") DO UPDATE SET "isActive"=TRUE`,
+        values: [`br-${b.slug}`, `svc-${s.code}`],
+      });
+    }
+  }
+
   return stmts;
 }
