@@ -104,6 +104,9 @@ export class CatalogService {
     const locale = normLocale(localeInput);
     const rows = await this.prisma.$queryRawUnsafe<any[]>(
       `SELECT p.*,
+       p.short_description AS "shortDescription",p.form_factor AS "formFactor",p.technology_level AS "technologyLevel",
+       p.brand_slug AS "brandSlug",p.price_from::float AS "priceFrom",p.price_to::float AS "priceTo",
+       p.in_stock AS "inStock",p.seo_title AS "seoTitle",p.seo_description AS "seoDescription",
        COALESCE((SELECT json_agg(json_build_object('slot',u.slot,'sortOrder',u.sort_order,'variants',
        (SELECT json_agg(json_build_object('key',v.variant_key,'url',v.url,'width',v.width,'height',v.height) ORDER BY v.width)
         FROM media_variants v WHERE v.media_id=u.media_id)) ORDER BY u.sort_order)

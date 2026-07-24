@@ -180,5 +180,77 @@
       "language": "Язык",
       "rights": "Все права защищены."
     }
+  },
+  "catalog": {
+    "meta": {
+      "title": "Каталог слуховых аппаратов — Oticon, ReSound, Signia | Soundz",
+      "description": "Слуховые аппараты Oticon, ReSound и Signia. Фильтруйте по форме, уровню технологии и цене, чтобы найти подходящее решение."
+    },
+    "hero": {
+      "eyebrow": "СЛУХОВЫЕ АППАРАТЫ",
+      "title": "Найдите подходящее решение",
+      "subtitle": "Фильтруйте по образу жизни, степени снижения слуха и бюджету. Окончательный выбор — после проверки у специалиста."
+    },
+    "filters": {
+      "title": "Фильтры",
+      "search": "Поиск",
+      "searchPlaceholder": "Модель или бренд",
+      "brand": "Бренд",
+      "formFactor": "Форм-фактор",
+      "techLevel": "Уровень технологии",
+      "minPrice": "Мин. цена",
+      "maxPrice": "Макс. цена",
+      "rechargeable": "Перезаряжаемые",
+      "bluetooth": "Bluetooth",
+      "inStock": "Только в наличии",
+      "sort": "Сортировка",
+      "sortRecommended": "Рекомендуемые",
+      "sortPriceAsc": "Цена: по возрастанию",
+      "sortPriceDesc": "Цена: по убыванию",
+      "sortName": "По названию",
+      "apply": "Применить",
+      "reset": "Сбросить",
+      "all": "Все"
+    },
+    "list": {
+      "count": "{total} аппаратов",
+      "empty": "Аппараты не найдены",
+      "emptyHint": "Смягчите фильтры или получите консультацию специалиста.",
+      "inStock": "В наличии",
+      "preOrder": "Под заказ",
+      "priceFrom": "от {price} сум",
+      "priceOnConsult": "Цена на консультации",
+      "details": "Подробнее",
+      "prev": "Назад",
+      "next": "Далее"
+    },
+    "brands": {
+      "title": "Бренды",
+      "subtitle": "Ведущие мировые производители слуховых технологий.",
+      "products": "{count} аппаратов",
+      "view": "Смотреть"
+    },
+    "product": {
+      "backToCatalog": "Назад в каталог",
+      "specs": "Характеристики",
+      "reviews": "Отзывы",
+      "noReviews": "Пока нет отзывов.",
+      "whoFor": "Кому подходит",
+      "features": "Особенности",
+      "rechargeable": "Перезаряжаемый",
+      "bluetooth": "Bluetooth",
+      "inStock": "В наличии",
+      "preOrder": "Под заказ",
+      "consult": "Получить консультацию",
+      "priceFrom": "от {price} сум",
+      "priceOnConsult": "Цену определим на консультации",
+      "rating": "{average} ({count} отзывов)",
+      "relatedTitle": "Похожие аппараты"
+    },
+    "brandPage": {
+      "productsTitle": "Аппараты {brand}",
+      "noProducts": "Аппараты этого бренда появятся скоро.",
+      "visitSite": "Официальный сайт"
+    }
   }
 }
