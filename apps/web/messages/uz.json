@@ -252,5 +252,32 @@
       "noProducts": "Bu brend uchun apparatlar tez orada qo'shiladi.",
       "visitSite": "Rasmiy sayt"
     }
+  },
+  "learn": {
+    "meta": {
+      "title": "Bilim markazi — eshitish haqida hamma narsa | Soundz",
+      "description": "Eshitish pasayishi, bolalar eshitishi, apparatlar va himoya bo'yicha audiologlar tayyorlagan maqolalar."
+    },
+    "hero": {
+      "eyebrow": "BILIM MARKAZI",
+      "title": "Eshitish haqida ishonchli ma'lumot",
+      "subtitle": "Audiologlarimiz tayyorlagan qo'llanmalar va maqolalar — sotuvdan oldin bilim va ishonch."
+    },
+    "categories": {
+      "title": "Bo'limlar"
+    },
+    "list": {
+      "latest": "So'nggi maqolalar",
+      "empty": "Maqolalar tez orada qo'shiladi.",
+      "readMin": "{min} daqiqa"
+    },
+    "article": {
+      "backToHub": "Bilim markaziga qaytish",
+      "reviewedBy": "Tibbiy tekshirilgan",
+      "author": "Muallif",
+      "updated": "Yangilangan",
+      "related": "O'xshash savollar",
+      "disclaimerTitle": "Eslatma"
+    }
   }
 }

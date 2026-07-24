@@ -252,5 +252,32 @@
       "noProducts": "Devices for this brand are coming soon.",
       "visitSite": "Official site"
     }
+  },
+  "learn": {
+    "meta": {
+      "title": "Knowledge Center — everything about hearing | Soundz",
+      "description": "Articles prepared by audiologists: hearing loss, children's hearing, devices and protection."
+    },
+    "hero": {
+      "eyebrow": "KNOWLEDGE CENTER",
+      "title": "Trustworthy information about hearing",
+      "subtitle": "Guides and articles from our audiologists — knowledge and trust before the sale."
+    },
+    "categories": {
+      "title": "Sections"
+    },
+    "list": {
+      "latest": "Latest articles",
+      "empty": "Articles are coming soon.",
+      "readMin": "{min} min"
+    },
+    "article": {
+      "backToHub": "Back to Knowledge Center",
+      "reviewedBy": "Medically reviewed",
+      "author": "Author",
+      "updated": "Updated",
+      "related": "Related questions",
+      "disclaimerTitle": "Note"
+    }
   }
 }

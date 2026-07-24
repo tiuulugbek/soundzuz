@@ -33,7 +33,7 @@ export function SiteHeader() {
     { href: localePath(locale, "/hearing-aids"), label: t("nav.hearingAids") },
     { href: "#iem", label: t("nav.iem") },
     { href: legacyHref(locale, "/xizmatlar"), label: t("nav.services") },
-    { href: legacyHref(locale, "/foydali-malumotlar"), label: t("nav.knowledge") },
+    { href: localePath(locale, "/learn"), label: t("nav.knowledge") },
     { href: legacyHref(locale, "/filiallar"), label: t("nav.branches") },
   ];
 
