@@ -6,7 +6,9 @@ import { JsonLd, breadcrumbJsonLd } from "../../../components/seo/json-ld";
 import type { Locale } from "../../../i18n/routing";
 import { buildPageMetadata, localePath } from "../../../lib/seo";
 import { fetchFilters, fetchProducts, formatPrice, mediaUrl } from "../../../lib/catalog";
+import { allHubs } from "../../../lib/catalog-hubs";
 import "./catalog.css";
+import "./hub.css";
 
 type PageParams = {
   params: Promise<{ locale: string }>;
@@ -51,6 +53,11 @@ export default async function CatalogPage({ params, searchParams }: PageParams) 
             <p className="sz-cat__eyebrow">{t("hero.eyebrow")}</p>
             <h1 className="sz-cat__title">{t("hero.title")}</h1>
             <p className="sz-cat__lead">{t("hero.subtitle")}</p>
+            <nav className="sz-cat__hubnav" aria-label={t("hero.eyebrow")}>
+              {allHubs(locale).map((h) => (
+                <a key={h.path} href={localePath(locale, h.path)}>{h.title}</a>
+              ))}
+            </nav>
           </div>
         </section>
 

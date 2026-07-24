@@ -21,8 +21,9 @@ export async function SiteFooter() {
           <nav className="sz-footer__col" aria-label={f("directions")}>
             <p>{f("directions")}</p>
             <a href={localePath(locale, "/hearing-aids")}>{t("nav.hearingAids")}</a>
-            <a href="#iem">{t("nav.iem")}</a>
+            <a href={localePath(locale, "/iem")}>{t("nav.iem")}</a>
             <a href={localePath(locale, "/services")}>{t("nav.services")}</a>
+            <a href={localePath(locale, "/tools/hearing-check")}>{t("nav.hearingCheck")}</a>
           </nav>
           <nav className="sz-footer__col" aria-label={f("company")}>
             <p>{f("company")}</p>

@@ -30,7 +30,7 @@ export function SiteHeader() {
 
   const links = [
     { href: localePath(locale, "/hearing-aids"), label: t("nav.hearingAids") },
-    { href: "#iem", label: t("nav.iem") },
+    { href: localePath(locale, "/iem"), label: t("nav.iem") },
     { href: localePath(locale, "/services"), label: t("nav.services") },
     { href: localePath(locale, "/learn"), label: t("nav.knowledge") },
     { href: localePath(locale, "/branches"), label: t("nav.branches") },

@@ -8,7 +8,8 @@
       "services": "Services",
       "knowledge": "Knowledge hub",
       "branches": "Locations",
-      "contact": "Contact"
+      "contact": "Contact",
+      "hearingCheck": "Online check"
     },
     "cta": {
       "consultation": "Consultation",
@@ -334,5 +335,222 @@
     "fri": "Friday",
     "sat": "Saturday",
     "sun": "Sunday"
+  },
+  "hub": {
+    "grid": {
+      "viewModels": "View models",
+      "allCatalog": "Full catalog",
+      "count": "{total} models",
+      "empty": "No models in this section yet. Browse the full catalog or talk to a specialist."
+    },
+    "faq": {
+      "title": "Frequently asked questions"
+    },
+    "related": {
+      "title": "Other sections"
+    },
+    "cta": {
+      "eyebrow": "Next step",
+      "title": "Find out for free which model suits you",
+      "body": "After an audiologist assessment we match the exact device and level for you. Book a branch visit or start the online check.",
+      "button": "Book an appointment",
+      "secondary": "Online check"
+    }
+  },
+  "iem": {
+    "meta": {
+      "title": "Custom IEM — personalised in-ear monitors | Soundz",
+      "description": "In-ear monitors custom-moulded to your ear: studio-grade sound and isolation for musicians, audio engineers and audiophiles."
+    },
+    "hero": {
+      "eyebrow": "Custom In-Ear Monitor",
+      "title": "For the stage. Exactly for your ear.",
+      "lead": "Monitors custom-moulded from your ear impression — accurate stage sound, reliable isolation and hours of comfort. The choice of musicians, audio engineers and audiophiles.",
+      "ctaPrimary": "IEM consultation",
+      "ctaSecondary": "See the process",
+      "stats": [
+        {
+          "value": "100%",
+          "label": "Custom-moulded — only for you"
+        },
+        {
+          "value": "-26 dB",
+          "label": "Isolation from outside noise"
+        },
+        {
+          "value": "8+ hrs",
+          "label": "Comfortable, fatigue-free wear"
+        }
+      ]
+    },
+    "process": {
+      "eyebrow": "Process",
+      "title": "From impression to finished monitor — 4 steps",
+      "lead": "Each monitor is made under specialist supervision to your ear's anatomy.",
+      "steps": [
+        {
+          "title": "Consultation",
+          "text": "We define needs, genre and use — stage or studio."
+        },
+        {
+          "title": "Ear impression",
+          "text": "The audiologist safely takes an accurate ear impression."
+        },
+        {
+          "title": "Manufacture",
+          "text": "The shell and acoustics are custom-built from the impression."
+        },
+        {
+          "title": "Fitting",
+          "text": "We check fit and sound, tuning if needed."
+        }
+      ]
+    },
+    "features": {
+      "eyebrow": "Why Custom IEM",
+      "title": "How it differs from universal earphones",
+      "items": [
+        {
+          "title": "Custom mould",
+          "text": "Moulded exactly to your ear — no pressure, never falls out."
+        },
+        {
+          "title": "Studio sound",
+          "text": "A multi-driver configuration gives accurate, rich, balanced sound."
+        },
+        {
+          "title": "Passive isolation",
+          "text": "Outside noise is naturally blocked — clean monitoring even quieter."
+        },
+        {
+          "title": "Hearing protection",
+          "text": "Lower volume — safer for your hearing on stage."
+        }
+      ]
+    },
+    "gallery": {
+      "eyebrow": "Gallery",
+      "title": "Design and finished work",
+      "lead": "You can choose shell colour, translucency and finish. (Sample looks — real work coming soon.)"
+    },
+    "audiences": {
+      "eyebrow": "Who it's for",
+      "title": "Who needs a Custom IEM",
+      "items": [
+        {
+          "title": "Musicians",
+          "text": "Hear your voice and instrument clearly on stage without monitor speakers."
+        },
+        {
+          "title": "Audio engineers",
+          "text": "Reference-grade monitoring — reliable for mixing and soundcheck."
+        },
+        {
+          "title": "Audiophiles",
+          "text": "Top quality and comfort for everyday listening."
+        }
+      ]
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "items": [
+        {
+          "q": "Is taking the impression painful?",
+          "a": "No. The audiologist takes an accurate impression in minutes with safe material."
+        },
+        {
+          "q": "How many drivers do I need?",
+          "a": "It depends on genre and needs — we pick the best option at the consultation."
+        },
+        {
+          "q": "Is there a warranty?",
+          "a": "Yes, the manufacturer warranty applies; we also give care instructions."
+        },
+        {
+          "q": "How long does it take?",
+          "a": "Usually a few weeks after the impression — exact time depends on the model."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Create your own monitor",
+      "body": "Book a free consultation — we'll define your needs and recommend the best configuration.",
+      "button": "Book a consultation"
+    }
+  },
+  "tools": {
+    "hearingCheck": {
+      "meta": {
+        "title": "Online hearing check — in 2 minutes | Soundz",
+        "description": "Assess your hearing for free based on everyday situations. This is not a diagnosis — the result points you to a specialist check."
+      },
+      "hero": {
+        "eyebrow": "Free online tool",
+        "title": "How's your hearing? Find out in 2 minutes",
+        "lead": "Answer 8 everyday-life questions — we'll show whether your hearing may need attention.",
+        "points": [
+          "No sign-up, completely free",
+          "8 simple questions — just 2 minutes",
+          "Your result is private and confidential"
+        ]
+      },
+      "disclaimer": "Note: this is a screening, not a diagnosis, and does not replace medical advice. Only an audiologist can give an accurate assessment.",
+      "start": {
+        "time": "≈ 2 minutes",
+        "title": "Ready?",
+        "lead": "Pick the answer that fits you best for each question. There are no right or wrong answers.",
+        "button": "Start the check",
+        "count": "{total} questions"
+      },
+      "progress": "Question {current} / {total}",
+      "options": [
+        {
+          "label": "No",
+          "value": 0
+        },
+        {
+          "label": "Sometimes",
+          "value": 1
+        },
+        {
+          "label": "Yes, often",
+          "value": 2
+        }
+      ],
+      "questions": [
+        "Do you often ask people to repeat what they said?",
+        "Is it hard to follow conversation in a noisy place (restaurant, market)?",
+        "Is it hard to understand words on the phone?",
+        "Do people say you turn the TV or radio up too loud?",
+        "Is it hard to tell who said what when several people talk?",
+        "Are women's or children's voices harder to hear?",
+        "Do you get ringing or buzzing in your ears?",
+        "Do people notice that your hearing has gotten worse?"
+      ],
+      "nav": {
+        "back": "Back",
+        "next": "Next",
+        "seeResult": "See result",
+        "restart": "Start over"
+      },
+      "result": {
+        "scoreLabel": "Score: {score} / {max}",
+        "disclaimer": "This result is not a diagnosis. It's based only on everyday signs. A professional check will determine your actual condition.",
+        "bookCta": "Book a free check",
+        "learnCta": "Read about hearing",
+        "low": {
+          "title": "Few signs",
+          "body": "No serious signs so far. As a precaution, it's worth checking your hearing once a year."
+        },
+        "moderate": {
+          "title": "Some signs present",
+          "body": "You have difficulty in some situations. We recommend an audiologist assessment to know your exact status."
+        },
+        "high": {
+          "title": "Several signs present",
+          "body": "There are noticeable difficulties in daily life. Please get a specialist assessment — early evaluation gives the best outcome."
+        }
+      }
+    }
   }
 }

@@ -1,0 +1,133 @@
+/* Onlayn eshitish tekshiruvi (lead-magnit) — dizayn tokenlari ustida. */
+
+.sz-tool { background: var(--sz-surface); }
+.sz-tool__hero {
+  background:
+    radial-gradient(110% 120% at 0% 0%, var(--sz-orange-tint) 0%, transparent 55%),
+    var(--sz-surface-warm);
+  padding: calc(var(--sz-header-h) + 3rem) 0 clamp(3.5rem, 8vw, 6rem);
+  border-bottom: 1px solid var(--sz-line);
+}
+.sz-tool__hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+@media (max-width: 920px) { .sz-tool__hero-grid { grid-template-columns: 1fr; } }
+
+.sz-tool__eyebrow { font: 600 var(--sz-text-xs)/1 var(--sz-font-body); letter-spacing: var(--sz-tracking-wide); text-transform: uppercase; color: var(--sz-orange-strong); margin: 0 0 0.85rem; }
+.sz-tool__title { font: 700 var(--sz-h1)/1.03 var(--sz-font-display); letter-spacing: var(--sz-tracking-tight); color: var(--sz-dark); margin: 0 0 0.9rem; max-width: 16ch; }
+.sz-tool__lead { font: 400 var(--sz-text-lg)/1.6 var(--sz-font-body); color: var(--sz-text-muted); margin: 0 0 1.5rem; max-width: 40rem; }
+.sz-tool__points { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+.sz-tool__points li { position: relative; padding-left: 1.9rem; font: 400 var(--sz-text-base)/1.5 var(--sz-font-body); color: var(--sz-text); }
+.sz-tool__points li::before {
+  content: "✓";
+  position: absolute; left: 0; top: 0;
+  width: 1.35rem; height: 1.35rem;
+  display: grid; place-items: center;
+  background: var(--sz-orange-tint);
+  color: var(--sz-orange-strong);
+  border-radius: var(--sz-r-pill);
+  font-size: 0.8rem; font-weight: 700;
+}
+
+/* --- Widget --- */
+.sz-tool__widget { position: relative; }
+.sz-hc__card {
+  background: var(--sz-surface);
+  border: 1px solid var(--sz-line);
+  border-radius: var(--sz-r-xl);
+  box-shadow: var(--sz-shadow-lg);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  min-height: 22rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Intro */
+.sz-hc__intro { justify-content: center; text-align: center; align-items: center; }
+.sz-hc__badge {
+  display: inline-block;
+  font: 600 var(--sz-text-xs)/1 var(--sz-font-body);
+  letter-spacing: var(--sz-tracking-wide);
+  text-transform: uppercase;
+  color: var(--sz-orange-strong);
+  background: var(--sz-orange-tint);
+  border-radius: var(--sz-r-pill);
+  padding: 0.4rem 0.85rem;
+  margin-bottom: 1.1rem;
+}
+.sz-hc__intro-title { font: 700 var(--sz-h3)/1.15 var(--sz-font-display); color: var(--sz-dark); margin: 0 0 0.6rem; }
+.sz-hc__intro-lead { font: 400 var(--sz-text-base)/1.6 var(--sz-font-body); color: var(--sz-text-muted); margin: 0 0 1.25rem; max-width: 32rem; }
+.sz-hc__count { font: 400 var(--sz-text-sm)/1 var(--sz-font-body); color: var(--sz-text-soft); margin: 1rem 0 0; }
+
+/* Disclaimer */
+.sz-hc__disclaimer {
+  font: 400 var(--sz-text-sm)/1.55 var(--sz-font-body);
+  color: var(--sz-text-muted);
+  background: var(--sz-surface-gray);
+  border: 1px solid var(--sz-line);
+  border-radius: var(--sz-r-md);
+  padding: 0.85rem 1rem;
+  margin: 0 0 1.25rem;
+  text-align: left;
+}
+
+/* Progress */
+.sz-hc__progress { height: 6px; background: var(--sz-surface-gray); border-radius: var(--sz-r-pill); overflow: hidden; margin-bottom: 1rem; }
+.sz-hc__progress-fill { height: 100%; background: linear-gradient(90deg, var(--sz-orange), var(--sz-orange-soft)); border-radius: var(--sz-r-pill); transition: width var(--sz-dur) var(--sz-ease); }
+.sz-hc__step-count { font: 600 var(--sz-text-xs)/1 var(--sz-font-body); letter-spacing: var(--sz-tracking-wide); text-transform: uppercase; color: var(--sz-text-soft); margin: 0 0 0.85rem; }
+.sz-hc__question { font: 600 var(--sz-text-xl)/1.3 var(--sz-font-display); color: var(--sz-dark); margin: 0 0 1.5rem; }
+
+/* Options */
+.sz-hc__options { display: grid; gap: 0.6rem; margin-bottom: auto; }
+.sz-hc__option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  text-align: left;
+  background: var(--sz-surface);
+  border: 1.5px solid var(--sz-line-strong);
+  border-radius: var(--sz-r-md);
+  padding: 0.9rem 1.1rem;
+  font: 500 var(--sz-text-base)/1.3 var(--sz-font-body);
+  color: var(--sz-text);
+  cursor: pointer;
+  transition: border-color var(--sz-dur) var(--sz-ease), background var(--sz-dur) var(--sz-ease);
+}
+.sz-hc__option:hover { border-color: var(--sz-orange-soft); }
+.sz-hc__option-dot {
+  width: 1.1rem; height: 1.1rem; flex-shrink: 0;
+  border: 2px solid var(--sz-line-strong);
+  border-radius: var(--sz-r-pill);
+  transition: border-color var(--sz-dur) var(--sz-ease), background var(--sz-dur) var(--sz-ease);
+}
+.sz-hc__option.is-selected { border-color: var(--sz-orange); background: var(--sz-orange-tint); }
+.sz-hc__option.is-selected .sz-hc__option-dot { border-color: var(--sz-orange); background: var(--sz-orange); box-shadow: inset 0 0 0 3px var(--sz-orange-tint); }
+
+/* Nav */
+.sz-hc__nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; }
+.sz-hc__nav-back {
+  background: none; border: none; cursor: pointer;
+  font: 500 var(--sz-text-sm)/1 var(--sz-font-body);
+  color: var(--sz-text-muted);
+  padding: 0.5rem 0.25rem;
+}
+.sz-hc__nav-back:disabled { opacity: 0.4; cursor: default; }
+.sz-hc__nav-back:not(:disabled):hover { color: var(--sz-orange-strong); }
+
+/* Result */
+.sz-hc__result { align-items: flex-start; }
+.sz-hc__meter { width: 100%; height: 10px; background: var(--sz-surface-gray); border-radius: var(--sz-r-pill); overflow: hidden; margin-bottom: 1rem; }
+.sz-hc__meter-fill { height: 100%; border-radius: var(--sz-r-pill); transition: width var(--sz-dur-slow) var(--sz-ease); }
+.sz-hc__result--low .sz-hc__meter-fill { background: var(--sz-success); }
+.sz-hc__result--moderate .sz-hc__meter-fill { background: var(--sz-orange); }
+.sz-hc__result--high .sz-hc__meter-fill { background: var(--sz-error); }
+.sz-hc__score { font: 600 var(--sz-text-sm)/1 var(--sz-font-body); color: var(--sz-text-muted); margin: 0 0 0.6rem; }
+.sz-hc__result-title { font: 700 var(--sz-h3)/1.15 var(--sz-font-display); color: var(--sz-dark); margin: 0 0 0.6rem; }
+.sz-hc__result-body { font: 400 var(--sz-text-base)/1.6 var(--sz-font-body); color: var(--sz-text-muted); margin: 0 0 1.25rem; }
+.sz-hc__result-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; width: 100%; }
+.sz-hc__restart { background: none; border: none; cursor: pointer; margin-top: 1.1rem; font: 500 var(--sz-text-sm)/1 var(--sz-font-body); color: var(--sz-text-soft); text-decoration: underline; }
+.sz-hc__restart:hover { color: var(--sz-orange-strong); }

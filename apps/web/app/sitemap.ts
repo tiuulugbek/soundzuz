@@ -15,6 +15,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/xizmatlar`, changeFrequency: "weekly", priority: 0.8 },
   ];
 
+  // Katalog hublari, Custom IEM va interaktiv vositalar — uz (prefikssiz) + ru/en.
+  const hubPaths = [
+    "/hearing-aids/type/ric",
+    "/hearing-aids/type/bte",
+    "/hearing-aids/type/ite",
+    "/hearing-aids/type/cic",
+    "/hearing-aids/type/iic",
+    "/hearing-aids/rechargeable",
+    "/hearing-aids/bluetooth",
+    "/hearing-aids/invisible",
+    "/hearing-aids/for-children",
+    "/hearing-aids/prices",
+    "/iem",
+    "/tools/hearing-check",
+  ];
+  for (const path of hubPaths) {
+    base.push({ url: `${SITE_URL}${path}`, changeFrequency: "weekly", priority: 0.75 });
+    base.push({ url: `${SITE_URL}/ru${path}`, changeFrequency: "weekly", priority: 0.6 });
+    base.push({ url: `${SITE_URL}/en${path}`, changeFrequency: "weekly", priority: 0.6 });
+  }
+
   try {
     const [uzProductsResponse, ruProductsResponse, articlesResponse, branchesResponse, servicesResponse] = await Promise.all([
       fetch(`${API_URL}/catalog/products?locale=uz&limit=48`, { next: { revalidate: 3600 } }),

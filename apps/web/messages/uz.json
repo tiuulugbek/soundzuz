@@ -8,7 +8,8 @@
       "services": "Xizmatlar",
       "knowledge": "Bilim markazi",
       "branches": "Filiallar",
-      "contact": "Aloqa"
+      "contact": "Aloqa",
+      "hearingCheck": "Onlayn tekshiruv"
     },
     "cta": {
       "consultation": "Konsultatsiya",
@@ -334,5 +335,222 @@
     "fri": "Juma",
     "sat": "Shanba",
     "sun": "Yakshanba"
+  },
+  "hub": {
+    "grid": {
+      "viewModels": "Modellarni ko'rish",
+      "allCatalog": "Butun katalog",
+      "count": "{total} ta model",
+      "empty": "Hozircha bu bo'limda model yo'q. Butun katalogni ko'rib chiqing yoki mutaxassisga murojaat qiling."
+    },
+    "faq": {
+      "title": "Ko'p so'raladigan savollar"
+    },
+    "related": {
+      "title": "Boshqa bo'limlar"
+    },
+    "cta": {
+      "eyebrow": "Keyingi qadam",
+      "title": "Qaysi model sizga mos — bepul aniqlang",
+      "body": "Audiolog tekshiruvidan so'ng aynan sizga mos moslama va daraja tanlanadi. Filialga yoziling yoki onlayn tekshiruvni boshlang.",
+      "button": "Qabulga yozilish",
+      "secondary": "Onlayn tekshiruv"
+    }
+  },
+  "iem": {
+    "meta": {
+      "title": "Custom IEM — individual quloq monitorlari | Soundz",
+      "description": "Quloq shaklingiz bo'yicha individual quyiladigan in-ear monitorlar: musiqachilar, ovoz muhandislari va audiofillar uchun studiya darajasidagi tovush va izolyatsiya."
+    },
+    "hero": {
+      "eyebrow": "Custom In-Ear Monitor",
+      "title": "Sahna uchun. Aynan sizning qulog'ingiz uchun.",
+      "lead": "Quloq qolipi bo'yicha individual quyiladigan monitorlar — sahnada aniq tovush, ishonchli izolyatsiya va soatlab qulay taqish. Musiqachilar, ovoz muhandislari va audiofillar tanlovi.",
+      "ctaPrimary": "IEM bo'yicha konsultatsiya",
+      "ctaSecondary": "Jarayonni ko'rish",
+      "stats": [
+        {
+          "value": "100%",
+          "label": "Individual qolip — faqat sizga"
+        },
+        {
+          "value": "-26 dB",
+          "label": "Tashqi shovqindan izolyatsiya"
+        },
+        {
+          "value": "8+ soat",
+          "label": "Charchatmaydigan qulay taqish"
+        }
+      ]
+    },
+    "process": {
+      "eyebrow": "Jarayon",
+      "title": "Qolipdan tayyor monitorgacha — 4 qadam",
+      "lead": "Har bir monitor mutaxassiz nazorati ostida, sizning quloq anatomiyangizga moslab tayyorlanadi.",
+      "steps": [
+        {
+          "title": "Konsultatsiya",
+          "text": "Ehtiyoj, janr va foydalanish sharoitini aniqlaymiz — sahnami yoki studiya."
+        },
+        {
+          "title": "Quloq qolipi",
+          "text": "Audiolog xavfsiz tarzda aniq quloq qolipini oladi."
+        },
+        {
+          "title": "Ishlab chiqarish",
+          "text": "Qolip asosida korpus va akustika individual yig'iladi."
+        },
+        {
+          "title": "Moslashtirish",
+          "text": "Taqish va tovushni tekshiramiz, kerak bo'lsa sozlaymiz."
+        }
+      ]
+    },
+    "features": {
+      "eyebrow": "Nega Custom IEM",
+      "title": "Universal quloqchindan farqi nimada",
+      "items": [
+        {
+          "title": "Individual qolip",
+          "text": "Quloq shaklingizga aniq quyiladi — bosim yo'q, tushib ketmaydi."
+        },
+        {
+          "title": "Studiya tovushi",
+          "text": "Ko'p drayverli konfiguratsiya bilan aniq, boy va balanslashgan tovush."
+        },
+        {
+          "title": "Passiv izolyatsiya",
+          "text": "Tashqi shovqin tabiiy to'siladi — pastroq balandlikda ham toza monitoring."
+        },
+        {
+          "title": "Eshitishni himoya",
+          "text": "Kamroq balandlik — sahnadagi eshitishingiz uchun xavfsizroq."
+        }
+      ]
+    },
+    "gallery": {
+      "eyebrow": "Galereya",
+      "title": "Dizayn va tayyor ishlar",
+      "lead": "Korpus rangi, shaffoflik va bezakni tanlash mumkin. (Namuna ko'rinishlar — haqiqiy ishlar tez orada.)"
+    },
+    "audiences": {
+      "eyebrow": "Kimlar uchun",
+      "title": "Custom IEM kimga kerak",
+      "items": [
+        {
+          "title": "Musiqachilar",
+          "text": "Sahnada o'z ovozingiz va cholg'uni aniq eshiting, monitor kolonkalarsiz."
+        },
+        {
+          "title": "Ovoz muhandislari",
+          "text": "Referens darajasidagi monitoring — miks va soundcheck uchun ishonchli."
+        },
+        {
+          "title": "Audiofillar",
+          "text": "Kundalik tinglash uchun eng yuqori sifat va qulaylik."
+        }
+      ]
+    },
+    "faq": {
+      "title": "Ko'p so'raladigan savollar",
+      "items": [
+        {
+          "q": "Qolip olish og'riqlimi?",
+          "a": "Yo'q. Audiolog xavfsiz material bilan bir necha daqiqada aniq qolipni oladi."
+        },
+        {
+          "q": "Necha drayverli variant kerak?",
+          "a": "Bu janr va ehtiyojga bog'liq — konsultatsiyada eng mosini tanlaymiz."
+        },
+        {
+          "q": "Kafolat bormi?",
+          "a": "Ha, ishlab chiqaruvchi kafolati amal qiladi; parvarish bo'yicha ham yo'riqnoma beramiz."
+        },
+        {
+          "q": "Qancha vaqtda tayyor bo'ladi?",
+          "a": "Qolip olingandan so'ng odatda bir necha hafta — aniq muddat modelga bog'liq."
+        }
+      ]
+    },
+    "cta": {
+      "title": "O'z monitoringizni yarating",
+      "body": "Bepul konsultatsiyaga yoziling — ehtiyojingizni aniqlab, eng mos konfiguratsiyani tavsiya qilamiz.",
+      "button": "Konsultatsiyaga yozilish"
+    }
+  },
+  "tools": {
+    "hearingCheck": {
+      "meta": {
+        "title": "Onlayn eshitish tekshiruvi — 2 daqiqada | Soundz",
+        "description": "Kundalik vaziyatlar bo'yicha eshitishingizni bepul onlayn baholang. Bu tashxis emas — natija sizni mutaxassis tekshiruviga yo'naltiradi."
+      },
+      "hero": {
+        "eyebrow": "Bepul onlayn vosita",
+        "title": "Eshitishingiz qanday? 2 daqiqada bilib oling",
+        "lead": "Kundalik hayotdagi 8 ta savolga javob bering — natijada eshitishga e'tibor berish kerakmi yoki yo'qligini ko'rsatamiz.",
+        "points": [
+          "Ro'yxatdan o'tish shart emas, mutlaqo bepul",
+          "8 ta oddiy savol — atigi 2 daqiqa",
+          "Natija shaxsiy va maxfiy"
+        ]
+      },
+      "disclaimer": "Diqqat: bu skrining tashxis emas va tibbiy xulosani almashtirmaydi. Aniq baholashni faqat audiolog o'tkazadi.",
+      "start": {
+        "time": "≈ 2 daqiqa",
+        "title": "Tayyormisiz?",
+        "lead": "Har bir savolga o'zingizga eng mos javobni belgilang. To'g'ri yoki noto'g'ri javob yo'q.",
+        "button": "Tekshiruvni boshlash",
+        "count": "{total} ta savol"
+      },
+      "progress": "{current}-savol / {total}",
+      "options": [
+        {
+          "label": "Yo'q",
+          "value": 0
+        },
+        {
+          "label": "Ba'zan",
+          "value": 1
+        },
+        {
+          "label": "Ha, tez-tez",
+          "value": 2
+        }
+      ],
+      "questions": [
+        "Suhbatdoshingizdan gapini takrorlashini tez-tez so'raysizmi?",
+        "Shovqinli joyda (restoran, bozor) suhbatni kuzatish qiyinmi?",
+        "Telefonda gaplashganda so'zlarni tushunish qiyinmi?",
+        "Atrofdagilar televizor yoki radio ovozini baland deyishadimi?",
+        "Bir nechta odam gaplashganda kim nima deganini ajratish qiyinmi?",
+        "Ayollar yoki bolalar ovozini eshitish qiyinroqmi?",
+        "Quloqingizda shang'illash yoki g'uvillash (shovqin) bo'ladimi?",
+        "Odamlar sizni yaxshi eshitmayapsan deb ta'kidlashadimi?"
+      ],
+      "nav": {
+        "back": "Orqaga",
+        "next": "Keyingi",
+        "seeResult": "Natijani ko'rish",
+        "restart": "Qaytadan boshlash"
+      },
+      "result": {
+        "scoreLabel": "Ball: {score} / {max}",
+        "disclaimer": "Bu natija tashxis emas. U faqat kundalik belgilarga asoslangan. Aniq holatni professional tekshiruv aniqlaydi.",
+        "bookCta": "Bepul tekshiruvga yozilish",
+        "learnCta": "Eshitish haqida o'qish",
+        "low": {
+          "title": "Belgilar kam",
+          "body": "Hozircha jiddiy belgilar sezilmadi. Profilaktika uchun eshitishni yiliga bir marta tekshirib turish foydali."
+        },
+        "moderate": {
+          "title": "Ba'zi belgilar bor",
+          "body": "Ayrim vaziyatlarda qiyinchilik seziladi. Aniq holatni bilish uchun audiolog tekshiruvidan o'tish tavsiya etiladi."
+        },
+        "high": {
+          "title": "Bir nechta belgilar bor",
+          "body": "Kundalik hayotda sezilarli qiyinchiliklar bor. Iltimos, mutaxassis tekshiruvidan o'ting — erta baholash eng yaxshi natija beradi."
+        }
+      }
+    }
   }
 }
