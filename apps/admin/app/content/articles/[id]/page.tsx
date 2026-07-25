@@ -16,18 +16,33 @@ const statuses = [
 ];
 const LOCALES = ["uz", "ru", "en"];
 
+/** Saytdagi public URL — uz prefikssiz, ru/en prefiksli (web bilan bir xil qoida). */
+function publicArticleHref(locale: string, categorySlug: string, slug: string): string {
+  const prefix = locale === "uz" ? "" : `/${locale}`;
+  return `${prefix}/learn/${categorySlug}/${slug}`;
+}
+
+/** `2026-07-25T…` → `2026-07-25` (date input uchun). Bo'sh qiymatlarga bardoshli. */
+function toDateInput(value?: string | null): string {
+  if (!value) return "";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "" : date.toISOString().slice(0, 10);
+}
+
 type Form = {
   slug: string; locale: string; categoryId: string; title: string; excerpt: string; content: string;
-  status: string; featuredImageUrl: string; authorName: string; reviewerName: string;
+  status: string; featuredImageUrl: string; videoUrl: string; authorName: string; reviewerName: string;
   seoTitle: string; seoDescription: string; readingTimeMinutes: number; medicalDisclaimer: string;
-  tags: string; relatedProducts: string[];
+  lastReviewedAt: string; nextReviewAt: string;
+  tags: string; relatedProducts: string[]; relatedServices: string[];
 };
 const empty: Form = {
   slug: "", locale: "uz", categoryId: "", title: "", excerpt: "", content: "", status: "DRAFT",
-  featuredImageUrl: "", authorName: "", reviewerName: "", seoTitle: "", seoDescription: "",
+  featuredImageUrl: "", videoUrl: "", authorName: "", reviewerName: "", seoTitle: "", seoDescription: "",
   readingTimeMinutes: 5,
   medicalDisclaimer: "Ushbu ma’lumot umumiy tushuntirish uchun berilgan va individual tibbiy tashxis o‘rnini bosmaydi.",
-  tags: "", relatedProducts: [],
+  lastReviewedAt: "", nextReviewAt: "",
+  tags: "", relatedProducts: [], relatedServices: [],
 };
 
 export default function EditArticlePage() {
@@ -36,7 +51,10 @@ export default function EditArticlePage() {
   const [form, setForm] = useState<Form>(empty);
   const [categories, setCategories] = useState<any[]>([]);
   const [products, setProducts] = useState<Array<{ slug: string; name: string; brand?: string }>>([]);
+  const [services, setServices] = useState<Array<{ code: string; name: string }>>([]);
   const [translations, setTranslations] = useState<Array<{ locale: string; status: string }>>([]);
+  const [revisions, setRevisions] = useState<Array<{ id: string; editor: string | null; createdAt: string }>>([]);
+  const [publishedAt, setPublishedAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
@@ -48,38 +66,62 @@ export default function EditArticlePage() {
     const auth = { authorization: `Bearer ${token}` };
     Promise.all([
       fetch(`${API_URL}/admin/content/articles/${id}`, { headers: auth }),
-      fetch(`${API_URL}/content/categories?locale=uz`),
       fetch(`${API_URL}/admin/catalog/products`, { headers: auth }),
       fetch(`${API_URL}/admin/content/articles`, { headers: auth }),
-    ]).then(async ([a, c, p, list]) => {
+      fetch(`${API_URL}/locations/services`),
+      fetch(`${API_URL}/admin/content/articles/${id}/revisions`, { headers: auth }),
+    ]).then(async ([a, p, list, s, rev]) => {
       const ad = await a.json();
       if (!a.ok) throw new Error(ad.message ?? "Maqola olinmadi");
-      const cd = await c.json();
       const pd = p.ok ? await p.json() : [];
       const ld = list.ok ? await list.json() : [];
+      const sd = s.ok ? await s.json() : [];
+      const rd = rev.ok ? await rev.json() : [];
       setForm({
         ...empty, ...ad,
         categoryId: ad.categoryId ?? "", featuredImageUrl: ad.featuredImageUrl ?? "",
+        videoUrl: ad.videoUrl ?? "",
         authorName: ad.authorName ?? "", reviewerName: ad.reviewerName ?? "",
         seoTitle: ad.seoTitle ?? "", seoDescription: ad.seoDescription ?? "",
         medicalDisclaimer: ad.medicalDisclaimer ?? empty.medicalDisclaimer,
+        lastReviewedAt: toDateInput(ad.lastReviewedAt),
+        nextReviewAt: toDateInput(ad.nextReviewAt),
         tags: Array.isArray(ad.tags) ? ad.tags.join(", ") : "",
         relatedProducts: Array.isArray(ad.relatedProducts) ? ad.relatedProducts : [],
+        relatedServices: Array.isArray(ad.relatedServices) ? ad.relatedServices : [],
       });
-      setCategories(Array.isArray(cd) ? cd : cd.items ?? []);
+      setPublishedAt(ad.publishedAt ?? null);
       const prodItems = Array.isArray(pd) ? pd : pd.items ?? [];
       const bySlug = new Map<string, { slug: string; name: string; brand?: string }>();
       for (const it of prodItems) if (it?.slug && !bySlug.has(it.slug)) bySlug.set(it.slug, { slug: it.slug, name: it.name, brand: it.brand });
       setProducts(Array.from(bySlug.values()));
+      setServices((Array.isArray(sd) ? sd : sd.items ?? []).map((x: any) => ({ code: x.code, name: x.name ?? x.code })));
+      setRevisions(Array.isArray(rd) ? rd : []);
       const listItems = Array.isArray(ld) ? ld : ld.items ?? [];
       setTranslations(listItems.filter((x: any) => x.slug === ad.slug).map((x: any) => ({ locale: x.locale, status: x.status })));
     }).catch((e) => setError(e instanceof Error ? e.message : "Xatolik")).finally(() => setLoading(false));
   }, [id, router, token]);
 
+  // Kategoriyalar HAR LOCALE uchun alohida qatorlar — maqola tili o'zgarsa qayta olinadi,
+  // aks holda ru/en maqolada kategoriya ro'yxati bo'sh yoki noto'g'ri chiqadi.
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`${API_URL}/content/categories?locale=${form.locale}`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then((d) => { if (!cancelled) setCategories(Array.isArray(d) ? d : d.items ?? []); })
+      .catch(() => undefined);
+    return () => { cancelled = true; };
+  }, [form.locale]);
+
   function set<K extends keyof Form>(k: K, v: Form[K]) { setForm((s) => ({ ...s, [k]: v })); }
   function toggleProduct(slug: string) {
     setForm((s) => ({ ...s, relatedProducts: s.relatedProducts.includes(slug) ? s.relatedProducts.filter((x) => x !== slug) : [...s.relatedProducts, slug] }));
   }
+  function toggleService(code: string) {
+    setForm((s) => ({ ...s, relatedServices: s.relatedServices.includes(code) ? s.relatedServices.filter((x) => x !== code) : [...s.relatedServices, code] }));
+  }
+
+  const categorySlug = categories.find((c) => c.id === form.categoryId)?.slug ?? "";
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -92,8 +134,12 @@ export default function EditArticlePage() {
           ...form,
           categoryId: form.categoryId || null,
           featuredImageUrl: form.featuredImageUrl || null,
+          videoUrl: form.videoUrl || null,
+          lastReviewedAt: form.lastReviewedAt || null,
+          nextReviewAt: form.nextReviewAt || null,
           tags: form.tags.split(",").map((t) => t.trim()).filter(Boolean),
           relatedProducts: form.relatedProducts,
+          relatedServices: form.relatedServices,
         }),
       });
       const d = await r.json();
@@ -115,7 +161,13 @@ export default function EditArticlePage() {
           <Link className="outline-button" href="/content/faqs">FAQ bog‘lash</Link>
           <Link className="outline-button" href="/content/media">Media Library</Link>
           <Link className="outline-button" href="/content/categories">Kategoriyalar</Link>
-          <a href={`/maqolalar/${form.slug}`} target="_blank" rel="noreferrer">Public sahifani ko‘rish ↗</a>
+          {categorySlug ? (
+            <a href={publicArticleHref(form.locale, categorySlug, form.slug)} target="_blank" rel="noreferrer">
+              Public sahifani ko‘rish ↗
+            </a>
+          ) : (
+            <span className="helper">Public havola uchun kategoriya tanlang</span>
+          )}
         </div>
       </header>
       <div className="translation-status">
@@ -163,6 +215,24 @@ export default function EditArticlePage() {
               )}
               <p className="helper">Maqola oxirida ko‘rsatiladigan mahsulotlar (maqola tili bo‘yicha aniqlanadi).</p>
             </div>
+            <div className="wide">
+              <span className="field-label">Tegishli xizmatlar</span>
+              {services.length === 0 ? (
+                <p className="helper">Hali xizmat kiritilmagan — Sozlamalar → Filiallar/Xizmatlar bo‘limidan qo‘shiladi.</p>
+              ) : (
+                <div className="related-grid">
+                  {services.map((s) => (
+                    <label key={s.code} className="related-check">
+                      <input type="checkbox" checked={form.relatedServices.includes(s.code)} onChange={() => toggleService(s.code)} />
+                      <span>{s.name}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+            <label className="wide">Video havolasi<input value={form.videoUrl} onChange={(e) => set("videoUrl", e.target.value)} placeholder="https://www.youtube.com/watch?v=…" /></label>
+            <label>Oxirgi tibbiy tekshiruv<input type="date" value={form.lastReviewedAt} onChange={(e) => set("lastReviewedAt", e.target.value)} /></label>
+            <label>Keyingi tekshiruv sanasi<input type="date" value={form.nextReviewAt} onChange={(e) => set("nextReviewAt", e.target.value)} /></label>
             <label className="wide">SEO title<input value={form.seoTitle} onChange={(e) => set("seoTitle", e.target.value)} /></label>
             <label className="wide">SEO description<textarea value={form.seoDescription} onChange={(e) => set("seoDescription", e.target.value)} /></label>
             <label className="wide">Tibbiy ogohlantirish<textarea value={form.medicalDisclaimer} onChange={(e) => set("medicalDisclaimer", e.target.value)} /></label>
@@ -173,6 +243,27 @@ export default function EditArticlePage() {
           </div>
         </section>
       </form>
+
+      <section className="panel editor-card">
+        <h2>Tahrir tarixi</h2>
+        {publishedAt ? (
+          <p className="helper">Birinchi nashr: {new Date(publishedAt).toLocaleString("uz-UZ")}</p>
+        ) : (
+          <p className="helper">Hali nashr qilinmagan.</p>
+        )}
+        {revisions.length === 0 ? (
+          <p className="helper">Saqlangan versiya yo‘q — birinchi tahrirdan keyin shu yerda ko‘rinadi.</p>
+        ) : (
+          <ul className="revision-list">
+            {revisions.map((r) => (
+              <li key={r.id}>
+                <span>{new Date(r.createdAt).toLocaleString("uz-UZ")}</span>
+                <span className="helper">{r.editor ?? "noma’lum muharrir"}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </main>
   );
 }

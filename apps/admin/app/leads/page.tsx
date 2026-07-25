@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { AdminSidebar } from "../components/AdminSidebar";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
 
@@ -61,11 +62,7 @@ export default function LeadsPage() {
 
   return (
     <div className="admin-shell">
-      <aside className="sidebar">
-        <div className="logo-row"><div className="brand-mark small">S</div><strong>Soundz</strong></div>
-        <nav><Link className="active" href="/leads">Murojaatlar</Link><Link href="/appointments">Qabullar</Link><Link href="/settings/branches">Filiallar</Link><span className="disabled">Mahsulotlar</span></nav>
-        <button className="ghost-button" onClick={logout}>Chiqish</button>
-      </aside>
+      <AdminSidebar />
       <main className="admin-main">
         <header className="page-header"><div><p className="eyebrow">CRM-LITE</p><h1>Murojaatlar</h1><p>Saytdan kelgan barcha mijoz so‘rovlari.</p></div><div className="live-pill"><span /> Jonli tizim</div></header>
         <section className="metrics">

@@ -36,8 +36,16 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          # DIQQAT: NEXT_PUBLIC_* qiymatlari brauzer bundle'iga SHU YERDA,
+          # build vaqtida singdiriladi — serverdagi .env ularni o'zgartira olmaydi.
+          #
+          # API manzili NISBIY: brauzer doim sayt turgan domenga murojaat qiladi
+          # (gateway /v1/ ni api konteynerga uzatadi). Shu sabab new.soundz.uz'da
+          # ham, soundz.uz'ga ko'chgandan keyin ham qayta build kerak emas.
+          # Ilgari bu yerda api.soundz.uz turgan edi — u domen uchun DNS yo'q va
+          # saytdagi barcha formalar jimgina uzilib qolgan edi.
           build-args: |
-            NEXT_PUBLIC_API_URL=https://api.soundz.uz/v1
-            NEXT_PUBLIC_SITE_URL=https://soundz.uz
+            NEXT_PUBLIC_API_URL=/v1
+            NEXT_PUBLIC_SITE_URL=${{ vars.NEXT_PUBLIC_SITE_URL || 'https://soundz.uz' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

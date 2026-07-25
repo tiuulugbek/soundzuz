@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { AdminSidebar } from "../components/AdminSidebar";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
 const statuses = ["PENDING", "CONFIRMED", "CONTACTED", "ARRIVED", "NO_SHOW", "CANCELLED", "RESCHEDULED", "COMPLETED"];
@@ -53,11 +54,7 @@ export default function AppointmentsPage() {
 
   return (
     <div className="admin-shell">
-      <aside className="sidebar">
-        <div className="logo-row"><div className="brand-mark small">S</div><strong>Soundz</strong></div>
-        <nav><Link href="/leads">Murojaatlar</Link><Link className="active" href="/appointments">Qabullar</Link><Link href="/settings/branches">Filiallar</Link><span className="disabled">Mahsulotlar</span></nav>
-        <button className="ghost-button" onClick={logout}>Chiqish</button>
-      </aside>
+      <AdminSidebar />
       <main className="admin-main">
         <header className="page-header"><div><p className="eyebrow">APPOINTMENTS</p><h1>Qabullar</h1><p>Oldindan yozilgan audiometriya va maslahat qabullari.</p></div></header>
         <section className="metrics"><article><span>Ko‘rsatilmoqda</span><strong>{items.length}</strong></article><article><span>Kutilmoqda</span><strong>{items.filter((x) => x.status === "PENDING").length}</strong></article><article><span>Tasdiqlangan</span><strong>{items.filter((x) => x.status === "CONFIRMED").length}</strong></article></section>

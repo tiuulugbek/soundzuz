@@ -59,7 +59,37 @@ export type ArticleDetail = {
   tags?: ContentTag[];
   relatedProducts?: RelatedProduct[];
   relatedServices?: Array<{ code: string }>;
+  videoUrl?: string | null;
 };
+
+/**
+ * Video havolasini <iframe> uchun embed manziliga aylantiradi.
+ * Faqat YouTube va Vimeo qo'llab-quvvatlanadi (CSP frame-src ham shularga ochiq);
+ * boshqasi bo'lsa null qaytadi va sahifada video ko'rsatilmaydi.
+ */
+export function videoEmbedUrl(url?: string | null): string | null {
+  if (!url) return null;
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return null;
+  }
+  const host = parsed.hostname.replace(/^www\./, "");
+  if (host === "youtube.com" || host === "m.youtube.com") {
+    const id = parsed.searchParams.get("v");
+    return id ? `https://www.youtube.com/embed/${encodeURIComponent(id)}` : null;
+  }
+  if (host === "youtu.be") {
+    const id = parsed.pathname.slice(1);
+    return id ? `https://www.youtube.com/embed/${encodeURIComponent(id)}` : null;
+  }
+  if (host === "vimeo.com") {
+    const id = parsed.pathname.split("/").filter(Boolean)[0];
+    return id && /^\d+$/.test(id) ? `https://player.vimeo.com/video/${id}` : null;
+  }
+  return null;
+}
 
 export type SearchAnswer = {
   text: string;

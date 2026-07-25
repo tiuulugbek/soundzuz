@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { AdminSidebar } from "../../components/AdminSidebar";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
 type Service = { id: string; code: string; name: string; durationMinutes: number; isActive: boolean };
@@ -59,7 +60,7 @@ export default function BranchSettingsPage() {
   function minutes(value: number): string { return `${String(Math.floor(value / 60)).padStart(2, "0")}:${String(value % 60).padStart(2, "0")}`; }
   function logout(): void { localStorage.removeItem("soundz_admin_token"); router.push("/login"); }
 
-  return <div className="admin-shell"><aside className="sidebar"><div className="logo-row"><div className="brand-mark small">S</div><strong>Soundz</strong></div><nav><Link href="/leads">Murojaatlar</Link><Link href="/appointments">Qabullar</Link><Link className="active" href="/settings/branches">Filiallar</Link><span className="disabled">Mahsulotlar</span></nav><button className="ghost-button" onClick={logout}>Chiqish</button></aside>
+  return <div className="admin-shell"><AdminSidebar />
     <main className="admin-main"><header className="page-header"><div><p className="eyebrow">OPERATING SETUP</p><h1>Filial va xizmatlar</h1><p>Qabul vaqtlarini chiqarish uchun filial, xizmat va ish jadvalini sozlang.</p></div></header>
       {message && <p className="notice">{message}</p>}
       <div className="settings-grid"><section className="panel settings-card"><h2>Yangi filial</h2><form onSubmit={createBranch}><label>Nomi<input value={branchForm.name} onChange={(e) => setBranchForm({ ...branchForm, name: e.target.value, slug: e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") })} required /></label><label>Slug<input value={branchForm.slug} onChange={(e) => setBranchForm({ ...branchForm, slug: e.target.value })} required /></label><label>Telefon<input value={branchForm.phone} onChange={(e) => setBranchForm({ ...branchForm, phone: e.target.value })} /></label><label>Manzil<textarea value={branchForm.address} onChange={(e) => setBranchForm({ ...branchForm, address: e.target.value })} /></label><button className="primary-button">Filial yaratish</button></form></section>

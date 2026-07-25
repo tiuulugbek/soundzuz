@@ -61,6 +61,10 @@
 .sz-article__reviewed { color: var(--sz-success); }
 .sz-article__body { color: var(--sz-text); font: 400 var(--sz-text-lg)/1.7 var(--sz-font-body); }
 .sz-article__body p { margin: 0 0 1.25rem; }
+/* Maqoladagi video — 16:9, mobil ekranda ham to'liq sig'adi. */
+.sz-article__video { margin: 2rem 0 0; padding: 0; }
+.sz-article__video iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: var(--sz-r-sm); background: var(--sz-dark); }
+
 .sz-article__disclaimer { margin-top: 2rem; background: var(--sz-orange-tint); border-left: 3px solid var(--sz-orange); border-radius: var(--sz-r-sm); padding: 1rem 1.25rem; }
 .sz-article__disclaimer strong { display: block; color: var(--sz-dark); margin-bottom: 0.25rem; font-family: var(--sz-font-display); }
 .sz-article__disclaimer p { margin: 0; color: var(--sz-text-muted); font-size: var(--sz-text-sm); }

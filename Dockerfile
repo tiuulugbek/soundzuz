@@ -17,7 +17,9 @@ RUN pnpm install --frozen-lockfile
 
 FROM dependencies AS builder
 COPY . .
-ARG NEXT_PUBLIC_API_URL=https://api.soundz.uz/v1
+# Brauzer bundle'iga singdiriladi. API nisbiy — sayt qaysi domenda tursa,
+# so'rov o'sha domenga ketadi (gateway `/v1/` ni api'ga uzatadi).
+ARG NEXT_PUBLIC_API_URL=/v1
 ARG NEXT_PUBLIC_SITE_URL=https://soundz.uz
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL

@@ -6,7 +6,7 @@ import { SiteFooter } from "../../../../../components/site/site-footer";
 import { JsonLd, breadcrumbJsonLd, faqJsonLd } from "../../../../../components/seo/json-ld";
 import type { Locale } from "../../../../../i18n/routing";
 import { SITE_URL, buildPageMetadata, localePath } from "../../../../../lib/seo";
-import { fetchArticle } from "../../../../../lib/content";
+import { fetchArticle, videoEmbedUrl } from "../../../../../lib/content";
 import { formatPrice } from "../../../../../lib/catalog";
 import { ArticleEngagement } from "../../../../../components/content/article-engagement";
 import "../../learn.css";
@@ -32,6 +32,9 @@ export default async function ArticlePage({ params }: PageParams) {
   const t = await getTranslations({ locale: rawLocale, namespace: "learn" });
   const a = await fetchArticle(locale, slug);
   if (!a) notFound();
+
+  // Faqat qo'llab-quvvatlanadigan (YouTube/Vimeo) havolalar embed qilinadi.
+  const videoEmbed = videoEmbedUrl(a.videoUrl);
 
   const articleLd: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -69,6 +72,17 @@ export default async function ArticlePage({ params }: PageParams) {
             {a.reading_time_minutes ? <span>{t("list.readMin", { min: a.reading_time_minutes })}</span> : null}
           </div>
           <article className="sz-article__body" dangerouslySetInnerHTML={{ __html: a.content }} />
+          {videoEmbed ? (
+            <figure className="sz-article__video">
+              <iframe
+                src={videoEmbed}
+                title={a.title}
+                loading="lazy"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </figure>
+          ) : null}
           {a.medical_disclaimer ? (
             <aside className="sz-article__disclaimer">
               <strong>{t("article.disclaimerTitle")}</strong>

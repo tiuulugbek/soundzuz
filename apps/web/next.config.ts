@@ -31,6 +31,8 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net https://mc.yandex.ru; " +
       `connect-src 'self'${extraConnect} https://www.google-analytics.com https://region1.google-analytics.com https://mc.yandex.ru https://www.facebook.com; ` +
       "img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; " +
+      // Maqoladagi video (faqat YouTube/Vimeo — lib/content.ts videoEmbedUrl bilan mos).
+      "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; " +
       `frame-ancestors 'none'; base-uri 'self'; form-action 'self'${extraConnect}; upgrade-insecure-requests`,
   },
 ];

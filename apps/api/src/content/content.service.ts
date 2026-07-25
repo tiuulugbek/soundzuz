@@ -61,7 +61,7 @@ export class ContentService {
 
   async getArticle(slug: string, locale: Locale = "uz") {
     const rows = await this.prisma.$queryRawUnsafe<any[]>(
-      `SELECT a.*, c.name AS "categoryName", c.slug AS "categorySlug",
+      `SELECT a.*, a.video_url AS "videoUrl", c.name AS "categoryName", c.slug AS "categorySlug",
         COALESCE((SELECT json_agg(json_build_object(
           'id',f.id,'question',f.question,'shortAnswer',f.short_answer,'fullAnswer',f.full_answer,'sortOrder',f.sort_order
         ) ORDER BY f.sort_order,f.question)
@@ -168,6 +168,7 @@ export class ContentService {
               a.seo_description AS "seoDescription", a.reading_time_minutes AS "readingTimeMinutes",
               a.medical_disclaimer AS "medicalDisclaimer", a.published_at AS "publishedAt",
               a.last_reviewed_at AS "lastReviewedAt", a.next_review_at AS "nextReviewAt",
+              a.video_url AS "videoUrl",
               COALESCE((SELECT json_agg(t.name ORDER BY t.name)
                 FROM article_tag_relations tr JOIN article_tags t ON t.id=tr.tag_id WHERE tr.article_id=a.id),'[]') AS tags,
               COALESCE((SELECT json_agg(crp.product_slug ORDER BY crp.sort_order)
@@ -187,15 +188,17 @@ export class ContentService {
     const rows = await this.prisma.$queryRawUnsafe<any[]>(
       `INSERT INTO articles
        (id, slug, locale, category_id, title, excerpt, content, status, featured_image_url, author_name, reviewer_name,
-        seo_title, seo_description, reading_time_minutes, medical_disclaimer, published_at, last_reviewed_at, next_review_at)
+        seo_title, seo_description, reading_time_minutes, medical_disclaimer, published_at, last_reviewed_at, next_review_at,
+        video_url)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8::"ContentStatus",$9,$10,$11,$12,$13,$14,$15,
-               CASE WHEN $8 = 'PUBLISHED' THEN NOW() ELSE NULL END,$16,$17) RETURNING *`,
+               CASE WHEN $8 = 'PUBLISHED' THEN NOW() ELSE NULL END,$16,$17,$18) RETURNING *`,
       id, input.slug, locale, input.categoryId ?? null, input.title, input.excerpt,
       sanitizeArticleContent(input.content), status, input.featuredImageUrl ?? null, input.authorName ?? null, input.reviewerName ?? null,
       input.seoTitle ?? null, input.seoDescription ?? null, input.readingTimeMinutes ?? 5,
       input.medicalDisclaimer ?? "Ushbu ma’lumot umumiy tushuntirish uchun berilgan va individual tibbiy tashxis o‘rnini bosmaydi.",
       input.lastReviewedAt ? new Date(input.lastReviewedAt) : null,
       input.nextReviewAt ? new Date(input.nextReviewAt) : null,
+      input.videoUrl ?? null,
     );
     await this.setArticleTags(id, locale, input.tags);
     await this.setArticleRelated(id, input.relatedProducts, input.relatedServices);
@@ -211,12 +214,13 @@ export class ContentService {
        status=$8::"ContentStatus", featured_image_url=$9, author_name=$10, reviewer_name=$11, seo_title=$12,
        seo_description=$13, reading_time_minutes=$14, medical_disclaimer=$15,
        published_at=CASE WHEN $8='PUBLISHED' THEN COALESCE(published_at,NOW()) ELSE published_at END,
-       last_reviewed_at=$16, next_review_at=$17, updated_at=NOW() WHERE id=$1 RETURNING *`,
+       last_reviewed_at=$16, next_review_at=$17, video_url=$18, updated_at=NOW() WHERE id=$1 RETURNING *`,
       id, input.slug, locale, input.categoryId ?? null, input.title, input.excerpt,
       sanitizeArticleContent(input.content), status, input.featuredImageUrl ?? null, input.authorName ?? null, input.reviewerName ?? null,
       input.seoTitle ?? null, input.seoDescription ?? null, input.readingTimeMinutes ?? 5,
       input.medicalDisclaimer ?? null, input.lastReviewedAt ? new Date(input.lastReviewedAt) : null,
       input.nextReviewAt ? new Date(input.nextReviewAt) : null,
+      input.videoUrl ?? null,
     );
     if (input.tags !== undefined) await this.setArticleTags(id, locale, input.tags);
     if (input.relatedProducts !== undefined || input.relatedServices !== undefined) {
