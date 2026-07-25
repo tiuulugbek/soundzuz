@@ -57,6 +57,10 @@ services:
       DB_HOST: postgres
       DB_PORT: 5432
       RUN_DATABASE_MIGRATIONS: "true"
+    volumes:
+      # `local` media drayveri fayllarni shu papkaga yozadi. Volume BO'LMASA
+      # har deploy'da konteyner qayta yaratiladi va yuklangan rasmlar yo'qoladi.
+      - media_storage:${MEDIA_STORAGE_PATH:-/app/storage/media}
     depends_on:
       postgres: { condition: service_healthy }
       redis: { condition: service_healthy }
@@ -147,6 +151,7 @@ services:
 volumes:
   postgres_data:
   redis_data:
+  media_storage:
 
 networks:
   backend:
