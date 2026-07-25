@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { browserApiUrl } from "../../lib/api-url";
 
-const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
+const PUBLIC_API_URL = browserApiUrl();
 
 type Labels = { prompt: string; yes: string; no: string; thanks: string };
 

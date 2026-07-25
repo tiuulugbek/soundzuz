@@ -1,9 +1,9 @@
-const API_URL = process.env.API_INTERNAL_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
-const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
+import { serverApiUrl, toMediaUrl } from "./api-url";
+
+const API_URL = serverApiUrl();
 
 export function locMediaUrl(url?: string | null): string {
-  if (!url) return "";
-  return /^https?:\/\//.test(url) ? url : `${PUBLIC_API_URL.replace(/\/v1$/, "")}${url}`;
+  return toMediaUrl(url);
 }
 
 export type Schedule = { weekday: number; openMinute: number; closeMinute: number; isClosed: boolean };
@@ -21,7 +21,9 @@ export type BranchDetail = Branch & { services?: Service[] };
 
 async function safeJson<T>(url: string, fallback: T, revalidate: number): Promise<T> {
   try {
-    const res = await fetch(url, { next: { revalidate } });
+    // Taymaut: API javob bermay qolsa sahifa (va build) osilib qolmasin —
+    // bo'sh ro'yxat bilan davom etamiz.
+    const res = await fetch(url, { next: { revalidate }, signal: AbortSignal.timeout(8_000) });
     if (!res.ok) return fallback;
     return (await res.json()) as T;
   } catch {

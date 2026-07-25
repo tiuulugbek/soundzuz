@@ -1,13 +1,12 @@
 import type { Locale } from "../i18n/routing";
+import { serverApiUrl, toMediaUrl } from "./api-url";
 
 // Server-side fetch: ichki Docker tarmog'i (api:4000) — ishonchli, tashqi DNS'ga bog'liq emas.
 // mediaUrl esa brauzer uchun ochiq (public) URL ishlatadi.
-const API_URL = process.env.API_INTERNAL_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
-const PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
+const API_URL = serverApiUrl();
 
 export function mediaUrl(url?: string | null): string {
-  if (!url) return "";
-  return /^https?:\/\//.test(url) ? url : `${PUBLIC_API_URL.replace(/\/v1$/, "")}${url}`;
+  return toMediaUrl(url);
 }
 
 export type Product = {
@@ -79,7 +78,9 @@ const EMPTY_FILTERS: Filters = { brands: [], formFactors: [], technologyLevels: 
 
 async function safeJson<T>(url: string, fallback: T, revalidate: number): Promise<T> {
   try {
-    const res = await fetch(url, { next: { revalidate } });
+    // Taymaut: API javob bermay qolsa sahifa (va build) osilib qolmasin —
+    // bo'sh ro'yxat bilan davom etamiz.
+    const res = await fetch(url, { next: { revalidate }, signal: AbortSignal.timeout(8_000) });
     if (!res.ok) return fallback;
     return (await res.json()) as T;
   } catch {

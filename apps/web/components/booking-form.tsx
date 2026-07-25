@@ -1,8 +1,9 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { browserApiUrl } from "../lib/api-url";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
+const API_URL = browserApiUrl();
 
 type Branch = { id: string; name: string; address?: string | null };
 type Service = { id: string; name: string; durationMinutes: number };

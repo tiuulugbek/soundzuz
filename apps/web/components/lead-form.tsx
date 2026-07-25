@@ -1,8 +1,9 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { browserApiUrl } from "../lib/api-url";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
+const API_URL = browserApiUrl();
 
 export function LeadForm() {
   const [name, setName] = useState(""); const [phone, setPhone] = useState(""); const [type, setType] = useState("HEARING_AID_CONSULTATION");

@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
 import { routing, type Locale } from "../i18n/routing";
+import { serverApiUrl } from "../lib/api-url";
 import { SITE_URL, localePath } from "../lib/seo";
 
 const locales = routing.locales;
 
 // SSR fetch — ichki API URL (tashqi domen konteyner ichidan ulanmaydi).
-const API_URL = process.env.API_INTERNAL_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
+const API_URL = serverApiUrl();
 
 type Entry = MetadataRoute.Sitemap[number];
 
