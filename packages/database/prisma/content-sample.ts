@@ -3,7 +3,9 @@
  * Idempotent (ON CONFLICT). Audiolog keyin tekshirib to'ldiradi/tahrirlaydi.
  */
 
-type L = { uz: string; ru: string; en: string };
+import { EXTRA_ARTICLES, EXTRA_FAQS } from "./content-sample-extra.js";
+import type { L } from "./content-sample-types.js";
+
 const LOCALES = ["uz", "ru", "en"] as const;
 
 const AUTHOR: L = { uz: "Soundz audiologiya jamoasi", ru: "Команда аудиологии Soundz", en: "Soundz audiology team" };
@@ -226,7 +228,8 @@ export function contentStatements(): { text: string; values: unknown[] }[] {
     }
   }
 
-  for (const a of ARTICLES) {
+  // Asosiy ro'yxat + content-sample-extra.ts dagi qo'shimcha maqolalar.
+  for (const a of [...ARTICLES, ...EXTRA_ARTICLES]) {
     for (const loc of LOCALES) {
       stmts.push({
         text: `INSERT INTO articles (id,slug,locale,category_id,title,excerpt,content,status,author_name,reviewer_name,reading_time_minutes,medical_disclaimer,published_at) VALUES ($1,$2,$3,(SELECT id FROM article_categories WHERE slug=$4 AND locale=$3 LIMIT 1),$5,$6,$7,'PUBLISHED',$8,$9,$10,$11,NOW()) ON CONFLICT (slug,locale) DO UPDATE SET category_id=(SELECT id FROM article_categories WHERE slug=$4 AND locale=$3 LIMIT 1),title=EXCLUDED.title,excerpt=EXCLUDED.excerpt,content=EXCLUDED.content,status='PUBLISHED',author_name=EXCLUDED.author_name,reviewer_name=EXCLUDED.reviewer_name,reading_time_minutes=EXCLUDED.reading_time_minutes,medical_disclaimer=EXCLUDED.medical_disclaimer,updated_at=NOW()`,
@@ -244,7 +247,7 @@ export function contentStatements(): { text: string; values: unknown[] }[] {
     }
   }
 
-  for (const f of FAQS) {
+  for (const f of [...FAQS, ...EXTRA_FAQS]) {
     for (const loc of LOCALES) {
       stmts.push({
         text: `INSERT INTO faqs (id,locale,category_id,question,short_answer,status,sort_order,published_at) VALUES ($1,$2,(SELECT id FROM faq_categories WHERE slug=$3 AND locale=$2 LIMIT 1),$4,$5,'PUBLISHED',$6,NOW()) ON CONFLICT (id) DO UPDATE SET category_id=(SELECT id FROM faq_categories WHERE slug=$3 AND locale=$2 LIMIT 1),question=EXCLUDED.question,short_answer=EXCLUDED.short_answer,status='PUBLISHED',sort_order=EXCLUDED.sort_order,updated_at=NOW()`,
