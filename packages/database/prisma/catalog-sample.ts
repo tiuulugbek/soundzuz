@@ -239,7 +239,15 @@ export function catalogStatements(): { text: string; values: unknown[] }[] {
     });
   }
 
-  // Namuna filiallar (Branch — tarjimasiz). Aniq "namuna" deb belgilangan; asoschi admin'da almashtiradi.
+  // Namuna filiallar (Branch — tarjimasiz).
+  //
+  // DIQQAT: filial JONLI saytda manzil va telefon bilan ko'rinadi. Soxta manzil
+  // ("haqiqiy manzil bilan almashtiring") tashrifchiga mavjud bo'lmagan joyni
+  // ko'rsatadi — bo'sh holatdan ancha yomon. Shu sabab bu blok standart holatda
+  // ISHLAMAYDI; faqat lokal demo uchun SEED_SAMPLE_BRANCHES=true bilan yoqiladi.
+  // Haqiqiy filiallarni asoschi admin panel orqali kiritadi (AGENTS.md, 12-band).
+  if (process.env.SEED_SAMPLE_BRANCHES !== "true") return stmts;
+
   const branches = [
     { slug: "toshkent-markaz", name: "Soundz — Toshkent markaz (namuna)", phone: "+998 71 200 00 00", address: "Toshkent sh. (haqiqiy manzil bilan almashtiring)" },
     { slug: "toshkent-yunusobod", name: "Soundz — Yunusobod (namuna)", phone: "+998 71 200 00 01", address: "Toshkent sh., Yunusobod tumani (haqiqiy manzil bilan almashtiring)" },
