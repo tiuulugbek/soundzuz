@@ -117,3 +117,64 @@
 .sz-learn__cat--faq { background: var(--sz-dark-scope, var(--sz-dark)); color: var(--sz-text-on-dark); }
 .sz-learn__cat--faq h3 { color: var(--sz-text-on-dark); }
 .sz-learn__cat--faq p { color: var(--sz-text-muted-on-dark); }
+
+/* Maqola: tegishli moslamalar, teglar, feedback (Content Hub v2) */
+.sz-article__related { margin: 2.5rem 0; }
+.sz-article__related h2 { font: 700 var(--sz-h3)/1.1 var(--sz-font-display); letter-spacing: var(--sz-tracking-tight); color: var(--sz-dark); margin: 0 0 1.25rem; }
+.sz-article__related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0.85rem; }
+.sz-article__product {
+  display: flex; flex-direction: column; gap: 0.3rem;
+  background: var(--sz-surface-warm);
+  border: 1px solid var(--sz-line);
+  border-radius: var(--sz-r-md);
+  padding: 1.1rem 1.2rem;
+  text-decoration: none;
+  transition: border-color var(--sz-dur) var(--sz-ease), transform var(--sz-dur) var(--sz-ease);
+}
+.sz-article__product:hover { border-color: var(--sz-orange-soft); transform: translateY(-2px); }
+.sz-article__product-brand { font: 600 var(--sz-text-xs)/1 var(--sz-font-body); letter-spacing: var(--sz-tracking-wide); text-transform: uppercase; color: var(--sz-text-soft); }
+.sz-article__product strong { font: 700 var(--sz-text-lg)/1.25 var(--sz-font-display); color: var(--sz-dark); }
+.sz-article__product-desc { font: 400 var(--sz-text-sm)/1.5 var(--sz-font-body); color: var(--sz-text-muted); }
+.sz-article__product-price { margin-top: 0.35rem; font: 600 var(--sz-text-sm)/1 var(--sz-font-body); color: var(--sz-orange-strong); }
+
+.sz-article__tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 2rem 0; }
+.sz-article__tag { font: 500 var(--sz-text-sm)/1 var(--sz-font-body); color: var(--sz-text-muted); background: var(--sz-surface-gray); border: 1px solid var(--sz-line); border-radius: var(--sz-r-pill); padding: 0.4rem 0.85rem; }
+
+.sz-feedback {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;
+  margin: 2rem 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--sz-surface-gray);
+  border: 1px solid var(--sz-line);
+  border-radius: var(--sz-r-lg);
+}
+.sz-feedback__prompt { font: 600 var(--sz-text-base)/1.3 var(--sz-font-display); color: var(--sz-dark); }
+.sz-feedback__btns { display: flex; gap: 0.6rem; margin-left: auto; }
+.sz-feedback__btns button {
+  cursor: pointer;
+  font: 600 var(--sz-text-sm)/1 var(--sz-font-body);
+  color: var(--sz-text);
+  background: var(--sz-surface);
+  border: 1px solid var(--sz-line-strong);
+  border-radius: var(--sz-r-pill);
+  padding: 0.55rem 1.1rem;
+  transition: border-color var(--sz-dur) var(--sz-ease), background var(--sz-dur) var(--sz-ease);
+}
+.sz-feedback__btns button:hover { border-color: var(--sz-orange); background: var(--sz-orange-tint); }
+.sz-feedback__thanks { margin: 0; font: 600 var(--sz-text-base)/1.3 var(--sz-font-display); color: var(--sz-success); }
+
+/* AI qidiruv javobi (Content Hub v2 — ekstraktiv, tashxis emas) */
+.sz-answer {
+  background: linear-gradient(135deg, var(--sz-orange-tint), var(--sz-surface-warm));
+  border: 1px solid var(--sz-orange-soft);
+  border-radius: var(--sz-r-lg);
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2rem;
+}
+.sz-answer__head { margin-bottom: 0.75rem; }
+.sz-answer__badge { font: 700 var(--sz-text-xs)/1 var(--sz-font-body); letter-spacing: var(--sz-tracking-wide); text-transform: uppercase; color: var(--sz-orange-strong); background: var(--sz-surface); border-radius: var(--sz-r-pill); padding: 0.4rem 0.85rem; }
+.sz-answer__text { font: 400 var(--sz-text-lg)/1.6 var(--sz-font-body); color: var(--sz-dark); margin: 0 0 0.85rem; }
+.sz-answer__source { display: inline-block; font: 600 var(--sz-text-sm)/1.4 var(--sz-font-body); color: var(--sz-orange-strong); text-decoration: none; margin-bottom: 0.85rem; }
+.sz-answer__source:hover { text-decoration: underline; }
+.sz-answer__source--plain { color: var(--sz-text-muted); }
+.sz-answer__disclaimer { font: 400 var(--sz-text-sm)/1.55 var(--sz-font-body); color: var(--sz-text-muted); margin: 0 0 1rem; padding: 0.6rem 0.85rem; background: var(--sz-surface); border-radius: var(--sz-r-md); }

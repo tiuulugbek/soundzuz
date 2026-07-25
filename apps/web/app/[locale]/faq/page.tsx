@@ -26,7 +26,7 @@ export default async function FaqPage({ params }: PageParams) {
 
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd([{ name: "Soundz", path: "/" }, { name: t("faq.title"), path: "/faq" }])} />
+      <JsonLd data={breadcrumbJsonLd([{ name: "Soundz", path: "/" }, { name: t("faq.title"), path: "/faq" }], locale)} />
       {faqs.length > 0 ? (
         <JsonLd data={faqJsonLd(faqs.map((f) => ({ question: f.question, answer: f.fullAnswer ?? f.shortAnswer })))} />
       ) : null}

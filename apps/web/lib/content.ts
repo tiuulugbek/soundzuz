@@ -25,6 +25,17 @@ export type ArticleSummary = {
   categorySlug?: string | null;
 };
 
+export type ContentTag = { slug: string; name: string };
+export type RelatedProduct = {
+  slug: string;
+  name: string;
+  brand?: string | null;
+  brandSlug?: string | null;
+  priceFrom?: number | null;
+  inStock?: boolean;
+  shortDescription?: string | null;
+};
+
 /** getArticle SELECT a.* qaytaradi — asosiy maydonlar snake_case. */
 export type ArticleDetail = {
   id: string;
@@ -45,6 +56,15 @@ export type ArticleDetail = {
   categoryName?: string | null;
   categorySlug?: string | null;
   faqs?: Array<{ id: string; question: string; shortAnswer: string; fullAnswer?: string | null; sortOrder: number }>;
+  tags?: ContentTag[];
+  relatedProducts?: RelatedProduct[];
+  relatedServices?: Array<{ code: string }>;
+};
+
+export type SearchAnswer = {
+  text: string;
+  source: { type: "faq"; question: string; articleSlug?: string | null } | { type: "article"; title: string; slug: string };
+  disclaimer: string;
 };
 
 export type Faq = {
@@ -91,10 +111,21 @@ export async function fetchFaqs(locale: Locale, opts: { category?: string; searc
   return safeJson<Faq[]>(`${API_URL}/content/faqs?${q.toString()}`, [], 300);
 }
 
-export async function searchKnowledge(locale: Locale, query: string): Promise<{ articles: ArticleSummary[]; faqs: Faq[] }> {
-  if (!query.trim()) return { articles: [], faqs: [] };
+export async function searchKnowledge(
+  locale: Locale,
+  query: string,
+): Promise<{ articles: ArticleSummary[]; faqs: Faq[]; answer: SearchAnswer | null }> {
+  if (!query.trim()) return { articles: [], faqs: [], answer: null };
   const q = new URLSearchParams({ locale, q: query });
-  return safeJson<{ articles: ArticleSummary[]; faqs: Faq[] }>(`${API_URL}/content/search?${q.toString()}`, { articles: [], faqs: [] }, 30);
+  return safeJson<{ articles: ArticleSummary[]; faqs: Faq[]; answer: SearchAnswer | null }>(
+    `${API_URL}/content/search?${q.toString()}`,
+    { articles: [], faqs: [], answer: null },
+    30,
+  );
+}
+
+export async function fetchTags(locale: Locale): Promise<Array<{ slug: string; name: string; count: number }>> {
+  return safeJson<Array<{ slug: string; name: string; count: number }>>(`${API_URL}/content/tags?locale=${locale}`, [], 300);
 }
 
 /** FAQ'larni kategoriya bo'yicha guruhlaydi (FAQ sahifasi uchun). */

@@ -44,8 +44,8 @@ export default async function BranchPage({ params }: PageParams) {
         { name: "Soundz", path: "/" },
         { name: t("title"), path: "/branches" },
         { name: branch.name, path: `/branches/${slug}` },
-      ])} />
-      <JsonLd data={localBusinessJsonLd({ name: branch.name, slug: branch.slug, address: branch.address, phone: branch.phone, imageUrl: branch.imageUrl ? locMediaUrl(branch.imageUrl) : undefined })} />
+      ], locale)} />
+      <JsonLd data={localBusinessJsonLd({ name: branch.name, slug: branch.slug, address: branch.address, phone: branch.phone, imageUrl: branch.imageUrl ? locMediaUrl(branch.imageUrl) : undefined }, locale)} />
       <SiteHeader />
       <main className="sz-loc">
         <section className="sz-loc__hero">

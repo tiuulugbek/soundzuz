@@ -36,7 +36,7 @@ export default async function HearingCheckPage({ params }: PageParams) {
         data={breadcrumbJsonLd([
           { name: "Soundz", path: "/" },
           { name: t("hero.eyebrow"), path: "/tools/hearing-check" },
-        ])}
+        ], locale)}
       />
       <SiteHeader />
       <main className="sz-tool">

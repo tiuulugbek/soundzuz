@@ -1,88 +1,130 @@
 import type { MetadataRoute } from "next";
+import { routing, type Locale } from "../i18n/routing";
+import { SITE_URL, localePath } from "../lib/seo";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://soundz.uz";
+const locales = routing.locales;
+
+// SSR fetch — ichki API URL (tashqi domen konteyner ichidan ulanmaydi).
+const API_URL = process.env.API_INTERNAL_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/v1";
+
+type Entry = MetadataRoute.Sitemap[number];
+
+/** Bitta yo'lni uch tilda (uz prefikssiz, ru/en prefiksli) sitemap yozuviga aylantiradi. */
+function forAllLocales(path: string, priority: number, changeFrequency: Entry["changeFrequency"], lastModified?: Date): Entry[] {
+  return locales.map((locale, index) => ({
+    url: `${SITE_URL}${localePath(locale, path)}`,
+    changeFrequency,
+    // ru/en biroz pastroq — uz asosiy til.
+    priority: index === 0 ? priority : Math.max(0.1, priority - 0.15),
+    ...(lastModified ? { lastModified } : {}),
+  }));
+}
+
+async function getJson<T>(url: string, fallback: T): Promise<T> {
+  try {
+    const response = await fetch(url, { next: { revalidate: 3600 } });
+    if (!response.ok) return fallback;
+    return (await response.json()) as T;
+  } catch {
+    return fallback;
+  }
+}
+
+/** Statik bo'limlar — barcha tillarda mavjud. */
+const STATIC_PATHS: Array<{ path: string; priority: number; changeFrequency: Entry["changeFrequency"] }> = [
+  { path: "/", priority: 1, changeFrequency: "weekly" },
+  { path: "/hearing-aids", priority: 0.9, changeFrequency: "daily" },
+  { path: "/hearing-aids/prices", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/hearing-aids/rechargeable", priority: 0.75, changeFrequency: "weekly" },
+  { path: "/hearing-aids/bluetooth", priority: 0.75, changeFrequency: "weekly" },
+  { path: "/hearing-aids/invisible", priority: 0.75, changeFrequency: "weekly" },
+  { path: "/hearing-aids/for-children", priority: 0.75, changeFrequency: "weekly" },
+  { path: "/hearing-aids/type/ric", priority: 0.7, changeFrequency: "weekly" },
+  { path: "/hearing-aids/type/bte", priority: 0.7, changeFrequency: "weekly" },
+  { path: "/hearing-aids/type/ite", priority: 0.7, changeFrequency: "weekly" },
+  { path: "/hearing-aids/type/cic", priority: 0.7, changeFrequency: "weekly" },
+  { path: "/hearing-aids/type/iic", priority: 0.7, changeFrequency: "weekly" },
+  { path: "/iem", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/learn", priority: 0.85, changeFrequency: "daily" },
+  { path: "/faq", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/services", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/branches", priority: 0.8, changeFrequency: "weekly" },
+  { path: "/tools/hearing-check", priority: 0.75, changeFrequency: "monthly" },
+];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base: MetadataRoute.Sitemap = [
-    { url: SITE_URL, changeFrequency: "weekly", priority: 1 },
-    { url: `${SITE_URL}/ru`, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${SITE_URL}/en`, changeFrequency: "weekly", priority: 0.85 },
-    { url: `${SITE_URL}/eshitish-moslamalari`, changeFrequency: "daily", priority: 0.9 },
-    { url: `${SITE_URL}/ru/eshitish-moslamalari`, changeFrequency: "daily", priority: 0.85 },
-    { url: `${SITE_URL}/foydali-malumotlar`, changeFrequency: "daily", priority: 0.8 },
-    { url: `${SITE_URL}/filiallar`, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${SITE_URL}/xizmatlar`, changeFrequency: "weekly", priority: 0.8 },
-  ];
+  const entries: Entry[] = STATIC_PATHS.flatMap((item) =>
+    forAllLocales(item.path, item.priority, item.changeFrequency),
+  );
 
-  // Katalog hublari, Custom IEM va interaktiv vositalar — uz (prefikssiz) + ru/en.
-  const hubPaths = [
-    "/hearing-aids/type/ric",
-    "/hearing-aids/type/bte",
-    "/hearing-aids/type/ite",
-    "/hearing-aids/type/cic",
-    "/hearing-aids/type/iic",
-    "/hearing-aids/rechargeable",
-    "/hearing-aids/bluetooth",
-    "/hearing-aids/invisible",
-    "/hearing-aids/for-children",
-    "/hearing-aids/prices",
-    "/iem",
-    "/tools/hearing-check",
-  ];
-  for (const path of hubPaths) {
-    base.push({ url: `${SITE_URL}${path}`, changeFrequency: "weekly", priority: 0.75 });
-    base.push({ url: `${SITE_URL}/ru${path}`, changeFrequency: "weekly", priority: 0.6 });
-    base.push({ url: `${SITE_URL}/en${path}`, changeFrequency: "weekly", priority: 0.6 });
-  }
+  // Dinamik yo'llar har bir til uchun alohida olinadi — kontent per-locale qatorlarda saqlanadi.
+  await Promise.all(
+    locales.map(async (locale: Locale) => {
+      const [brands, products, categories, articles, branches] = await Promise.all([
+        getJson<any[]>(`${API_URL}/catalog/brands?locale=${locale}`, []),
+        getJson<any>(`${API_URL}/catalog/products?locale=${locale}&limit=100`, { items: [] }),
+        getJson<any[]>(`${API_URL}/content/categories?locale=${locale}`, []),
+        getJson<any[]>(`${API_URL}/content/articles?locale=${locale}&limit=200`, []),
+        getJson<any[]>(`${API_URL}/locations/branches`, []),
+      ]);
 
-  try {
-    const [uzProductsResponse, ruProductsResponse, articlesResponse, branchesResponse, servicesResponse] = await Promise.all([
-      fetch(`${API_URL}/catalog/products?locale=uz&limit=48`, { next: { revalidate: 3600 } }),
-      fetch(`${API_URL}/catalog/products?locale=ru&limit=48`, { next: { revalidate: 3600 } }),
-      fetch(`${API_URL}/content/articles?locale=uz&limit=100`, { next: { revalidate: 3600 } }),
-      fetch(`${API_URL}/locations/branches`, { next: { revalidate: 3600 } }),
-      fetch(`${API_URL}/locations/services`, { next: { revalidate: 3600 } }),
-    ]);
+      const productItems: any[] = Array.isArray(products) ? products : (products?.items ?? []);
 
-    const uzPayload = uzProductsResponse.ok ? await uzProductsResponse.json() : { items: [] };
-    const ruPayload = ruProductsResponse.ok ? await ruProductsResponse.json() : { items: [] };
-    const uzProducts = Array.isArray(uzPayload) ? uzPayload : (uzPayload.items ?? []);
-    const ruProducts = Array.isArray(ruPayload) ? ruPayload : (ruPayload.items ?? []);
-    const articles = articlesResponse.ok ? await articlesResponse.json() : [];
-    const branches = branchesResponse.ok ? await branchesResponse.json() : [];
-    const services = servicesResponse.ok ? await servicesResponse.json() : [];
+      for (const brand of brands) {
+        if (!brand?.slug) continue;
+        entries.push({
+          url: `${SITE_URL}${localePath(locale, `/hearing-aids/${brand.slug}`)}`,
+          changeFrequency: "weekly",
+          priority: 0.75,
+        });
+      }
 
-    return [
-      ...base,
-      ...uzProducts.map((product: any) => ({
-        url: `${SITE_URL}/eshitish-moslamalari/${product.slug}`,
-        changeFrequency: "weekly" as const,
-        priority: 0.8,
-      })),
-      ...ruProducts.map((product: any) => ({
-        url: `${SITE_URL}/ru/eshitish-moslamalari/${product.slug}`,
-        changeFrequency: "weekly" as const,
-        priority: 0.75,
-      })),
-      ...articles.map((article: any) => ({
-        url: `${SITE_URL}/maqolalar/${article.slug}`,
-        lastModified: article.publishedAt ? new Date(article.publishedAt) : undefined,
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-      })),
-      ...branches.map((branch: any) => ({
-        url: `${SITE_URL}/filiallar/${branch.slug}`,
-        changeFrequency: "weekly" as const,
-        priority: 0.75,
-      })),
-      ...services.map((service: any) => ({
-        url: `${SITE_URL}/xizmatlar/${service.code}`,
-        changeFrequency: "monthly" as const,
-        priority: 0.75,
-      })),
-    ];
-  } catch {
-    return base;
-  }
+      for (const product of productItems) {
+        // brandSlug'siz mahsulot URL'i noto'g'ri bo'lardi — bunday yozuvni chiqarmaymiz.
+        if (!product?.slug || !product?.brandSlug) continue;
+        entries.push({
+          url: `${SITE_URL}${localePath(locale, `/hearing-aids/${product.brandSlug}/${product.slug}`)}`,
+          changeFrequency: "weekly",
+          priority: 0.8,
+        });
+      }
+
+      for (const category of categories) {
+        if (!category?.slug) continue;
+        entries.push({
+          url: `${SITE_URL}${localePath(locale, `/learn/${category.slug}`)}`,
+          changeFrequency: "weekly",
+          priority: 0.7,
+        });
+      }
+
+      for (const article of articles) {
+        if (!article?.slug || !article?.categorySlug) continue;
+        entries.push({
+          url: `${SITE_URL}${localePath(locale, `/learn/${article.categorySlug}/${article.slug}`)}`,
+          lastModified: article.publishedAt ? new Date(article.publishedAt) : undefined,
+          changeFrequency: "monthly",
+          priority: 0.7,
+        });
+      }
+
+      // Filiallar tildan qat'i nazar bitta ro'yxat — har tilda o'z URL'i bilan.
+      for (const branch of branches) {
+        if (!branch?.slug) continue;
+        entries.push({
+          url: `${SITE_URL}${localePath(locale, `/branches/${branch.slug}`)}`,
+          changeFrequency: "weekly",
+          priority: 0.7,
+        });
+      }
+    }),
+  );
+
+  // Bir xil URL ikki marta tushmasligi uchun (masalan bir nechta manbadan).
+  const seen = new Set<string>();
+  return entries.filter((entry) => {
+    if (seen.has(entry.url)) return false;
+    seen.add(entry.url);
+    return true;
+  });
 }

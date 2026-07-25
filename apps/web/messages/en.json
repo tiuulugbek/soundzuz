@@ -278,7 +278,11 @@
       "author": "Author",
       "updated": "Updated",
       "related": "Related questions",
-      "disclaimerTitle": "Note"
+      "disclaimerTitle": "Note",
+      "relatedProducts": "Related devices",
+      "tags": "Tags",
+      "priceFrom": "from {price} UZS",
+      "priceOnConsult": "Price on consultation"
     },
     "faq": {
       "metaTitle": "FAQ — Soundz",
@@ -296,12 +300,20 @@
       "faqs": "FAQ",
       "empty": "Nothing found. Try another query or get a consultation.",
       "prompt": "Type your question — we'll show matching articles and answers.",
-      "results": "Results for \"{q}\""
+      "results": "Results for \"{q}\"",
+      "answerTitle": "AI answer (based on site content)",
+      "answerSource": "Source"
     },
     "cta": {
       "question": "Want to check your hearing?",
       "book": "Book an appointment",
       "consult": "Get a consultation"
+    },
+    "feedback": {
+      "prompt": "Was this article helpful?",
+      "yes": "Yes",
+      "no": "No",
+      "thanks": "Thanks for your feedback!"
     }
   },
   "services": {

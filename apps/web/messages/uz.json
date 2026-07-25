@@ -278,7 +278,11 @@
       "author": "Muallif",
       "updated": "Yangilangan",
       "related": "O'xshash savollar",
-      "disclaimerTitle": "Eslatma"
+      "disclaimerTitle": "Eslatma",
+      "relatedProducts": "Tegishli moslamalar",
+      "tags": "Teglar",
+      "priceFrom": "{price} so'mdan",
+      "priceOnConsult": "Narx konsultatsiyada"
     },
     "faq": {
       "metaTitle": "Savol-javoblar — Soundz",
@@ -296,12 +300,20 @@
       "faqs": "Savol-javoblar",
       "empty": "Hech narsa topilmadi. Boshqa so'z bilan urinib ko'ring yoki maslahat oling.",
       "prompt": "Savolingizni yozing — biz maqolalar va javoblardan mos keladiganini ko'rsatamiz.",
-      "results": "\"{q}\" bo'yicha natijalar"
+      "results": "\"{q}\" bo'yicha natijalar",
+      "answerTitle": "AI javob (saytdagi ma'lumot asosida)",
+      "answerSource": "Manba"
     },
     "cta": {
       "question": "Eshitishingizni tekshirtirmoqchimisiz?",
       "book": "Qabulga yozilish",
       "consult": "Maslahat olish"
+    },
+    "feedback": {
+      "prompt": "Ushbu maqola foydali bo'ldimi?",
+      "yes": "Ha",
+      "no": "Yo'q",
+      "thanks": "Fikringiz uchun rahmat!"
     }
   },
   "services": {

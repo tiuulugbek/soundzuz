@@ -7,6 +7,8 @@ import { JsonLd, breadcrumbJsonLd, faqJsonLd } from "../../../../../components/s
 import type { Locale } from "../../../../../i18n/routing";
 import { SITE_URL, buildPageMetadata, localePath } from "../../../../../lib/seo";
 import { fetchArticle } from "../../../../../lib/content";
+import { formatPrice } from "../../../../../lib/catalog";
+import { ArticleEngagement } from "../../../../../components/content/article-engagement";
 import "../../learn.css";
 
 type PageParams = { params: Promise<{ locale: string; category: string; slug: string }> };
@@ -51,7 +53,7 @@ export default async function ArticlePage({ params }: PageParams) {
         { name: t("hero.eyebrow"), path: "/learn" },
         ...(a.categoryName ? [{ name: a.categoryName, path: `/learn/${a.categorySlug ?? category}` }] : []),
         { name: a.title, path: `/learn/${category}/${slug}` },
-      ])} />
+      ], locale)} />
       <JsonLd data={articleLd} />
       {a.faqs && a.faqs.length > 0 ? (
         <JsonLd data={faqJsonLd(a.faqs.map((f) => ({ question: f.question, answer: f.fullAnswer ?? f.shortAnswer })))} />
@@ -84,6 +86,49 @@ export default async function ArticlePage({ params }: PageParams) {
               ))}
             </section>
           ) : null}
+
+          {a.relatedProducts && a.relatedProducts.length > 0 ? (
+            <section className="sz-article__related">
+              <h2>{t("article.relatedProducts")}</h2>
+              <div className="sz-article__related-grid">
+                {a.relatedProducts.map((p) => {
+                  const price = formatPrice(locale, p.priceFrom);
+                  const href = localePath(locale, `/hearing-aids/${p.brandSlug ?? "brand"}/${p.slug}`);
+                  return (
+                    <a key={p.slug} href={href} className="sz-article__product">
+                      <span className="sz-article__product-brand">{p.brand ?? "Soundz"}</span>
+                      <strong>{p.name}</strong>
+                      {p.shortDescription ? <span className="sz-article__product-desc">{p.shortDescription}</span> : null}
+                      <span className="sz-article__product-price">
+                        {price ? t("article.priceFrom", { price }) : t("article.priceOnConsult")} →
+                      </span>
+                    </a>
+                  );
+                })}
+              </div>
+            </section>
+          ) : null}
+
+          {a.tags && a.tags.length > 0 ? (
+            <div className="sz-article__tags" aria-label={t("article.tags")}>
+              {a.tags.map((tag) => (
+                <span key={tag.slug} className="sz-article__tag">#{tag.name}</span>
+              ))}
+            </div>
+          ) : null}
+
+          <ArticleEngagement
+            entityId={a.id}
+            entityType="article"
+            locale={locale}
+            labels={{
+              prompt: t("feedback.prompt"),
+              yes: t("feedback.yes"),
+              no: t("feedback.no"),
+              thanks: t("feedback.thanks"),
+            }}
+          />
+
           <aside className="sz-cta-block">
             <strong>{t("cta.question")}</strong>
             <div className="sz-cta-block__btns">

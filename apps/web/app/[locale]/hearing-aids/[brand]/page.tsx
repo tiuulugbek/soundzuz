@@ -38,7 +38,7 @@ export default async function BrandPage({ params }: PageParams) {
         { name: "Soundz", path: "/" },
         { name: t("hero.eyebrow"), path: "/hearing-aids" },
         { name: data.name, path: `/hearing-aids/${brand}` },
-      ])} />
+      ], locale)} />
       <SiteHeader />
       <main className="sz-cat">
         <section className="sz-cat__hero sz-cat__hero--brand">

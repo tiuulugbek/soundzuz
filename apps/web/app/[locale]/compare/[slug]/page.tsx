@@ -83,7 +83,7 @@ export default async function ComparePage({ params }: PageParams) {
           { name: "Soundz", path: "/" },
           { name: tc("hero.eyebrow"), path: "/hearing-aids" },
           { name: names, path: `/compare/${slug}` },
-        ])}
+        ], locale)}
       />
       <SiteHeader />
       <main className="sz-cmp">

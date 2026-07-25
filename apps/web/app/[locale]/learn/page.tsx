@@ -25,7 +25,7 @@ export default async function LearnHub({ params }: PageParams) {
 
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd([{ name: "Soundz", path: "/" }, { name: t("hero.eyebrow"), path: "/learn" }])} />
+      <JsonLd data={breadcrumbJsonLd([{ name: "Soundz", path: "/" }, { name: t("hero.eyebrow"), path: "/learn" }], locale)} />
       <SiteHeader />
       <main className="sz-learn">
         <section className="sz-learn__hero">

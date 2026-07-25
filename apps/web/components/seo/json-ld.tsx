@@ -1,4 +1,10 @@
-import { SITE_URL } from "../../lib/seo";
+import type { Locale } from "../../i18n/routing";
+import { SITE_URL, localePath } from "../../lib/seo";
+
+/** Locale'ga mos to'liq (absolute) URL — uz prefikssiz, ru/en prefiksli. */
+function absolute(locale: Locale, path: string): string {
+  return `${SITE_URL}${localePath(locale, path)}`;
+}
 
 /** JSON-LD ni xavfsiz render qiluvchi komponent. */
 export function JsonLd({ data }: { data: Record<string, unknown> }) {
@@ -36,7 +42,8 @@ export function webSiteJsonLd() {
   };
 }
 
-export function breadcrumbJsonLd(items: Array<{ name: string; path: string }>) {
+/** Breadcrumb. `path` locale prefiksisiz beriladi — prefiks shu yerda qo'shiladi. */
+export function breadcrumbJsonLd(items: Array<{ name: string; path: string }>, locale: Locale = "uz") {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -44,7 +51,7 @@ export function breadcrumbJsonLd(items: Array<{ name: string; path: string }>) {
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: `${SITE_URL}${item.path}`,
+      item: absolute(locale, item.path),
     })),
   };
 }
@@ -61,18 +68,21 @@ export function faqJsonLd(items: Array<{ question: string; answer: string }>) {
   };
 }
 
-export function localBusinessJsonLd(branch: {
-  name: string;
-  slug: string;
-  address?: string | null;
-  phone?: string | null;
-  imageUrl?: string | null;
-}) {
+export function localBusinessJsonLd(
+  branch: {
+    name: string;
+    slug: string;
+    address?: string | null;
+    phone?: string | null;
+    imageUrl?: string | null;
+  },
+  locale: Locale = "uz",
+) {
   return {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
     name: branch.name,
-    url: `${SITE_URL}/filiallar/${branch.slug}`,
+    url: absolute(locale, `/branches/${branch.slug}`),
     ...(branch.address ? { address: branch.address } : {}),
     ...(branch.phone ? { telephone: branch.phone } : {}),
     ...(branch.imageUrl ? { image: branch.imageUrl } : {}),
@@ -80,21 +90,29 @@ export function localBusinessJsonLd(branch: {
   };
 }
 
-export function productJsonLd(product: {
-  name: string;
-  slug: string;
-  description?: string | null;
-  brand?: string | null;
-  imageUrl?: string | null;
-  price?: number | null;
-  currency?: string;
-  inStock?: boolean;
-}) {
+export function productJsonLd(
+  product: {
+    name: string;
+    slug: string;
+    /** Brend slug — mahsulot URL'i `/hearing-aids/<brand>/<model>` ko'rinishida. */
+    brandSlug?: string | null;
+    description?: string | null;
+    brand?: string | null;
+    imageUrl?: string | null;
+    price?: number | null;
+    currency?: string;
+    inStock?: boolean;
+  },
+  locale: Locale = "uz",
+) {
   return {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
-    url: `${SITE_URL}/eshitish-moslamalari/${product.slug}`,
+    url: absolute(
+      locale,
+      product.brandSlug ? `/hearing-aids/${product.brandSlug}/${product.slug}` : `/hearing-aids/${product.slug}`,
+    ),
     ...(product.description ? { description: product.description } : {}),
     ...(product.brand ? { brand: { "@type": "Brand", name: product.brand } } : {}),
     ...(product.imageUrl ? { image: product.imageUrl } : {}),

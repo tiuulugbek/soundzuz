@@ -25,7 +25,7 @@ export default async function BranchesPage({ params }: PageParams) {
 
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd([{ name: "Soundz", path: "/" }, { name: t("title"), path: "/branches" }])} />
+      <JsonLd data={breadcrumbJsonLd([{ name: "Soundz", path: "/" }, { name: t("title"), path: "/branches" }], locale)} />
       <SiteHeader />
       <main className="sz-loc">
         <section className="sz-loc__hero">

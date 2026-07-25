@@ -49,16 +49,17 @@ export default async function ProductPage({ params }: PageParams) {
         { name: t("hero.eyebrow"), path: "/hearing-aids" },
         { name: product.brand ?? brand, path: `/hearing-aids/${product.brandSlug ?? brand}` },
         { name: product.name, path: `/hearing-aids/${brand}/${model}` },
-      ])} />
+      ], locale)} />
       <JsonLd data={productJsonLd({
         name: product.name,
-        slug: product.slug,
+        slug: product.slug ?? model,
+        brandSlug: product.brandSlug ?? brand,
         description: product.description ?? product.shortDescription,
         brand: product.brand,
         imageUrl: heroUrl || undefined,
         price: product.priceFrom,
         inStock: product.inStock,
-      })} />
+      }, locale)} />
       <SiteHeader />
       <main className="sz-cat sz-pdp">
         <div className="sz-container">

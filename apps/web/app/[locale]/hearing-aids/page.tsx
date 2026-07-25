@@ -48,7 +48,7 @@ export default async function CatalogPage({ params, searchParams }: PageParams) 
 
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd([{ name: "Soundz", path: "/" }, { name: t("hero.eyebrow"), path: "/hearing-aids" }])} />
+      <JsonLd data={breadcrumbJsonLd([{ name: "Soundz", path: "/" }, { name: t("hero.eyebrow"), path: "/hearing-aids" }], locale)} />
       <SiteHeader />
       <main className="sz-cat">
         <section className="sz-cat__hero">

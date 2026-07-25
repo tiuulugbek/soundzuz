@@ -39,7 +39,7 @@ export default async function LearnCategory({ params }: PageParams) {
         { name: "Soundz", path: "/" },
         { name: t("hero.eyebrow"), path: "/learn" },
         { name: cat.name, path: `/learn/${category}` },
-      ])} />
+      ], locale)} />
       <SiteHeader />
       <main className="sz-learn">
         <section className="sz-learn__hero">

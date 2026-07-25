@@ -80,7 +80,8 @@ export class CatalogService {
 
     const [items, countRows] = await Promise.all([
       this.prisma.$queryRawUnsafe<any[]>(
-        `SELECT p.id,p.slug,p.name,p.short_description AS "shortDescription",p.brand,p.form_factor AS "formFactor",
+        `SELECT p.id,p.slug,p.name,p.short_description AS "shortDescription",p.brand,p.brand_slug AS "brandSlug",
+         p.form_factor AS "formFactor",
          p.technology_level AS "technologyLevel",p.price_from::float AS "priceFrom",p.price_to::float AS "priceTo",
          p.rechargeable,p.bluetooth,p.in_stock AS "inStock",
          (SELECT v.url FROM media_usages u JOIN media_variants v ON v.media_id=u.media_id AND v.variant_key='card'
@@ -149,7 +150,8 @@ export class CatalogService {
     );
     if (!rows[0]) throw new NotFoundException(locale === "ru" ? "Бренд не найден" : locale === "en" ? "Brand not found" : "Brend topilmadi");
     const brandProducts = await this.prisma.$queryRawUnsafe(
-      `SELECT p.id,p.slug,p.name,p.short_description AS "shortDescription",p.brand,p.form_factor AS "formFactor",
+      `SELECT p.id,p.slug,p.name,p.short_description AS "shortDescription",p.brand,p.brand_slug AS "brandSlug",
+       p.form_factor AS "formFactor",
        p.technology_level AS "technologyLevel",p.price_from::float AS "priceFrom",p.price_to::float AS "priceTo",p.rechargeable,p.bluetooth,
        (SELECT v.url FROM media_usages u JOIN media_variants v ON v.media_id=u.media_id AND v.variant_key='card'
         WHERE u.entity_type='product' AND u.entity_id=p.id AND u.slot='featured' ORDER BY u.sort_order LIMIT 1) AS "imageUrl"

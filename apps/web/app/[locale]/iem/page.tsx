@@ -36,7 +36,7 @@ export default async function IemPage({ params }: PageParams) {
         data={breadcrumbJsonLd([
           { name: "Soundz", path: "/" },
           { name: t("hero.eyebrow"), path: "/iem" },
-        ])}
+        ], locale)}
       />
       <JsonLd data={faqJsonLd(faq.map((f) => ({ question: f.q, answer: f.a })))} />
       <SiteHeader />

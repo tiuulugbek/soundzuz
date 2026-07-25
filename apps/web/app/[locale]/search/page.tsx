@@ -25,7 +25,7 @@ export default async function SearchPage({ params, searchParams }: PageParams) {
   const t = await getTranslations({ locale: rawLocale, namespace: "learn" });
   const sp = await searchParams;
   const query = typeof sp.q === "string" ? sp.q : "";
-  const { articles, faqs } = await searchKnowledge(locale, query);
+  const { articles, faqs, answer } = await searchKnowledge(locale, query);
   const hasQuery = query.trim().length > 0;
   const nothing = hasQuery && articles.length === 0 && faqs.length === 0;
 
@@ -59,6 +59,27 @@ export default async function SearchPage({ params, searchParams }: PageParams) {
             </>
           ) : (
             <>
+              {answer ? (
+                <div className="sz-answer">
+                  <div className="sz-answer__head">
+                    <span className="sz-answer__badge">{t("search.answerTitle")}</span>
+                  </div>
+                  <p className="sz-answer__text">{answer.text}</p>
+                  {answer.source.type === "faq" && answer.source.articleSlug ? (
+                    <a className="sz-answer__source" href={localePath(locale, `/learn/hearing-aids/${answer.source.articleSlug}`)}>
+                      {t("search.answerSource")}: {answer.source.question} →
+                    </a>
+                  ) : answer.source.type === "article" ? (
+                    <a className="sz-answer__source" href={localePath(locale, `/learn/hearing-aids/${answer.source.slug}`)}>
+                      {t("search.answerSource")}: {answer.source.title} →
+                    </a>
+                  ) : (
+                    <span className="sz-answer__source sz-answer__source--plain">{t("search.answerSource")}: {answer.source.question}</span>
+                  )}
+                  <p className="sz-answer__disclaimer">⚕ {answer.disclaimer}</p>
+                  <a className="sz-btn sz-btn--primary sz-btn--md" href={localePath(locale, "/#contact")}>{t("cta.book")}</a>
+                </div>
+              ) : null}
               <p className="sz-search__summary">{t("search.results", { q: query })}</p>
               {articles.length > 0 ? (
                 <div className="sz-search__block">
