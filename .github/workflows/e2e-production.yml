@@ -6,7 +6,7 @@ on:
       base_url:
         description: Production or staging URL
         required: false
-        default: https://soundz.uz
+        default: https://new.soundz.uz
   schedule:
     - cron: "15 2 * * *"
 
@@ -18,7 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      E2E_BASE_URL: ${{ inputs.base_url || 'https://soundz.uz' }}
+      # Yangi platforma turgan domen. soundz.uz'da hozircha ESKI WordPress sayt
+      # ishlaydi — unga qarshi smoke test o'tkazish ma'nosiz. Ko'chishdan keyin
+      # repo o'zgaruvchisi (vars.E2E_BASE_URL) bilan almashtiriladi.
+      E2E_BASE_URL: ${{ inputs.base_url || vars.E2E_BASE_URL || 'https://new.soundz.uz' }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -28,6 +31,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      # playwright.config.ts `@playwright/test` ni repo'dan import qiladi —
+      # o'rnatishsiz konfiguratsiya yuklanmaydi va test umuman ishga tushmaydi.
+      - run: pnpm install --frozen-lockfile --reporter=silent
       - run: pnpm e2e:install
       - run: pnpm e2e
       - name: Upload Playwright report
