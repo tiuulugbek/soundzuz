@@ -83,3 +83,12 @@ test("Sitemap lists new-structure URLs only", async ({ request }) => {
     expect(body, `sitemap'da eski yo'l qolmasin: ${legacy}`).not.toContain(legacy);
   }
 });
+
+test("Sitemap includes dynamic content, not just static paths", async ({ request }) => {
+  const body = await (await request.get("/sitemap.xml")).text();
+  const count = (body.match(/<loc>/g) ?? []).length;
+  // Regressiya qo'riqchisi: sitemap CI'da build vaqtida render qilinganda
+  // API mavjud bo'lmagani uchun faqat statik yo'llar qolib ketgan edi.
+  expect(body, "maqola URL'lari sitemap'da bo'lishi kerak").toMatch(/\/learn\/[a-z0-9-]+\/[a-z0-9-]+/);
+  expect(count, "sitemap faqat statik yo'llardan iborat bo'lib qolmasin").toBeGreaterThan(60);
+});

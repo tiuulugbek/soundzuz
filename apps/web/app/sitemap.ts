@@ -5,6 +5,16 @@ import { SITE_URL, localePath } from "../lib/seo";
 
 const locales = routing.locales;
 
+/**
+ * Sitemap SO'ROV VAQTIDA quriladi.
+ *
+ * Aks holda u CI'dagi `pnpm build` paytida oldindan render qilinadi — u yerda
+ * API ham, `API_INTERNAL_URL` ham yo'q, natijada faqat statik yo'llar tushib,
+ * barcha mahsulot/maqola/brend URL'lari yo'qoladi. Ma'lumot fetch darajasida
+ * bir soat keshlanadi, shuning uchun har so'rovda API qayta yuklanmaydi.
+ */
+export const dynamic = "force-dynamic";
+
 // SSR fetch — ichki API URL (tashqi domen konteyner ichidan ulanmaydi).
 const API_URL = serverApiUrl();
 
