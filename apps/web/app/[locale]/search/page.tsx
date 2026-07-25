@@ -4,7 +4,7 @@ import { SiteHeader } from "../../../components/site/site-header";
 import { SiteFooter } from "../../../components/site/site-footer";
 import type { Locale } from "../../../i18n/routing";
 import { buildPageMetadata, localePath } from "../../../lib/seo";
-import { searchKnowledge } from "../../../lib/content";
+import { articlePath, searchKnowledge } from "../../../lib/content";
 import "../learn/learn.css";
 
 type PageParams = {
@@ -29,13 +29,24 @@ export default async function SearchPage({ params, searchParams }: PageParams) {
   const hasQuery = query.trim().length > 0;
   const nothing = hasQuery && articles.length === 0 && faqs.length === 0;
 
+  // Javob manbasiga havola — kategoriya API'dan keladi; noma'lum bo'lsa
+  // havola o'rniga oddiy matn ko'rsatiladi (buzuq havoladan ko'ra yaxshi).
+  const answerHref =
+    answer?.source.type === "faq"
+      ? articlePath(answer.source.articleCategorySlug, answer.source.articleSlug)
+      : answer?.source.type === "article"
+        ? articlePath(answer.source.categorySlug, answer.source.slug)
+        : null;
+  const answerLabel = answer?.source.type === "faq" ? answer.source.question : answer?.source.title ?? "";
+
   return (
     <>
       <SiteHeader />
       <main className="sz-learn">
         <section className="sz-learn__hero">
           <div className="sz-container">
-            <p className="sz-learn__eyebrow">{t("search.title")}</p>
+            <p className="sz-learn__eyebrow">{t("hero.eyebrow")}</p>
+            <h1 className="sz-learn__title">{t("search.title")}</h1>
             <form className="sz-search__form" method="get" action={localePath(locale, "/search")}>
               <input name="q" defaultValue={query} placeholder={t("search.placeholder")} aria-label={t("search.title")} />
               <button className="sz-btn sz-btn--primary sz-btn--md" type="submit">{t("search.button")}</button>
@@ -65,16 +76,12 @@ export default async function SearchPage({ params, searchParams }: PageParams) {
                     <span className="sz-answer__badge">{t("search.answerTitle")}</span>
                   </div>
                   <p className="sz-answer__text">{answer.text}</p>
-                  {answer.source.type === "faq" && answer.source.articleSlug ? (
-                    <a className="sz-answer__source" href={localePath(locale, `/learn/hearing-aids/${answer.source.articleSlug}`)}>
-                      {t("search.answerSource")}: {answer.source.question} →
-                    </a>
-                  ) : answer.source.type === "article" ? (
-                    <a className="sz-answer__source" href={localePath(locale, `/learn/hearing-aids/${answer.source.slug}`)}>
-                      {t("search.answerSource")}: {answer.source.title} →
+                  {answerHref ? (
+                    <a className="sz-answer__source" href={localePath(locale, answerHref)}>
+                      {t("search.answerSource")}: {answerLabel} →
                     </a>
                   ) : (
-                    <span className="sz-answer__source sz-answer__source--plain">{t("search.answerSource")}: {answer.source.question}</span>
+                    <span className="sz-answer__source sz-answer__source--plain">{t("search.answerSource")}: {answerLabel}</span>
                   )}
                   <p className="sz-answer__disclaimer">⚕ {answer.disclaimer}</p>
                   <a className="sz-btn sz-btn--primary sz-btn--md" href={localePath(locale, "/#contact")}>{t("cta.book")}</a>

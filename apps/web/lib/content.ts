@@ -92,9 +92,21 @@ export function videoEmbedUrl(url?: string | null): string | null {
 
 export type SearchAnswer = {
   text: string;
-  source: { type: "faq"; question: string; articleSlug?: string | null } | { type: "article"; title: string; slug: string };
+  source:
+    | { type: "faq"; question: string; articleSlug?: string | null; articleCategorySlug?: string | null }
+    | { type: "article"; title: string; slug: string; categorySlug?: string | null };
   disclaimer: string;
 };
+
+/**
+ * Maqola sahifasining yo'li. Kategoriya noma'lum bo'lsa havola qurilmaydi —
+ * ilgari bunday holatda kategoriya "hearing-aids" deb qattiq yozilgan va
+ * boshqa bo'limdagi maqolaga havola 404 berardi.
+ */
+export function articlePath(categorySlug?: string | null, slug?: string | null): string | null {
+  if (!categorySlug || !slug) return null;
+  return `/learn/${categorySlug}/${slug}`;
+}
 
 export type Faq = {
   id: string;
@@ -105,6 +117,7 @@ export type Faq = {
   categoryName?: string | null;
   categorySlug?: string | null;
   relatedArticleSlug?: string | null;
+  relatedArticleCategorySlug?: string | null;
 };
 
 async function safeJson<T>(url: string, fallback: T, revalidate: number): Promise<T> {

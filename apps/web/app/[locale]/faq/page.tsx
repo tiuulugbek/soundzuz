@@ -5,7 +5,7 @@ import { SiteFooter } from "../../../components/site/site-footer";
 import { JsonLd, breadcrumbJsonLd, faqJsonLd } from "../../../components/seo/json-ld";
 import type { Locale } from "../../../i18n/routing";
 import { buildPageMetadata, localePath } from "../../../lib/seo";
-import { fetchFaqs, groupFaqsByCategory } from "../../../lib/content";
+import { articlePath, fetchFaqs, groupFaqsByCategory } from "../../../lib/content";
 import "../learn/learn.css";
 
 type PageParams = { params: Promise<{ locale: string }> };
@@ -47,15 +47,21 @@ export default async function FaqPage({ params }: PageParams) {
               {groups.map((g) => (
                 <div className="sz-faq__group" key={g.slug}>
                   <h2 className="sz-faq__cat">{g.name}</h2>
-                  {g.items.map((f) => (
-                    <details className="sz-faq__item" key={f.id}>
-                      <summary>{f.question}</summary>
-                      <p>{f.fullAnswer ?? f.shortAnswer}</p>
-                      {f.relatedArticleSlug ? (
-                        <a className="sz-faq__link" href={localePath(locale, `/learn/hearing-aids/${f.relatedArticleSlug}`)}>{t("article.backToHub")} →</a>
-                      ) : null}
-                    </details>
-                  ))}
+                  {g.items.map((f) => {
+                    // Kategoriya API'dan keladi; noma'lum bo'lsa havola ko'rsatilmaydi
+                    // (ilgari kategoriya "hearing-aids" deb qattiq yozilgan va boshqa
+                    // bo'limdagi maqolaga havola 404 berardi).
+                    const href = articlePath(f.relatedArticleCategorySlug, f.relatedArticleSlug);
+                    return (
+                      <details className="sz-faq__item" key={f.id}>
+                        <summary>{f.question}</summary>
+                        <p>{f.fullAnswer ?? f.shortAnswer}</p>
+                        {href ? (
+                          <a className="sz-faq__link" href={localePath(locale, href)}>{t("article.backToHub")} →</a>
+                        ) : null}
+                      </details>
+                    );
+                  })}
                 </div>
               ))}
             </div>

@@ -87,9 +87,13 @@ export class ContentService {
     return this.prisma.$queryRawUnsafe(
       `SELECT f.id, f.question, f.short_answer AS "shortAnswer", f.full_answer AS "fullAnswer",
               f.sort_order AS "sortOrder", c.name AS "categoryName", c.slug AS "categorySlug",
-              a.slug AS "relatedArticleSlug"
+              a.slug AS "relatedArticleSlug",
+              -- Maqola havolasi /learn/<kategoriya>/<slug> ko'rinishida — kategoriyasiz
+              -- havola qurib bo'lmaydi (ilgari u qattiq "hearing-aids" yozilgan edi).
+              ac.slug AS "relatedArticleCategorySlug"
        FROM faqs f LEFT JOIN faq_categories c ON c.id = f.category_id
        LEFT JOIN articles a ON a.id = f.related_article_id
+       LEFT JOIN article_categories ac ON ac.id = a.category_id
        WHERE f.locale = $1 AND f.status = 'PUBLISHED'
          AND ($2::text IS NULL OR c.slug = $2)
          AND ($3::text IS NULL OR to_tsvector('simple', coalesce(f.question,'') || ' ' || coalesce(f.short_answer,'') || ' ' || coalesce(f.full_answer,'')) @@ plainto_tsquery('simple', $3))
@@ -133,7 +137,12 @@ export class ContentService {
       if (text) {
         return {
           text: String(text),
-          source: { type: "faq" as const, question: top.question, articleSlug: top.relatedArticleSlug ?? null },
+          source: {
+            type: "faq" as const,
+            question: top.question,
+            articleSlug: top.relatedArticleSlug ?? null,
+            articleCategorySlug: top.relatedArticleCategorySlug ?? null,
+          },
           disclaimer,
         };
       }
@@ -142,7 +151,12 @@ export class ContentService {
     if (article?.excerpt) {
       return {
         text: String(article.excerpt),
-        source: { type: "article" as const, title: article.title, slug: article.slug },
+        source: {
+          type: "article" as const,
+          title: article.title,
+          slug: article.slug,
+          categorySlug: article.categorySlug ?? null,
+        },
         disclaimer,
       };
     }

@@ -23,5 +23,40 @@ export function LeadForm() {
     } catch (reason) { setState("error"); setFeedback(reason instanceof Error ? reason.message : "Murojaat yuborilmadi"); }
   }
 
-  return <form className="lead-form" onSubmit={submit}><h3>Maslahat olish</h3><label>Ismingiz<input value={name} onChange={(e) => setName(e.target.value)} minLength={2} required placeholder="Ismingiz" /></label><label>Telefon raqamingiz<input value={phone} onChange={(e) => setPhone(e.target.value)} required placeholder="+998 90 123 45 67" inputMode="tel" /></label><label>Qiziqayotgan yo‘nalish<select value={type} onChange={(e) => setType(e.target.value)}><option value="HEARING_AID_CONSULTATION">Eshitish moslamasi</option><option value="APPOINTMENT_REQUEST">Qabulga yozilish</option><option value="PRICE_REQUEST">Narxini bilish</option><option value="IEM_CONSULTATION">Custom IEM</option></select></label><label>Qo‘shimcha izoh<textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Qaysi masala bo‘yicha yordam kerak?" /></label><label className="consent"><input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} required /><span>Ma’lumotlarim murojaatni ko‘rib chiqish uchun saqlanishiga roziman.</span></label><button className="primary form-button" disabled={state === "loading"}>{state === "loading" ? "Yuborilmoqda…" : "Murojaat yuborish"}</button>{feedback && <p className={`form-feedback ${state}`}>{feedback}</p>}</form>;
+  // `name` + `autoComplete`: telefon orqali kiruvchi foydalanuvchida brauzer
+  // avtoto'ldirishi ishlaydi. `aria-live`: natija ekran o'quvchiga e'lon qilinadi.
+  return (
+    <form className="lead-form" onSubmit={submit}>
+      <h3>Maslahat olish</h3>
+      <label>
+        Ismingiz
+        <input name="name" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} minLength={2} required placeholder="Ismingiz" />
+      </label>
+      <label>
+        Telefon raqamingiz
+        <input name="tel" autoComplete="tel" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required placeholder="+998 90 123 45 67" inputMode="tel" />
+      </label>
+      <label>
+        Qiziqayotgan yo‘nalish
+        <select name="type" value={type} onChange={(e) => setType(e.target.value)}>
+          <option value="HEARING_AID_CONSULTATION">Eshitish moslamasi</option>
+          <option value="APPOINTMENT_REQUEST">Qabulga yozilish</option>
+          <option value="PRICE_REQUEST">Narxini bilish</option>
+          <option value="IEM_CONSULTATION">Custom IEM</option>
+        </select>
+      </label>
+      <label>
+        Qo‘shimcha izoh
+        <textarea name="message" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Qaysi masala bo‘yicha yordam kerak?" />
+      </label>
+      <label className="consent">
+        <input type="checkbox" name="consent" checked={consent} onChange={(e) => setConsent(e.target.checked)} required />
+        <span>Ma’lumotlarim murojaatni ko‘rib chiqish uchun saqlanishiga roziman.</span>
+      </label>
+      <button className="primary form-button" disabled={state === "loading"}>
+        {state === "loading" ? "Yuborilmoqda…" : "Murojaat yuborish"}
+      </button>
+      <p className={`form-feedback ${state}`} role="status" aria-live="polite">{feedback}</p>
+    </form>
+  );
 }

@@ -184,13 +184,14 @@ export function BookingForm({ locale = "uz" }: { locale?: Locale }) {
         <label>{text.service}<select value={serviceId} onChange={(event) => setServiceId(event.target.value)} required><option value="">{text.selectService}</option>{services.map((service) => <option key={service.id} value={service.id}>{service.name}</option>)}</select></label>
         <label>{text.date}<input type="date" value={date} min={tomorrow()} onChange={(event) => setDate(event.target.value)} required /></label>
         <label>{text.slot}<select value={startsAt} onChange={(event) => setStartsAt(event.target.value)} required><option value="">{text.selectTime}</option>{slots.map((slot) => <option key={slot.startsAt} value={slot.startsAt}>{new Intl.DateTimeFormat(locale === "ru" ? "ru-RU" : "uz-UZ", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Tashkent" }).format(new Date(slot.startsAt))}</option>)}</select></label>
-        <label>{text.name}<input value={name} onChange={(event) => setName(event.target.value)} required minLength={2} /></label>
-        <label>{text.phone}<input value={phone} onChange={(event) => setPhone(event.target.value)} required placeholder="+998 90 123 45 67" /></label>
+        <label>{text.name}<input name="name" autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} required minLength={2} /></label>
+        <label>{text.phone}<input name="tel" autoComplete="tel" type="tel" inputMode="tel" value={phone} onChange={(event) => setPhone(event.target.value)} required placeholder="+998 90 123 45 67" /></label>
       </div>
-      <label>{text.note}<textarea value={message} onChange={(event) => setMessage(event.target.value)} placeholder={text.notePlaceholder} /></label>
+      <label>{text.note}<textarea name="message" value={message} onChange={(event) => setMessage(event.target.value)} placeholder={text.notePlaceholder} /></label>
       {branches.length === 0 && <p className="booking-note">{text.noBranches}</p>}
       <button className="primary" disabled={loading || branches.length === 0}>{loading ? text.saving : text.submit}</button>
-      {feedback && <p className="form-feedback success">{feedback}</p>}
+      {/* aria-live: natija ekran o'quvchiga e'lon qilinadi. */}
+      <p className="form-feedback success" role="status" aria-live="polite">{feedback}</p>
     </form>
   );
 }
