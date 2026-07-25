@@ -14,7 +14,7 @@ set -euo pipefail
 ENV_FILE="${ENV_FILE:-.env.production}"
 COMPOSE_FILE="${COMPOSE_FILE:-docker-compose.production.yml}"
 # web'ga proxy qiluvchi Docker Nginx konteyner nomi. Compose'dagi `nginx` servisi
-# (deploy/nginx/edge-gateway.conf) — 127.0.0.1:8085/8086/8087 portlarida.
+# (deploy/nginx/gateway/default.conf) — 127.0.0.1:8085/8086/8087 portlarida.
 GATEWAY="${GATEWAY:-soundz-nginx-1}"
 SITE_URL="${SITE_URL:-https://new.soundz.uz}"
 DC="docker compose --env-file ${ENV_FILE} -f ${COMPOSE_FILE}"
