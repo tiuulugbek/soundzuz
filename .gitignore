@@ -13,6 +13,8 @@ data/migration/**
 deploy/certs/*.pem
 !deploy/certs/README.md
 media-storage/
+# Zaxira nusxalar: baza dump'i va .env nusxasi (parollar bilan) — hech qachon git'ga tushmasin.
+backups/
 *.log
 .DS_Store
 .idea/
