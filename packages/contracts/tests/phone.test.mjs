@@ -1,22 +1,32 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { normalizeUzbekPhone } from "../dist/index.js";
 
-function normalizeUzbekPhone(value) {
-  const digits = value.replace(/\D/g, "");
-  if (digits.length === 9) return `998${digits}`;
-  if (digits.length === 12 && digits.startsWith("998")) return digits;
-  if (digits.length === 13 && digits.startsWith("0998")) return digits.slice(1);
-  throw new Error("invalid");
-}
+// DIQQAT: haqiqiy implementatsiya import qilinadi. Ilgari bu fayl funksiyaning
+// NUSXASINI saqlar edi — kod buzilsa ham test yashil qolaverardi.
 
-test("normalizes local Uzbek number", () => {
+test("mahalliy raqamni normalizatsiya qiladi", () => {
   assert.equal(normalizeUzbekPhone("90 123 45 67"), "998901234567");
 });
 
-test("normalizes international Uzbek number", () => {
+test("xalqaro formatni normalizatsiya qiladi", () => {
   assert.equal(normalizeUzbekPhone("+998 (90) 123-45-67"), "998901234567");
 });
 
-test("rejects invalid phone", () => {
+test("0998 bilan boshlangan raqamni tuzatadi", () => {
+  assert.equal(normalizeUzbekPhone("0998901234567"), "998901234567");
+});
+
+test("ajratgichlar natijaga ta'sir qilmaydi", () => {
+  assert.equal(normalizeUzbekPhone("998-90-123-45-67"), normalizeUzbekPhone("998901234567"));
+});
+
+test("noto'g'ri uzunlikdagi raqamni rad etadi", () => {
   assert.throws(() => normalizeUzbekPhone("123"));
+  assert.throws(() => normalizeUzbekPhone("9012345678"));
+  assert.throws(() => normalizeUzbekPhone(""));
+});
+
+test("boshqa davlat kodini rad etadi", () => {
+  assert.throws(() => normalizeUzbekPhone("+7 900 123 45 67"));
 });

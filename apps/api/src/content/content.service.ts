@@ -1,27 +1,12 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import type { PrismaClient } from "@soundz/database";
 import { randomUUID } from "node:crypto";
-import sanitizeHtml from "sanitize-html";
 import { PRISMA } from "../prisma/prisma.module.js";
+import { sanitizeArticleContent } from "./sanitize.js";
 
 type Locale = "uz" | "ru";
 type ContentStatus = "DRAFT" | "IN_REVIEW" | "APPROVED" | "PUBLISHED" | "NEEDS_UPDATE" | "ARCHIVED";
 
-const sanitizeArticleContent = (value: unknown) => sanitizeHtml(String(value ?? ""), {
-  allowedTags: ["p", "br", "h2", "h3", "h4", "strong", "b", "em", "i", "u", "s", "ul", "ol", "li", "blockquote", "a", "img", "hr", "code", "pre"],
-  allowedAttributes: {
-    a: ["href", "title", "target", "rel"],
-    img: ["src", "alt", "title", "width", "height", "loading"],
-    h2: ["id"],
-    h3: ["id"],
-    h4: ["id"],
-  },
-  allowedSchemes: ["http", "https", "mailto", "tel"],
-  transformTags: {
-    a: (_tagName, attribs) => ({ tagName: "a", attribs: { ...attribs, rel: "noopener noreferrer" } }),
-    img: (_tagName, attribs) => ({ tagName: "img", attribs: { ...attribs, loading: "lazy" } }),
-  },
-});
 
 @Injectable()
 export class ContentService {
@@ -33,10 +18,21 @@ export class ContentService {
     throw new BadRequestException("Noto‘g‘ri kategoriya turi");
   }
 
+  /**
+   * Public kategoriyalar. Nashr qilingan maqolasi yo'q kategoriya ro'yxatga
+   * TUSHMAYDI — bo'sh bo'lim foydalanuvchini boshi berk sahifaga olib boradi.
+   * (Admin paneli `listAdminCategories` orqali hammasini ko'radi.)
+   */
   listCategories(locale: Locale = "uz") {
     return this.prisma.$queryRawUnsafe(
-      `SELECT id, slug, name, description, sort_order AS "sortOrder"
-       FROM article_categories WHERE locale = $1 AND is_active = TRUE ORDER BY sort_order, name`, locale,
+      `SELECT c.id, c.slug, c.name, c.description, c.sort_order AS "sortOrder",
+              COUNT(a.id)::int AS "articleCount"
+       FROM article_categories c
+       LEFT JOIN articles a ON a.category_id = c.id AND a.status = 'PUBLISHED'
+       WHERE c.locale = $1 AND c.is_active = TRUE
+       GROUP BY c.id, c.slug, c.name, c.description, c.sort_order
+       HAVING COUNT(a.id) > 0
+       ORDER BY c.sort_order, c.name`, locale,
     );
   }
 

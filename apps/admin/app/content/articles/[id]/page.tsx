@@ -104,14 +104,21 @@ export default function EditArticlePage() {
 
   // Kategoriyalar HAR LOCALE uchun alohida qatorlar — maqola tili o'zgarsa qayta olinadi,
   // aks holda ru/en maqolada kategoriya ro'yxati bo'sh yoki noto'g'ri chiqadi.
+  //
+  // Public endpoint EMAS, admin endpoint: publicda maqolasi yo'q kategoriya
+  // ko'rsatilmaydi, admin esa yangi (hali bo'sh) kategoriyani tanlay olishi kerak.
   useEffect(() => {
     let cancelled = false;
-    fetch(`${API_URL}/content/categories?locale=${form.locale}`)
+    fetch(`${API_URL}/admin/content/categories/articles`, { headers: { authorization: `Bearer ${token}` } })
       .then((r) => (r.ok ? r.json() : []))
-      .then((d) => { if (!cancelled) setCategories(Array.isArray(d) ? d : d.items ?? []); })
+      .then((d) => {
+        if (cancelled) return;
+        const all = Array.isArray(d) ? d : d.items ?? [];
+        setCategories(all.filter((c: any) => c.locale === form.locale));
+      })
       .catch(() => undefined);
     return () => { cancelled = true; };
-  }, [form.locale]);
+  }, [form.locale, token]);
 
   function set<K extends keyof Form>(k: K, v: Form[K]) { setForm((s) => ({ ...s, [k]: v })); }
   function toggleProduct(slug: string) {
