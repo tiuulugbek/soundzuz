@@ -122,15 +122,18 @@ services:
       retries: 10
     networks: [edge]
 
+  # Edge gateway. SSL'ni HOST Nginx tugatadi va shu yerga uzatadi, shuning uchun
+  # portlar faqat loopback'ga bog'lanadi — admin paneli tashqi tarmoqqa shifrsiz
+  # ochiq qolmasin. 8085=sayt (/v1/ ham shu yerdan), 8086=admin, 8087=API.
   nginx:
     image: nginx:1.27-alpine
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - "127.0.0.1:8085:80"
+      - "127.0.0.1:8086:81"
+      - "127.0.0.1:8087:82"
     volumes:
-      - ./deploy/nginx/soundz.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./deploy/certs:/etc/nginx/certs:ro
+      - ./deploy/nginx/edge-gateway.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       web: { condition: service_healthy }
       admin: { condition: service_healthy }

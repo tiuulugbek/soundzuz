@@ -13,7 +13,9 @@ set -euo pipefail
 
 ENV_FILE="${ENV_FILE:-.env.production}"
 COMPOSE_FILE="${COMPOSE_FILE:-docker-compose.production.yml}"
-GATEWAY="${GATEWAY:-soundz-alt-gateway}"       # web'ga proxy qiluvchi Docker Nginx konteyner nomi
+# web'ga proxy qiluvchi Docker Nginx konteyner nomi. Compose'dagi `nginx` servisi
+# (deploy/nginx/edge-gateway.conf) — 127.0.0.1:8085/8086/8087 portlarida.
+GATEWAY="${GATEWAY:-soundz-nginx-1}"
 SITE_URL="${SITE_URL:-https://new.soundz.uz}"
 DC="docker compose --env-file ${ENV_FILE} -f ${COMPOSE_FILE}"
 
@@ -90,6 +92,10 @@ if $DC exec -T api curl -fsS http://localhost:4000/v1/health >/dev/null 2>&1; th
 code="$(curl -fsS -o /dev/null -w '%{http_code}' "$SITE_URL/" 2>/dev/null || echo 000)"
 echo "  $SITE_URL -> $code"
 [ "$code" = "200" ] || ok=0
+# Formalar brauzerdan shu yo'l orqali yuboriladi — uzilsa lead kelmay qoladi.
+api_code="$(curl -fsS -o /dev/null -w '%{http_code}' "$SITE_URL/v1/health" 2>/dev/null || echo 000)"
+echo "  $SITE_URL/v1/health -> $api_code"
+[ "$api_code" = "200" ] || ok=0
 if [ "$ok" != "1" ]; then rollback; exit 1; fi
 
 trap - ERR
